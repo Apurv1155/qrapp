@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bella Vista Restaurant - Gourmet Menu</title>
-    <link rel="stylesheet" href="style.css">
+
 </head>
     <style>
         :root {
@@ -1447,6 +1447,874 @@ select.form-control {
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script src="app.js">
+        // Restaurant Menu Application
+class RestaurantApp {
+    constructor() {
+        this.menuItems = [
+            {
+                id: 1,
+                name: "Caesar Salad",
+                category: "appetizer",
+                price: 12.99,
+                description: "Fresh romaine lettuce with parmesan cheese, croutons and caesar dressing",
+                image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=300&h=200&fit=crop"
+            },
+            {
+                id: 2,
+                name: "Garlic Bread",
+                category: "appetizer", 
+                price: 8.99,
+                description: "Toasted bread with garlic butter and herbs",
+                image: "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=300&h=200&fit=crop"
+            },
+            {
+                id: 3,
+                name: "Bruschetta",
+                category: "appetizer",
+                price: 10.99,
+                description: "Grilled bread with tomatoes, basil and balsamic glaze",
+                image: "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=300&h=200&fit=crop"
+            },
+            {
+                id: 4,
+                name: "Grilled Salmon",
+                category: "main",
+                price: 24.99,
+                description: "Fresh Atlantic salmon with lemon butter sauce and vegetables",
+                image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300&h=200&fit=crop"
+            },
+            {
+                id: 5,
+                name: "Ribeye Steak",
+                category: "main",
+                price: 32.99,
+                description: "Prime ribeye steak cooked to perfection with mashed potatoes",
+                image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300&h=200&fit=crop"
+            },
+            {
+                id: 6,
+                name: "Chicken Alfredo",
+                category: "main",
+                price: 18.99,
+                description: "Grilled chicken breast with fettuccine in creamy alfredo sauce",
+                image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=300&h=200&fit=crop"
+            },
+            {
+                id: 7,
+                name: "Margherita Pizza",
+                category: "main",
+                price: 16.99,
+                description: "Wood-fired pizza with fresh mozzarella, tomatoes and basil",
+                image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&h=200&fit=crop"
+            },
+            {
+                id: 8,
+                name: "Lobster Bisque",
+                category: "main",
+                price: 22.99,
+                description: "Rich and creamy lobster soup with a touch of brandy",
+                image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&h=200&fit=crop"
+            },
+            {
+                id: 9,
+                name: "Chocolate Lava Cake",
+                category: "dessert",
+                price: 9.99,
+                description: "Warm chocolate cake with molten center and vanilla ice cream",
+                image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=300&h=200&fit=crop"
+            },
+            {
+                id: 10,
+                name: "Tiramisu",
+                category: "dessert",
+                price: 8.99,
+                description: "Classic Italian dessert with mascarpone and coffee",
+                image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=300&h=200&fit=crop"
+            },
+            {
+                id: 11,
+                name: "Cheesecake",
+                category: "dessert",
+                price: 7.99,
+                description: "New York style cheesecake with berry compote",
+                image: "https://images.unsplash.com/photo-1567958947166-aa5b74985095?w=300&h=200&fit=crop"
+            },
+            {
+                id: 12,
+                name: "Craft Beer",
+                category: "beverage",
+                price: 6.99,
+                description: "Local brewery selection of craft beers",
+                image: "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&h=200&fit=crop"
+            },
+            {
+                id: 13,
+                name: "House Wine",
+                category: "beverage",
+                price: 8.99,
+                description: "Red or white wine selection from our cellar",
+                image: "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=300&h=200&fit=crop"
+            },
+            {
+                id: 14,
+                name: "Fresh Juice",
+                category: "beverage",
+                price: 4.99,
+                description: "Orange, apple, or cranberry juice freshly squeezed",
+                image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300&h=200&fit=crop"
+            },
+            {
+                id: 15,
+                name: "Coffee",
+                category: "beverage", 
+                price: 3.99,
+                description: "Freshly brewed coffee, espresso, or cappuccino",
+                image: "https://images.unsplash.com/photo-1495774856032-8b90bbb32b32?w=300&h=200&fit=crop"
+            }
+        ];
+
+        this.restaurantInfo = {
+            name: "Bella Vista Restaurant",
+            address: "123 Gourmet Street, Culinary District",
+            phone: "+1 (555) 123-4567",
+            email: "orders@bellavista.com"
+        };
+
+        this.cart = [];
+        this.currentFilter = 'all';
+        this.invoiceData = null;
+        
+        this.init();
+    }
+
+    init() {
+        this.renderMenu();
+        this.updateCartCount();
+        this.showSection('menu');
+    }
+
+    renderMenu(filter = 'all') {
+        const menuGrid = document.getElementById('menu-grid');
+        if (!menuGrid) return;
+
+        const filteredItems = filter === 'all' ? 
+            this.menuItems : 
+            this.menuItems.filter(item => item.category === filter);
+
+        menuGrid.innerHTML = filteredItems.map(item => `
+            <div class="menu-item fade-in" data-category="${item.category}">
+                <img src="${item.image}" alt="${item.name}" class="menu-item-image" loading="lazy">
+                <div class="menu-item-content">
+                    <div class="menu-item-category">${this.capitalizeFirst(item.category)}</div>
+                    <div class="menu-item-header">
+                        <h3 class="menu-item-name">${item.name}</h3>
+                        <div class="menu-item-price">$${item.price.toFixed(2)}</div>
+                    </div>
+                    <p class="menu-item-description">${item.description}</p>
+                    <button class="btn btn--primary add-to-cart" data-item-id="${item.id}">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        `).join('');
+
+        // Add event listeners to add-to-cart buttons
+        const addToCartButtons = menuGrid.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const itemId = parseInt(button.getAttribute('data-item-id'));
+                this.addToCart(itemId);
+            });
+        });
+    }
+
+    capitalizeFirst(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    addToCart(itemId) {
+        const item = this.menuItems.find(item => item.id === itemId);
+        if (!item) return;
+        
+        const existingItem = this.cart.find(cartItem => cartItem.id === itemId);
+
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            this.cart.push({
+                ...item,
+                quantity: 1
+            });
+        }
+
+        this.updateCartCount();
+        this.showToast(`${item.name} added to cart!`);
+        
+        // Add visual feedback
+        const button = document.querySelector(`[data-item-id="${itemId}"]`);
+        if (button) {
+            button.style.background = 'var(--color-success)';
+            button.textContent = 'Added!';
+            setTimeout(() => {
+                button.style.background = 'var(--color-primary)';
+                button.textContent = 'Add to Cart';
+            }, 1000);
+        }
+    }
+
+    removeFromCart(itemId) {
+        const item = this.cart.find(cartItem => cartItem.id === itemId);
+        if (item) {
+            this.cart = this.cart.filter(cartItem => cartItem.id !== itemId);
+            this.updateCartCount();
+            this.renderCart();
+            this.showToast(`${item.name} removed from cart`);
+        }
+    }
+
+    updateQuantity(itemId, change) {
+        const item = this.cart.find(cartItem => cartItem.id === itemId);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                this.removeFromCart(itemId);
+            } else {
+                this.updateCartCount();
+                this.renderCart();
+            }
+        }
+    }
+
+    updateCartCount() {
+        const count = this.cart.reduce((total, item) => total + item.quantity, 0);
+        const cartCountElement = document.getElementById('cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = count;
+        }
+    }
+
+    renderCart() {
+        const cartItems = document.getElementById('cart-items');
+        const cartSummary = document.getElementById('cart-summary');
+
+        if (!cartItems || !cartSummary) return;
+
+        if (this.cart.length === 0) {
+            cartItems.innerHTML = `
+                <div class="empty-cart">
+                    <h3>Your cart is empty</h3>
+                    <p>Start adding some delicious items from our menu</p>
+                    <button class="btn btn--primary" onclick="window.showSection('menu')">Browse Menu</button>
+                </div>
+            `;
+            cartSummary.classList.add('hidden');
+            return;
+        }
+
+        cartItems.innerHTML = this.cart.map(item => `
+            <div class="cart-item">
+                <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                <div class="cart-item-details">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-price">$${item.price.toFixed(2)} each</div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" data-action="decrease" data-item-id="${item.id}">-</button>
+                        <span class="quantity-display">${item.quantity}</span>
+                        <button class="quantity-btn" data-action="increase" data-item-id="${item.id}">+</button>
+                        <span style="margin-left: 12px;">Total: $${(item.price * item.quantity).toFixed(2)}</span>
+                    </div>
+                    <div class="remove-item" data-item-id="${item.id}">Remove item</div>
+                </div>
+            </div>
+        `).join('');
+
+        // Add event listeners for quantity controls and remove buttons
+        const quantityBtns = cartItems.querySelectorAll('.quantity-btn');
+        const removeItems = cartItems.querySelectorAll('.remove-item');
+
+        quantityBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const itemId = parseInt(btn.getAttribute('data-item-id'));
+                const action = btn.getAttribute('data-action');
+                const change = action === 'increase' ? 1 : -1;
+                this.updateQuantity(itemId, change);
+            });
+        });
+
+        removeItems.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const itemId = parseInt(btn.getAttribute('data-item-id'));
+                this.removeFromCart(itemId);
+            });
+        });
+
+        // Update summary
+        const subtotal = this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const tax = subtotal * 0.1;
+        const total = subtotal + tax;
+
+        const subtotalEl = document.getElementById('subtotal');
+        const taxEl = document.getElementById('tax');
+        const totalEl = document.getElementById('total');
+
+        if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+        if (taxEl) taxEl.textContent = `$${tax.toFixed(2)}`;
+        if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+
+        cartSummary.classList.remove('hidden');
+    }
+
+    clearCart() {
+        if (confirm('Are you sure you want to clear your cart?')) {
+            this.cart = [];
+            this.updateCartCount();
+            this.renderCart();
+            this.showToast('Cart cleared');
+        }
+    }
+
+    generateInvoice() {
+        if (this.cart.length === 0) {
+            this.showToast('Your cart is empty!');
+            return;
+        }
+
+        const subtotal = this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const tax = subtotal * 0.1;
+        const total = subtotal + tax;
+        const now = new Date();
+
+        this.invoiceData = {
+            invoiceNumber: `BV-${Date.now()}`,
+            date: now.toLocaleDateString(),
+            time: now.toLocaleTimeString(),
+            items: [...this.cart],
+            subtotal,
+            tax,
+            total
+        };
+
+        const invoiceContent = document.getElementById('invoice-content');
+        if (invoiceContent) {
+            invoiceContent.innerHTML = `
+                <div class="invoice-title">
+                    <h2>INVOICE</h2>
+                    <p>Invoice #: ${this.invoiceData.invoiceNumber}</p>
+                    <p>Date: ${this.invoiceData.date} | Time: ${this.invoiceData.time}</p>
+                </div>
+
+                <div class="invoice-details">
+                    <div>
+                        <div class="invoice-section-title">Restaurant Information</div>
+                        <p><strong>${this.restaurantInfo.name}</strong></p>
+                        <p>${this.restaurantInfo.address}</p>
+                        <p>Phone: ${this.restaurantInfo.phone}</p>
+                        <p>Email: ${this.restaurantInfo.email}</p>
+                    </div>
+                    <div>
+                        <div class="invoice-section-title">Order Details</div>
+                        <p>Total Items: ${this.cart.reduce((total, item) => total + item.quantity, 0)}</p>
+                        <p>Order Date: ${this.invoiceData.date}</p>
+                        <p>Order Time: ${this.invoiceData.time}</p>
+                    </div>
+                </div>
+
+                <table class="invoice-table">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">Qty</th>
+                            <th class="text-right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${this.cart.map(item => `
+                            <tr>
+                                <td>${item.name}</td>
+                                <td class="text-right">$${item.price.toFixed(2)}</td>
+                                <td class="text-right">${item.quantity}</td>
+                                <td class="text-right">$${(item.price * item.quantity).toFixed(2)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+
+                <div class="invoice-totals">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>$${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (10%):</span>
+                        <span>$${tax.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span><strong>Grand Total:</strong></span>
+                        <span><strong>$${total.toFixed(2)}</strong></span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px; text-align: center; color: var(--color-text-secondary);">
+                    <p>Thank you for dining with us!</p>
+                    <p>We hope to see you again soon.</p>
+                </div>
+            `;
+        }
+
+        this.showSection('invoice');
+    }
+
+    downloadInvoice() {
+        if (!this.invoiceData) {
+            this.showToast('No invoice to download');
+            return;
+        }
+
+        const printWindow = window.open('', '_blank');
+        const invoiceContent = document.getElementById('invoice-content');
+        
+        if (!invoiceContent) {
+            this.showToast('Invoice content not found');
+            return;
+        }
+        
+        const invoiceHTML = invoiceContent.innerHTML;
+        
+        printWindow.document.write(`
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Invoice - ${this.invoiceData.invoiceNumber}</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+                    .invoice-title { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px; }
+                    .invoice-details { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+                    .invoice-section-title { font-weight: bold; margin-bottom: 10px; color: #333; font-size: 16px; }
+                    .invoice-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                    .invoice-table th, .invoice-table td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+                    .invoice-table th { background: #f5f5f5; font-weight: bold; }
+                    .text-right { text-align: right; }
+                    .invoice-totals { border-top: 2px solid #333; padding-top: 15px; }
+                    .summary-row { display: flex; justify-content: space-between; padding: 10px 0; }
+                    .total { font-weight: bold; font-size: 18px; }
+                    @media print { body { -webkit-print-color-adjust: exact; } }
+                </style>
+            </head>
+            <body>
+                ${invoiceHTML}
+            </body>
+            </html>
+        `);
+        
+        printWindow.document.close();
+        printWindow.focus();
+        
+        setTimeout(() => {
+            printWindow.print();
+            printWindow.close();
+            this.showToast('Invoice downloaded successfully!');
+        }, 250);
+    }
+
+    sendOrder() {
+        if (!this.invoiceData || this.cart.length === 0) {
+            this.showToast('No order to send');
+            return;
+        }
+
+        this.showLoading();
+
+        const orderData = {
+            restaurant: this.restaurantInfo.name,
+            invoice: this.invoiceData.invoiceNumber,
+            total: this.invoiceData.total.toFixed(2),
+            items: this.cart.map(item => ({
+                name: item.name,
+                quantity: item.quantity,
+                price: item.price
+            })),
+            date: this.invoiceData.date,
+            time: this.invoiceData.time
+        };
+
+        const receiverHTML = this.createOrderReceiverHTML(orderData);
+        
+        setTimeout(() => {
+            this.hideLoading();
+            
+            const receiverWindow = window.open('', '_blank');
+            receiverWindow.document.write(receiverHTML);
+            receiverWindow.document.close();
+            
+            this.showToast('Order sent to live tracking!');
+        }, 1500);
+    }
+
+    createOrderReceiverHTML(orderData) {
+        return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔴 LIVE Order Tracking - ${orderData.restaurant}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin: 0 0 10px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .live-indicator {
+            background: #FF4444;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .status {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .status h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.4em;
+        }
+        .order-details {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 25px;
+        }
+        .detail-section h4 {
+            color: #FFD700;
+            margin: 0 0 15px 0;
+            font-size: 1.2em;
+        }
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+        .item-list li {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1em;
+        }
+        .item-list li:last-child {
+            border-bottom: none;
+        }
+        .total {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 65%;
+            animation: progress 3s ease-in-out;
+        }
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 65%; }
+        }
+        .estimated-time {
+            text-align: center;
+            font-size: 1.3em;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .detail-grid { grid-template-columns: 1fr; gap: 20px; }
+            .header h1 { font-size: 2em; }
+            .total { font-size: 1.5em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="live-indicator">🔴 LIVE TRACKING</div>
+            <h1>${orderData.restaurant}</h1>
+            <h2>Order Tracking System</h2>
+        </div>
+        
+        <div class="status">
+            <h3>✅ ORDER RECEIVED & CONFIRMED</h3>
+            <p>Your delicious meal is being prepared by our expert chefs!</p>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="estimated-time">⏰ Estimated Time: 25-30 minutes</div>
+        </div>
+
+        <div class="order-details">
+            <div class="detail-grid">
+                <div class="detail-section">
+                    <h4>📋 Order Information</h4>
+                    <p><strong>Invoice #:</strong> ${orderData.invoice}</p>
+                    <p><strong>Date:</strong> ${orderData.date}</p>
+                    <p><strong>Time:</strong> ${orderData.time}</p>
+                    <p><strong>Status:</strong> <span style="color: #4CAF50; font-weight: bold;">PREPARING</span></p>
+                </div>
+                <div class="detail-section">
+                    <h4>🏪 Restaurant Details</h4>
+                    <p><strong>Name:</strong> ${orderData.restaurant}</p>
+                    <p><strong>Address:</strong> 123 Gourmet Street</p>
+                    <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                </div>
+            </div>
+            
+            <h4>🍽️ Items Ordered (${orderData.items.reduce((sum, item) => sum + item.quantity, 0)} items):</h4>
+            <ul class="item-list">
+                ${orderData.items.map(item => `
+                    <li>
+                        <span><strong>${item.name}</strong> × ${item.quantity}</span>
+                        <span style="color: #FFD700; font-weight: bold;">$${(item.price * item.quantity).toFixed(2)}</span>
+                    </li>
+                `).join('')}
+            </ul>
+            
+            <div class="total">
+                💰 Total Amount: $${orderData.total}
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; font-style: italic; opacity: 0.9;">
+            <p>🚚 We'll notify you when your order is ready for pickup/delivery!</p>
+            <p>Thank you for choosing ${orderData.restaurant}</p>
+        </div>
+    </div>
+
+    <script>
+        let progressValue = 65;
+        const progressBar = document.querySelector('.progress-fill');
+        const statusText = document.querySelector('.status h3');
+        
+        setInterval(() => {
+            if (progressValue < 100) {
+                progressValue += Math.random() * 10;
+                progressBar.style.width = Math.min(progressValue, 100) + '%';
+                
+                if (progressValue > 90) {
+                    statusText.textContent = '🍽️ ALMOST READY - FINAL TOUCHES!';
+                } else if (progressValue > 75) {
+                    statusText.textContent = '👨‍🍳 PLATING YOUR DISHES';
+                }
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
+        `;
+    }
+
+    showSection(sectionId) {
+        const sections = ['menu', 'cart', 'invoice'];
+        sections.forEach(id => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.classList.add('hidden');
+            }
+        });
+
+        const selectedSection = document.getElementById(sectionId);
+        if (selectedSection) {
+            selectedSection.classList.remove('hidden');
+        }
+
+        if (sectionId === 'cart') {
+            this.renderCart();
+        }
+    }
+
+    showLoading() {
+        const loading = document.getElementById('loading');
+        if (loading) {
+            loading.classList.remove('hidden');
+        }
+    }
+
+    hideLoading() {
+        const loading = document.getElementById('loading');
+        if (loading) {
+            loading.classList.add('hidden');
+        }
+    }
+
+    showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toast-message');
+        
+        if (toast && toastMessage) {
+            toastMessage.textContent = message;
+            toast.classList.remove('hidden');
+
+            setTimeout(() => {
+                this.hideToast();
+            }, 3000);
+        }
+    }
+
+    hideToast() {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.classList.add('hidden');
+        }
+    }
+}
+
+// Initialize the application and setup global functions
+let app;
+
+window.addEventListener('DOMContentLoaded', function() {
+    app = new RestaurantApp();
+    window.app = app;
+
+    // Setup navigation event listeners
+    const menuButton = document.querySelector('button[onclick="showSection(\'menu\')"]');
+    const cartButton = document.querySelector('.cart-toggle');
+
+    if (menuButton) {
+        menuButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            app.showSection('menu');
+        });
+    }
+
+    if (cartButton) {
+        cartButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            app.showSection('cart');
+        });
+    }
+
+    // Setup filter buttons with proper event delegation
+    const categoryFilter = document.querySelector('.category-filter');
+    if (categoryFilter) {
+        categoryFilter.addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-btn')) {
+                e.preventDefault();
+                
+                // Update active state
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                e.target.classList.add('active');
+
+                // Determine category
+                const buttonText = e.target.textContent.toLowerCase();
+                let category = 'all';
+                if (buttonText.includes('appetizer')) category = 'appetizer';
+                else if (buttonText.includes('main')) category = 'main';
+                else if (buttonText.includes('dessert')) category = 'dessert';
+                else if (buttonText.includes('beverage')) category = 'beverage';
+
+                // Filter menu
+                app.renderMenu(category);
+                app.currentFilter = category;
+            }
+        });
+    }
+});
+
+// Global functions for HTML onclick handlers
+window.showSection = function(sectionId) {
+    if (window.app) {
+        window.app.showSection(sectionId);
+    }
+};
+
+window.generateInvoice = function() {
+    if (window.app) {
+        window.app.generateInvoice();
+    }
+};
+
+window.downloadInvoice = function() {
+    if (window.app) {
+        window.app.downloadInvoice();
+    }
+};
+
+window.sendOrder = function() {
+    if (window.app) {
+        window.app.sendOrder();
+    }
+};
+
+window.clearCart = function() {
+    if (window.app) {
+        window.app.clearCart();
+    }
+};
+
+window.hideToast = function() {
+    if (window.app) {
+        window.app.hideToast();
+    }
+};
+    </script>
 </body>
 </html>
