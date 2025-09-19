@@ -1542,16 +1542,53 @@ class RestaurantApp {
         }
     }
 
-    // This function can be expanded with real-world logic
+    // Fix for download functionality
     async downloadInvoice() {
-        this.showToast('Downloading invoice...');
+        if (!this.invoiceData) {
+            this.showToast('Please generate an invoice first.');
+            return;
+        }
+
+        this.showToast('Generating invoice for download...');
         const loadingOverlay = document.getElementById('loading');
         if (loadingOverlay) loadingOverlay.classList.remove('hidden');
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate a delay
+
+            const invoiceContentEl = document.getElementById('invoice-content');
+            if (!invoiceContentEl) {
+                this.showToast('Invoice content not found.');
+                return;
+            }
+
+            const invoiceHTML = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <title>Invoice - ${this.invoiceData.invoiceNumber}</title>
+                    <style>${document.querySelector('style').innerHTML}</style>
+                </head>
+                <body>
+                    <div class="invoice-container">
+                        ${invoiceContentEl.innerHTML}
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            const blob = new Blob([invoiceHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `invoice-${this.invoiceData.invoiceNumber}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
             this.showToast('Download complete!');
-            console.log('Invoice Data:', this.invoiceData);
         } catch (error) {
             this.showToast('Failed to download invoice.');
             console.error('Download error:', error);
