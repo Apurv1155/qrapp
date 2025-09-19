@@ -995,6 +995,8 @@ p {
   }
 }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -1542,56 +1544,56 @@ class RestaurantApp {
         }
     }
 
-    // Fix for download functionality
+    // New and updated function for PDF download
     async downloadInvoice() {
         if (!this.invoiceData) {
             this.showToast('Please generate an invoice first.');
             return;
         }
 
-        this.showToast('Generating invoice for download...');
+        this.showToast('Generating PDF invoice...');
         const loadingOverlay = document.getElementById('loading');
         if (loadingOverlay) loadingOverlay.classList.remove('hidden');
 
         try {
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate a delay
+            // Wait a moment for the toast and loading indicator to appear
+            await new Promise(resolve => setTimeout(resolve, 500)); 
 
-            const invoiceContentEl = document.getElementById('invoice-content');
-            if (!invoiceContentEl) {
-                this.showToast('Invoice content not found.');
+            const invoiceContainer = document.querySelector('.invoice-container');
+            if (!invoiceContainer) {
+                this.showToast('Invoice container not found.');
                 return;
             }
 
-            const invoiceHTML = `
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <title>Invoice - ${this.invoiceData.invoiceNumber}</title>
-                    <style>${document.querySelector('style').innerHTML}</style>
-                </head>
-                <body>
-                    <div class="invoice-container">
-                        ${invoiceContentEl.innerHTML}
-                    </div>
-                </body>
-                </html>
-            `;
-            
-            const blob = new Blob([invoiceHTML], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `invoice-${this.invoiceData.invoiceNumber}.html`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            // Temporarily hide the buttons for the screenshot
+            const actions = invoiceContainer.querySelector('.invoice-actions');
+            actions.style.display = 'none';
 
+            // Generate a canvas from the invoice HTML
+            const canvas = await html2canvas(invoiceContainer, {
+                scale: 2, // Increase scale for better quality on high-res displays
+                useCORS: true // Required if images are from a different domain
+            });
+
+            // Re-show the buttons
+            actions.style.display = 'flex';
+
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            // Add the image to the PDF
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            
+            // Download the PDF
+            pdf.save(`invoice-${this.invoiceData.invoiceNumber}.pdf`);
             this.showToast('Download complete!');
         } catch (error) {
             this.showToast('Failed to download invoice.');
-            console.error('Download error:', error);
+            console.error('PDF generation error:', error);
         } finally {
             if (loadingOverlay) loadingOverlay.classList.add('hidden');
         }
