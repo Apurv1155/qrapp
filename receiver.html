@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Kitchen - Auto Receiver</title>
+    <title>Bella Vista Kitchen - GitHub Auto Receiver</title>
     <style>
         * {
             margin: 0;
@@ -44,9 +44,9 @@
             font-size: 1.2rem;
         }
 
-        .auto-status {
-            background: linear-gradient(45deg, #e8f5e8, #f0f8ff);
-            border: 2px solid #007bff;
+        .github-status {
+            background: linear-gradient(45deg, #f6f8fa, #e1e4e8);
+            border: 2px solid #0366d6;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -54,49 +54,103 @@
         }
 
         .status-title {
-            color: #007bff;
+            color: #0366d6;
             font-weight: bold;
             font-size: 1.1rem;
             margin-bottom: 10px;
         }
 
         .status-subtitle {
-            color: #004085;
+            color: #586069;
             font-size: 0.9rem;
+        }
+
+        .config-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .config-title {
+            color: #0366d6;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .config-input {
+            display: grid;
+            grid-template-columns: 150px 1fr 100px;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .config-input label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .config-input input {
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .config-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .config-btn:hover {
+            background: #218838;
+        }
+
+        .monitoring-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .monitoring-title {
+            color: #2C5F2D;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
         }
 
         .monitoring-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
-            margin: 20px 0;
         }
 
-        .monitor-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #007bff;
-            text-align: center;
+        .monitor-item {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            border-left: 4px solid #0366d6;
         }
 
-        .monitor-title {
-            font-weight: bold;
-            color: #007bff;
-            margin-bottom: 5px;
+        .monitor-label {
+            font-weight: 500;
             font-size: 0.9rem;
+            color: #333;
         }
 
-        .monitor-status {
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        .monitor-counter {
-            font-size: 1.2rem;
+        .monitor-value {
+            font-size: 1.1rem;
+            color: #0366d6;
             font-weight: bold;
-            color: #28a745;
             margin-top: 5px;
         }
 
@@ -104,7 +158,7 @@
             border-left-color: #28a745;
         }
 
-        .monitor-active .monitor-title {
+        .monitor-active .monitor-value {
             color: #28a745;
         }
 
@@ -182,12 +236,12 @@
             transform: translateY(-1px);
         }
 
-        .control-btn.auto {
-            background: #007bff;
+        .control-btn.github {
+            background: #0366d6;
         }
 
-        .control-btn.auto:hover {
-            background: #0056b3;
+        .control-btn.github:hover {
+            background: #0256cc;
         }
 
         .control-btn.danger {
@@ -242,32 +296,32 @@
 
         .order-card.new-order {
             animation: newOrderGlow 4s;
-            border-color: #007bff;
-            background: linear-gradient(45deg, #e7f3ff, #f8f9fa);
+            border-color: #0366d6;
+            background: linear-gradient(45deg, #f6f8fa, #f8f9fa);
         }
 
-        .order-card.auto-order {
-            border-left: 5px solid #007bff;
+        .order-card.github-order {
+            border-left: 5px solid #0366d6;
         }
 
         @keyframes newOrderGlow {
             0% { 
-                border-color: #007bff;
-                background: #e7f3ff;
+                border-color: #0366d6;
+                background: #f6f8fa;
                 transform: scale(1.02);
-                box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+                box-shadow: 0 0 20px rgba(3, 102, 214, 0.3);
             }
             25% {
                 border-color: #28a745;
-                background: #d4edda;
+                background: #e8f5e8;
             }
             50% {
                 border-color: #17a2b8;
                 background: #cce7ff;
             }
             75% {
-                border-color: #007bff;
-                background: #e7f3ff;
+                border-color: #0366d6;
+                background: #f6f8fa;
             }
             100% { 
                 border-color: #ddd;
@@ -296,8 +350,8 @@
             color: #666;
         }
 
-        .auto-badge {
-            background: #007bff;
+        .github-badge {
+            background: #0366d6;
             color: white;
             padding: 3px 10px;
             border-radius: 12px;
@@ -417,17 +471,6 @@
             font-weight: 500;
         }
 
-        .debug-info {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            display: none;
-        }
-
         .rotating {
             animation: rotate 1s linear infinite;
         }
@@ -473,20 +516,41 @@
         <!-- Header -->
         <header class="header">
             <h1 class="kitchen-title">🍳 Bella Vista Kitchen</h1>
-            <p class="kitchen-subtitle">Automatic Order Receiver - No User Action Required</p>
+            <p class="kitchen-subtitle">GitHub Auto Receiver - Live JSON Database</p>
         </header>
 
-        <!-- Auto Status -->
-        <div class="auto-status">
-            <div class="status-title" id="auto-title">🤖 Automatic Monitoring Active</div>
-            <div class="status-subtitle" id="auto-subtitle">Continuously scanning for new orders from customer devices - NO action required</div>
+        <!-- GitHub Status -->
+        <div class="github-status">
+            <div class="status-title" id="github-title">🚀 GitHub Auto Sync Active</div>
+            <div class="status-subtitle" id="github-subtitle">Automatically fetching orders from GitHub JSON database every 10 seconds</div>
         </div>
 
-        <!-- Monitoring Grid -->
-        <div class="monitoring-grid" id="monitoring-grid"></div>
+        <!-- Configuration Panel -->
+        <div class="config-panel">
+            <div class="config-title">⚙️ GitHub Repository Configuration</div>
 
-        <!-- Debug Info -->
-        <div id="debug-info" class="debug-info"></div>
+            <div class="config-input">
+                <label>Repository:</label>
+                <input type="text" id="github-repo" placeholder="username/repository-name" value="apurv1155/qrapp">
+                <button class="config-btn" onclick="saveConfig()">Save</button>
+            </div>
+
+            <div class="config-input">
+                <label>JSON File:</label>
+                <input type="text" id="json-filename" placeholder="orders.json" value="orders.json">
+                <button class="config-btn" onclick="testConnection()">Test</button>
+            </div>
+
+            <p style="margin-top: 10px; font-size: 0.9rem; color: #6c757d;">
+                <strong>Auto-sync:</strong> Kitchen automatically fetches the latest orders.json from GitHub repository.
+            </p>
+        </div>
+
+        <!-- Monitoring Panel -->
+        <div class="monitoring-panel">
+            <div class="monitoring-title">🔍 Live GitHub Monitoring</div>
+            <div class="monitoring-grid" id="monitoring-grid"></div>
+        </div>
 
         <!-- Statistics -->
         <div class="stats-grid">
@@ -503,8 +567,8 @@
                 <div class="stat-label">Completed Today</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="auto-orders">0</div>
-                <div class="stat-label">Auto Orders</div>
+                <div class="stat-number" id="github-orders">0</div>
+                <div class="stat-label">GitHub Orders</div>
             </div>
         </div>
 
@@ -513,9 +577,8 @@
             <div class="section-header">
                 <h2 class="section-title">Live Kitchen Orders</h2>
                 <div class="control-buttons">
-                    <button class="control-btn auto" onclick="testAutoOrder()">🧪 Test Auto Order</button>
-                    <button class="control-btn" onclick="toggleDebug()">🐛 Debug Monitor</button>
-                    <button class="control-btn" onclick="forceRefresh()">🔄 Force Check</button>
+                    <button class="control-btn github" onclick="fetchFromGitHub()">🚀 Fetch from GitHub</button>
+                    <button class="control-btn" onclick="toggleAutoSync()">⏸️ Pause Auto-Sync</button>
                     <button class="control-btn danger" onclick="clearAllOrders()">🗑️ Clear All</button>
                 </div>
             </div>
@@ -535,450 +598,269 @@
             <!-- Orders Grid -->
             <div id="orders-grid" class="orders-grid">
                 <div class="empty-state">
-                    <div class="empty-icon">🤖</div>
-                    <h3>Automatic Order Monitoring Active</h3>
-                    <p>Continuously scanning for new orders from customer devices.</p>
-                    <p><small>Orders will appear automatically - NO user action required!</small></p>
+                    <div class="empty-icon">🚀</div>
+                    <h3>GitHub Auto Receiver Ready</h3>
+                    <p>Automatically fetching orders from GitHub JSON database.</p>
+                    <p><small>Orders will appear automatically when customers send them!</small></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Automatic Cross-Device Kitchen Order Reception System
+        // GitHub Auto JSON Database Kitchen Receiver System
 
         let orders = [];
         let currentFilter = 'all';
-        let isInitialized = false;
-        let monitoringIntervals = {};
-        let autoStats = {
-            totalScans: 0,
-            ordersDetected: 0,
-            lastScanTime: null,
+        let autoSyncActive = true;
+        let autoSyncInterval = null;
+        let monitoringStats = {
+            totalFetches: 0,
+            successfulFetches: 0,
+            lastFetchTime: null,
             systemStartTime: new Date(),
-            lastOrderCounter: 0,
-            lastSignalCheck: 0,
-            monitoring: {
-                counterPolling: { active: false, scans: 0, detections: 0 },
-                signalDetection: { active: false, scans: 0, detections: 0 },
-                recentOrders: { active: false, scans: 0, detections: 0 },
-                timestampScan: { active: false, scans: 0, detections: 0 },
-                titleMonitor: { active: false, scans: 0, detections: 0 },
-                hashMonitor: { active: false, scans: 0, detections: 0 }
-            }
+            githubErrors: 0,
+            ordersReceived: 0
         };
 
-        // Auto-sync configuration - must match index.html
-        const AUTO_CONFIG = {
-            orderPrefix: 'BellaVistaOrder_',
-            signalPrefix: 'BellaVistaSignal_',
-            counterKey: 'BellaVistaCounter',
-            scanInterval: 3000 // 3 seconds
+        // GitHub configuration
+        let githubConfig = {
+            repo: 'apurv1155/qrapp',
+            jsonFile: 'orders.json',
+            apiBase: 'https://api.github.com',
+            rawBase: 'https://raw.githubusercontent.com'
         };
 
-        // Initialize the automatic kitchen system
+        // Initialize the GitHub receiver system
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🍳 Automatic Kitchen Order Reception System Starting...');
+            console.log('🚀 GitHub Auto Receiver System Starting...');
 
-            loadStoredOrders();
-            setupAutomaticMonitoring();
+            loadGithubConfig();
+            startAutoSync();
             updateStats();
             renderOrders();
             updateMonitoringDisplay();
 
-            isInitialized = true;
-            console.log('✅ Automatic Kitchen Reception System Ready - Monitoring Started!');
+            console.log('✅ GitHub Auto Receiver Ready!');
         });
 
-        // Setup automatic monitoring
-        function setupAutomaticMonitoring() {
-            // Method 1: Counter-based polling
-            setupCounterPolling();
+        // Load GitHub configuration
+        function loadGithubConfig() {
+            const saved = localStorage.getItem('githubReceiverConfig');
+            if (saved) {
+                const config = JSON.parse(saved);
+                githubConfig = { ...githubConfig, ...config };
 
-            // Method 2: Signal detection
-            setupSignalDetection();
+                document.getElementById('github-repo').value = githubConfig.repo;
+                document.getElementById('json-filename').value = githubConfig.jsonFile;
+            }
 
-            // Method 3: Recent orders monitoring
-            setupRecentOrdersMonitoring();
-
-            // Method 4: Timestamp-based scanning
-            setupTimestampScanning();
-
-            // Method 5: Title monitoring
-            setupTitleMonitoring();
-
-            // Method 6: Hash monitoring
-            setupHashMonitoring();
-
-            console.log('🤖 All automatic monitoring methods initialized');
-            updateAutoStatus();
+            updateGitHubStatus();
         }
 
-        // Method 1: Counter-based polling
-        function setupCounterPolling() {
-            try {
-                // Get initial counter value
-                autoStats.lastOrderCounter = parseInt(localStorage.getItem(AUTO_CONFIG.counterKey) || '0');
+        // Save configuration
+        function saveConfig() {
+            githubConfig.repo = document.getElementById('github-repo').value;
+            githubConfig.jsonFile = document.getElementById('json-filename').value;
 
-                monitoringIntervals.counterPolling = setInterval(() => {
-                    autoStats.totalScans++;
-                    autoStats.lastScanTime = new Date();
-                    autoStats.monitoring.counterPolling.scans++;
+            localStorage.setItem('githubReceiverConfig', JSON.stringify(githubConfig));
+            updateGitHubStatus();
 
-                    try {
-                        const currentCounter = parseInt(localStorage.getItem(AUTO_CONFIG.counterKey) || '0');
+            showSuccessMessage('✅ GitHub configuration saved!');
 
-                        if (currentCounter > autoStats.lastOrderCounter) {
-                            // New orders detected
-                            for (let i = autoStats.lastOrderCounter + 1; i <= currentCounter; i++) {
-                                const orderKey = AUTO_CONFIG.orderPrefix + i;
-                                const orderData = localStorage.getItem(orderKey);
-
-                                if (orderData) {
-                                    try {
-                                        const order = JSON.parse(orderData);
-                                        if (!orders.find(o => o.id === order.id)) {
-                                            processDetectedOrder(order, 'Counter Polling');
-                                            autoStats.monitoring.counterPolling.detections++;
-                                        }
-                                    } catch (parseError) {
-                                        console.warn('Error parsing counter order:', parseError);
-                                    }
-                                }
-                            }
-                            autoStats.lastOrderCounter = currentCounter;
-                        }
-                    } catch (error) {
-                        console.warn('Counter polling error:', error);
-                    }
-                }, AUTO_CONFIG.scanInterval);
-
-                autoStats.monitoring.counterPolling.active = true;
-                console.log('✅ Counter polling active');
-            } catch (error) {
-                console.error('❌ Counter polling setup failed:', error);
+            // Restart auto-sync with new config
+            if (autoSyncActive) {
+                startAutoSync();
             }
         }
 
-        // Method 2: Signal detection
-        function setupSignalDetection() {
-            try {
-                monitoringIntervals.signalDetection = setInterval(() => {
-                    autoStats.monitoring.signalDetection.scans++;
-
-                    try {
-                        // Scan for new signal keys
-                        for (let i = 0; i < localStorage.length; i++) {
-                            const key = localStorage.key(i);
-                            if (key && key.startsWith(AUTO_CONFIG.signalPrefix)) {
-                                const signalData = localStorage.getItem(key);
-                                if (signalData) {
-                                    try {
-                                        const signal = JSON.parse(signalData);
-                                        const signalTimestamp = parseInt(key.replace(AUTO_CONFIG.signalPrefix, ''));
-
-                                        if (signalTimestamp > autoStats.lastSignalCheck) {
-                                            console.log('🔔 New signal detected:', signal);
-
-                                            // Try to find and load the corresponding order
-                                            if (signal.orderId) {
-                                                findAndLoadOrder(signal.orderId, 'Signal Detection');
-                                                autoStats.monitoring.signalDetection.detections++;
-                                            }
-
-                                            autoStats.lastSignalCheck = signalTimestamp;
-                                        }
-                                    } catch (parseError) {
-                                        console.warn('Error parsing signal:', parseError);
-                                    }
-                                }
-                            }
-                        }
-                    } catch (error) {
-                        console.warn('Signal detection error:', error);
-                    }
-                }, AUTO_CONFIG.scanInterval);
-
-                autoStats.monitoring.signalDetection.active = true;
-                console.log('✅ Signal detection active');
-            } catch (error) {
-                console.error('❌ Signal detection setup failed:', error);
-            }
+        // Update GitHub status
+        function updateGitHubStatus() {
+            document.getElementById('github-title').textContent = 
+                `🚀 Auto-Sync: ${githubConfig.repo}/${githubConfig.jsonFile}`;
         }
 
-        // Method 3: Recent orders monitoring
-        function setupRecentOrdersMonitoring() {
-            try {
-                let lastRecentCheck = 0;
-
-                monitoringIntervals.recentOrders = setInterval(() => {
-                    autoStats.monitoring.recentOrders.scans++;
-
-                    try {
-                        const recentData = localStorage.getItem('BellaVistaRecent');
-                        if (recentData) {
-                            const recentOrders = JSON.parse(recentData);
-                            if (Array.isArray(recentOrders)) {
-                                recentOrders.forEach(orderData => {
-                                    if (orderData.createdAt > lastRecentCheck) {
-                                        if (!orders.find(o => o.id === orderData.id)) {
-                                            processDetectedOrder(orderData, 'Recent Orders Monitor');
-                                            autoStats.monitoring.recentOrders.detections++;
-                                        }
-                                        lastRecentCheck = orderData.createdAt;
-                                    }
-                                });
-                            }
-                        }
-                    } catch (error) {
-                        console.warn('Recent orders monitoring error:', error);
-                    }
-                }, AUTO_CONFIG.scanInterval);
-
-                autoStats.monitoring.recentOrders.active = true;
-                console.log('✅ Recent orders monitoring active');
-            } catch (error) {
-                console.error('❌ Recent orders monitoring setup failed:', error);
+        // Test GitHub connection
+        async function testConnection() {
+            if (!githubConfig.repo) {
+                showSuccessMessage('Please enter repository name', 'error');
+                return;
             }
-        }
 
-        // Method 4: Timestamp-based scanning
-        function setupTimestampScanning() {
             try {
-                monitoringIntervals.timestampScan = setInterval(() => {
-                    autoStats.monitoring.timestampScan.scans++;
+                const url = `${githubConfig.rawBase}/${githubConfig.repo}/main/${githubConfig.jsonFile}`;
+                const response = await fetch(url);
 
-                    try {
-                        // Scan for timestamp-based keys
-                        for (let i = 0; i < localStorage.length; i++) {
-                            const key = localStorage.key(i);
-                            if (key && key.startsWith('BellaVistaTime_')) {
-                                const timeData = localStorage.getItem(key);
-                                if (timeData) {
-                                    try {
-                                        const timeOrder = JSON.parse(timeData);
-                                        if (timeOrder.fullOrder && !orders.find(o => o.id === timeOrder.orderId)) {
-                                            processDetectedOrder(timeOrder.fullOrder, 'Timestamp Scanning');
-                                            autoStats.monitoring.timestampScan.detections++;
-                                        }
-                                    } catch (parseError) {
-                                        console.warn('Error parsing timestamp order:', parseError);
-                                    }
-                                }
-                            }
-                        }
-                    } catch (error) {
-                        console.warn('Timestamp scanning error:', error);
-                    }
-                }, AUTO_CONFIG.scanInterval);
-
-                autoStats.monitoring.timestampScan.active = true;
-                console.log('✅ Timestamp scanning active');
-            } catch (error) {
-                console.error('❌ Timestamp scanning setup failed:', error);
-            }
-        }
-
-        // Method 5: Title monitoring
-        function setupTitleMonitoring() {
-            try {
-                monitoringIntervals.titleMonitor = setInterval(() => {
-                    autoStats.monitoring.titleMonitor.scans++;
-
-                    try {
-                        const currentTitle = document.title;
-                        if (currentTitle.includes('[AUTO_ORDER:')) {
-                            const match = currentTitle.match(/\[AUTO_ORDER:([^:]+):([^:]+):([^\]]+)\]/);
-                            if (match) {
-                                const [, orderNumber, total, orderId] = match;
-                                console.log('📄 Title order signal detected:', orderNumber, total, orderId);
-
-                                findAndLoadOrder(parseInt(orderId), 'Title Monitoring');
-                                autoStats.monitoring.titleMonitor.detections++;
-                            }
-                        }
-                    } catch (error) {
-                        console.warn('Title monitoring error:', error);
-                    }
-                }, AUTO_CONFIG.scanInterval);
-
-                autoStats.monitoring.titleMonitor.active = true;
-                console.log('✅ Title monitoring active');
-            } catch (error) {
-                console.error('❌ Title monitoring setup failed:', error);
-            }
-        }
-
-        // Method 6: Hash monitoring
-        function setupHashMonitoring() {
-            try {
-                window.addEventListener('hashchange', function() {
-                    console.log('🔗 Hash change detected:', window.location.hash);
-                    checkCurrentHash();
-                });
-
-                monitoringIntervals.hashMonitor = setInterval(() => {
-                    autoStats.monitoring.hashMonitor.scans++;
-                    checkCurrentHash();
-                }, AUTO_CONFIG.scanInterval);
-
-                autoStats.monitoring.hashMonitor.active = true;
-                console.log('✅ Hash monitoring active');
-            } catch (error) {
-                console.error('❌ Hash monitoring setup failed:', error);
-            }
-        }
-
-        // Check current hash for orders
-        function checkCurrentHash() {
-            try {
-                const hash = window.location.hash;
-                if (hash.startsWith('#auto-order-')) {
-                    const orderHash = hash.replace('#auto-order-', '');
-                    const orderInfo = JSON.parse(atob(orderHash));
-
-                    if (orderInfo.id && !orders.find(o => o.id === orderInfo.id)) {
-                        findAndLoadOrder(orderInfo.id, 'Hash Monitoring');
-                        autoStats.monitoring.hashMonitor.detections++;
-                    }
+                if (response.ok) {
+                    const data = await response.json();
+                    showSuccessMessage(`✅ Successfully connected to GitHub! Found ${data.orders ? data.orders.length : 0} orders.`);
+                } else if (response.status === 404) {
+                    showSuccessMessage('⚠️ JSON file not found. It will be created when first order is sent.', 'warning');
+                } else {
+                    showSuccessMessage(`❌ Error connecting to GitHub: ${response.status}`, 'error');
                 }
             } catch (error) {
-                // Hash doesn't contain order data, ignore
+                showSuccessMessage('❌ Network error connecting to GitHub', 'error');
+                console.error('GitHub test error:', error);
             }
         }
 
-        // Find and load order by ID
-        function findAndLoadOrder(orderId, method) {
+        // Start auto-sync
+        function startAutoSync() {
+            if (autoSyncInterval) {
+                clearInterval(autoSyncInterval);
+            }
+
+            // Initial fetch
+            fetchFromGitHub();
+
+            // Set up interval
+            autoSyncInterval = setInterval(() => {
+                if (autoSyncActive) {
+                    fetchFromGitHub();
+                }
+            }, 10000); // Fetch every 10 seconds
+
+            console.log('🔄 Auto-sync started (every 10 seconds)');
+        }
+
+        // Fetch orders from GitHub
+        async function fetchFromGitHub() {
+            if (!githubConfig.repo) {
+                showSuccessMessage('Please configure GitHub repository', 'warning');
+                return;
+            }
+
+            monitoringStats.totalFetches++;
+            monitoringStats.lastFetchTime = new Date();
+
             try {
-                // Search through all localStorage keys for the order
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key && key.startsWith(AUTO_CONFIG.orderPrefix)) {
-                        const orderData = localStorage.getItem(key);
-                        if (orderData) {
-                            try {
-                                const order = JSON.parse(orderData);
-                                if (order.id === orderId && !orders.find(o => o.id === orderId)) {
-                                    processDetectedOrder(order, method);
-                                    return true;
+                const url = `${githubConfig.rawBase}/${githubConfig.repo}/main/${githubConfig.jsonFile}?t=${Date.now()}`;
+                console.log('🔄 Fetching from GitHub:', url);
+
+                const response = await fetch(url);
+
+                if (response.ok) {
+                    const githubData = await response.json();
+                    monitoringStats.successfulFetches++;
+
+                    if (githubData.orders && Array.isArray(githubData.orders)) {
+                        const previousCount = orders.length;
+                        orders = githubData.orders;
+
+                        // Check for new orders
+                        if (orders.length > previousCount) {
+                            const newOrdersCount = orders.length - previousCount;
+                            monitoringStats.ordersReceived += newOrdersCount;
+
+                            showSuccessMessage(`🚀 ${newOrdersCount} new order(s) received from GitHub!`);
+
+                            // Add animation to new orders
+                            setTimeout(() => {
+                                const orderCards = document.querySelectorAll('.order-card');
+                                for (let i = 0; i < newOrdersCount && i < orderCards.length; i++) {
+                                    orderCards[i].classList.add('new-order');
                                 }
-                            } catch (parseError) {
-                                console.warn('Error parsing found order:', parseError);
-                            }
+                            }, 100);
                         }
+
+                        updateStats();
+                        renderOrders();
+
+                        console.log(`✅ Fetched ${orders.length} orders from GitHub`);
+                    } else {
+                        console.log('📝 No orders found in GitHub JSON');
                     }
+                } else if (response.status === 404) {
+                    console.log('📝 JSON file not found in GitHub (will be created on first order)');
+                } else {
+                    monitoringStats.githubErrors++;
+                    console.error('❌ GitHub fetch error:', response.status);
                 }
             } catch (error) {
-                console.warn(`Error finding order ${orderId}:`, error);
+                monitoringStats.githubErrors++;
+                console.error('❌ Network error fetching from GitHub:', error);
             }
-            return false;
-        }
 
-        // Process detected order
-        function processDetectedOrder(orderData, method) {
-            console.log(`🔔 NEW AUTO ORDER DETECTED via ${method}:`, orderData);
-
-            orders.unshift(orderData);
-            autoStats.ordersDetected++;
-
-            // Save to local kitchen storage
-            saveOrdersToStorage();
-
-            // Update display
-            updateStats();
-            renderOrders();
             updateMonitoringDisplay();
-
-            showSuccessMessage(`🔔 New order automatically detected via ${method}: ${orderData.orderNumber} ($${orderData.total.toFixed(2)})`);
-
-            // Add animation
-            setTimeout(() => {
-                const orderCards = document.querySelectorAll('.order-card');
-                if (orderCards.length > 0) {
-                    orderCards[0].classList.add('new-order');
-                }
-            }, 100);
         }
 
-        // Update auto status
-        function updateAutoStatus() {
-            const activeMethods = Object.values(autoStats.monitoring).filter(m => m.active).length;
+        // Toggle auto-sync
+        function toggleAutoSync() {
+            autoSyncActive = !autoSyncActive;
+            const toggleBtn = document.querySelector('.control-btn:nth-child(2)');
 
-            const titleEl = document.getElementById('auto-title');
-            const subtitleEl = document.getElementById('auto-subtitle');
-
-            if (activeMethods > 0) {
-                titleEl.textContent = `🤖 Automatic Monitoring Active (${activeMethods}/6 methods)`;
-                subtitleEl.textContent = `Continuously scanning ${activeMethods} detection methods every ${AUTO_CONFIG.scanInterval/1000} seconds`;
+            if (autoSyncActive) {
+                toggleBtn.textContent = '⏸️ Pause Auto-Sync';
+                toggleBtn.style.background = '#17a2b8';
+                document.getElementById('github-subtitle').textContent = 
+                    'Automatically fetching orders from GitHub JSON database every 10 seconds';
+                startAutoSync();
             } else {
-                titleEl.textContent = '⚠️ Automatic Monitoring Issues';
-                subtitleEl.textContent = 'Some monitoring methods failed to initialize';
+                toggleBtn.textContent = '▶️ Resume Auto-Sync';
+                toggleBtn.style.background = '#28a745';
+                document.getElementById('github-subtitle').textContent = 
+                    'Auto-sync paused - click Resume to continue automatic fetching';
+                if (autoSyncInterval) {
+                    clearInterval(autoSyncInterval);
+                }
             }
+
+            showSuccessMessage(autoSyncActive ? 'Auto-sync resumed' : 'Auto-sync paused');
         }
 
         // Update monitoring display
         function updateMonitoringDisplay() {
             const grid = document.getElementById('monitoring-grid');
+            const uptime = Math.floor((new Date() - monitoringStats.systemStartTime) / 1000);
+            const successRate = monitoringStats.totalFetches > 0 ? 
+                Math.round((monitoringStats.successfulFetches / monitoringStats.totalFetches) * 100) : 0;
 
-            grid.innerHTML = Object.entries(autoStats.monitoring).map(([key, monitor]) => `
-                <div class="monitor-card ${monitor.active ? 'monitor-active' : ''}">
-                    <div class="monitor-title">${formatMethodName(key)}</div>
-                    <div class="monitor-status">
-                        ${monitor.active ? 'Active' : 'Inactive'}
-                    </div>
-                    <div class="monitor-counter">
-                        ${monitor.scans} scans | ${monitor.detections} orders
-                    </div>
+            const monitors = [
+                {
+                    label: 'Total Fetches',
+                    value: `${monitoringStats.totalFetches} requests`,
+                    active: monitoringStats.totalFetches > 0
+                },
+                {
+                    label: 'Success Rate',
+                    value: `${successRate}%`,
+                    active: successRate > 80
+                },
+                {
+                    label: 'Orders Received',
+                    value: `${monitoringStats.ordersReceived} orders`,
+                    active: monitoringStats.ordersReceived > 0
+                },
+                {
+                    label: 'GitHub Errors',
+                    value: `${monitoringStats.githubErrors} errors`,
+                    active: monitoringStats.githubErrors === 0
+                },
+                {
+                    label: 'Last Fetch',
+                    value: monitoringStats.lastFetchTime ? monitoringStats.lastFetchTime.toLocaleTimeString() : 'Never',
+                    active: monitoringStats.lastFetchTime !== null
+                },
+                {
+                    label: 'Auto-Sync',
+                    value: autoSyncActive ? 'Active' : 'Paused',
+                    active: autoSyncActive
+                }
+            ];
+
+            grid.innerHTML = monitors.map(monitor => `
+                <div class="monitor-item ${monitor.active ? 'monitor-active' : ''}">
+                    <div class="monitor-label">${monitor.label}</div>
+                    <div class="monitor-value">${monitor.value}</div>
                 </div>
             `).join('');
         }
 
-        // Format method names for display
-        function formatMethodName(methodKey) {
-            const names = {
-                counterPolling: 'Counter Polling',
-                signalDetection: 'Signal Detection',
-                recentOrders: 'Recent Orders',
-                timestampScan: 'Timestamp Scan',
-                titleMonitor: 'Title Monitor',
-                hashMonitor: 'Hash Monitor'
-            };
-            return names[methodKey] || methodKey;
-        }
-
-        // Load stored orders
-        function loadStoredOrders() {
-            try {
-                const stored = localStorage.getItem('autoKitchenOrders');
-                if (stored) {
-                    const data = JSON.parse(stored);
-                    orders = data.orders || [];
-                }
-                console.log(`📦 Loaded ${orders.length} orders from kitchen storage`);
-            } catch (error) {
-                console.error('❌ Error loading stored orders:', error);
-                orders = [];
-            }
-        }
-
-        // Save orders to storage
-        function saveOrdersToStorage() {
-            try {
-                const saveData = {
-                    orders: orders,
-                    lastUpdated: new Date().toISOString(),
-                    source: 'auto-kitchen'
-                };
-                localStorage.setItem('autoKitchenOrders', JSON.stringify(saveData));
-            } catch (error) {
-                console.error('❌ Error saving orders:', error);
-            }
-        }
-
         // Update statistics
         function updateStats() {
-            const autoOrders = orders.filter(order => 
-                order.source === 'auto-menu' || order.autoSignal
+            const githubOrders = orders.filter(order => 
+                order.source === 'github-auto'
             ).length;
 
             document.getElementById('total-orders').textContent = orders.length;
@@ -986,7 +868,7 @@
                 orders.filter(order => order.status === 'pending' || order.status === 'preparing').length;
             document.getElementById('completed-orders').textContent = 
                 orders.filter(order => order.status === 'completed').length;
-            document.getElementById('auto-orders').textContent = autoOrders;
+            document.getElementById('github-orders').textContent = githubOrders;
         }
 
         // Render orders
@@ -1005,25 +887,25 @@
             if (filteredOrders.length === 0) {
                 ordersGrid.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">🤖</div>
+                        <div class="empty-icon">🚀</div>
                         <h3>No ${currentFilter === 'all' ? '' : currentFilter} orders</h3>
-                        <p>Automatic monitoring is active - orders will appear automatically when detected.</p>
-                        <p><small>Try the "Test Auto Order" button to verify the system is working.</small></p>
+                        <p>GitHub auto-sync is ${autoSyncActive ? 'active' : 'paused'} - orders will appear automatically.</p>
+                        <p><small>Repository: ${githubConfig.repo}/${githubConfig.jsonFile}</small></p>
                     </div>
                 `;
                 return;
             }
 
             ordersGrid.innerHTML = filteredOrders.map(order => {
-                const isAutoOrder = order.source === 'auto-menu' || order.autoSignal;
+                const isGitHubOrder = order.source === 'github-auto';
 
                 return `
-                    <div class="order-card ${isAutoOrder ? 'auto-order' : ''}" data-status="${order.status}">
+                    <div class="order-card ${isGitHubOrder ? 'github-order' : ''}" data-status="${order.status}">
                         <div class="order-header">
                             <div class="order-number">${order.orderNumber}</div>
                             <div class="order-meta">
                                 <div>${formatTime(new Date(order.timestamp))}</div>
-                                ${isAutoOrder ? '<div class="auto-badge">Auto Detected</div>' : ''}
+                                ${isGitHubOrder ? '<div class="github-badge">GitHub Auto</div>' : ''}
                             </div>
                         </div>
 
@@ -1068,13 +950,13 @@
         function getActionButtons(order) {
             switch (order.status) {
                 case 'pending':
-                    return `<button class="action-btn" onclick="updateOrderStatus(${order.id}, 'preparing')">Start Preparing</button>`;
+                    return `<button class="action-btn" onclick="updateOrderStatus('${order.id}', 'preparing')">Start Preparing</button>`;
                 case 'preparing':
-                    return `<button class="action-btn" onclick="updateOrderStatus(${order.id}, 'ready')">Mark Ready</button>`;
+                    return `<button class="action-btn" onclick="updateOrderStatus('${order.id}', 'ready')">Mark Ready</button>`;
                 case 'ready':
-                    return `<button class="action-btn" onclick="updateOrderStatus(${order.id}, 'completed')">Complete Order</button>`;
+                    return `<button class="action-btn" onclick="updateOrderStatus('${order.id}', 'completed')">Complete Order</button>`;
                 case 'completed':
-                    return `<button class="action-btn" onclick="generateInvoice(${order.id})">Generate Invoice</button>`;
+                    return `<button class="action-btn" onclick="generateInvoice('${order.id}')">Generate Invoice</button>`;
                 default:
                     return '';
             }
@@ -1082,7 +964,7 @@
 
         // Update order status
         function updateOrderStatus(orderId, newStatus) {
-            const order = orders.find(o => o.id === orderId);
+            const order = orders.find(o => o.id == orderId);
             if (order) {
                 order.status = newStatus;
                 order.lastUpdatedAt = new Date().toISOString();
@@ -1090,9 +972,6 @@
                 if (newStatus === 'completed') {
                     order.completedTime = new Date().toISOString();
                 }
-
-                // Save updated orders
-                saveOrdersToStorage();
 
                 updateStats();
                 renderOrders();
@@ -1115,104 +994,23 @@
             renderOrders();
         }
 
-        // Test auto order
-        function testAutoOrder() {
-            const testOrder = {
-                id: Date.now(),
-                orderNumber: `AUTO-TEST-${String(Date.now()).slice(-4)}`,
-                items: [
-                    { id: 1, name: "Auto Burger", price: 16, quantity: 1, description: "Test burger for automatic system" },
-                    { id: 2, name: "Auto Fries", price: 8, quantity: 1, description: "Test fries for verification" }
-                ],
-                subtotal: 24,
-                tax: 2.4,
-                total: 26.4,
-                timestamp: new Date().toISOString(),
-                status: 'pending',
-                source: 'auto-menu',
-                autoSignal: true,
-                createdAt: Date.now()
-            };
-
-            processDetectedOrder(testOrder, 'Test Auto System');
-        }
-
-        // Toggle debug info
-        function toggleDebug() {
-            const debugEl = document.getElementById('debug-info');
-            const isVisible = debugEl.style.display !== 'none';
-
-            if (isVisible) {
-                debugEl.style.display = 'none';
-            } else {
-                updateDebugInfo();
-                debugEl.style.display = 'block';
-            }
-        }
-
-        // Update debug info
-        function updateDebugInfo() {
-            const debugEl = document.getElementById('debug-info');
-            const uptime = Math.floor((new Date() - autoStats.systemStartTime) / 1000);
-
-            debugEl.innerHTML = `
-                <strong>Automatic Kitchen Monitoring Debug Info:</strong><br>
-                System Uptime: ${Math.floor(uptime / 60)}m ${uptime % 60}s<br>
-                Total Scans: ${autoStats.totalScans}<br>
-                Orders Detected: ${autoStats.ordersDetected}<br>
-                Last Scan: ${autoStats.lastScanTime ? autoStats.lastScanTime.toLocaleTimeString() : 'Never'}<br>
-                Last Order Counter: ${autoStats.lastOrderCounter}<br>
-                Scan Interval: ${AUTO_CONFIG.scanInterval/1000}s<br>
-                Active Intervals: ${Object.keys(monitoringIntervals).length}<br>
-                <br><strong>Method Performance:</strong><br>
-                ${Object.entries(autoStats.monitoring).map(([key, monitor]) => 
-                    `${formatMethodName(key)}: ${monitor.scans} scans, ${monitor.detections} detections`
-                ).join('<br>')}
-            `;
-        }
-
-        // Force refresh
-        function forceRefresh() {
-            console.log('🔄 Manual force check requested');
-
-            // Manually trigger all monitoring methods
-            Object.values(monitoringIntervals).forEach(interval => {
-                if (interval) {
-                    clearInterval(interval);
-                }
-            });
-
-            // Restart monitoring
-            setupAutomaticMonitoring();
-
-            loadStoredOrders();
-            updateStats();
-            renderOrders();
-            updateMonitoringDisplay();
-            updateAutoStatus();
-
-            showSuccessMessage('Forced monitoring refresh completed!');
-        }
-
         // Clear all orders
         function clearAllOrders() {
-            if (confirm('Are you sure you want to clear all orders? This action cannot be undone.')) {
+            if (confirm('Are you sure you want to clear all orders? This will only clear the local display, not the GitHub JSON file.')) {
                 orders = [];
-                saveOrdersToStorage();
 
                 updateStats();
                 renderOrders();
-                showSuccessMessage('All orders cleared!');
-                console.log('🗑️ All orders cleared');
+                showSuccessMessage('Local orders cleared! GitHub JSON file unchanged.');
+                console.log('🗑️ Local orders cleared');
             }
         }
 
         // Generate invoice (simplified for brevity)
         function generateInvoice(orderId) {
-            const order = orders.find(o => o.id === orderId);
+            const order = orders.find(o => o.id == orderId);
             if (order) {
                 showSuccessMessage(`Invoice generated for ${order.orderNumber}`);
-                // Full invoice generation logic would go here
             }
         }
 
@@ -1221,6 +1019,28 @@
             const messageEl = document.getElementById('success-message');
             messageEl.textContent = message;
             messageEl.style.display = 'block';
+
+            // Reset styles
+            messageEl.style.backgroundColor = '';
+            messageEl.style.color = '';
+            messageEl.style.borderColor = '';
+
+            switch (type) {
+                case 'error':
+                    messageEl.style.backgroundColor = '#f8d7da';
+                    messageEl.style.color = '#721c24';
+                    messageEl.style.borderColor = '#f5c6cb';
+                    break;
+                case 'warning':
+                    messageEl.style.backgroundColor = '#fff3cd';
+                    messageEl.style.color = '#856404';
+                    messageEl.style.borderColor = '#ffeaa7';
+                    break;
+                default:
+                    messageEl.style.backgroundColor = '#d4edda';
+                    messageEl.style.color = '#155724';
+                    messageEl.style.borderColor = '#c3e6cb';
+            }
 
             setTimeout(() => {
                 messageEl.style.display = 'none';
@@ -1238,9 +1058,9 @@
 
         // Cleanup on page unload
         window.addEventListener('beforeunload', function() {
-            Object.values(monitoringIntervals).forEach(interval => {
-                if (interval) clearInterval(interval);
-            });
+            if (autoSyncInterval) {
+                clearInterval(autoSyncInterval);
+            }
         });
     </script>
 </body>
