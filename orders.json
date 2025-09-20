@@ -1,9 +1,34 @@
 {
   "restaurant": "Bella Vista",
-  "lastUpdated": "2025-09-20T11:14:17.701Z",
-  "totalOrders": 2,
+  "lastUpdated": "2025-09-20T11:15:08.597Z",
+  "totalOrders": 3,
   "method": "direct-send-to-receiver",
   "orders": [
+    {
+      "id": 1758366908138,
+      "orderNumber": "DIRECT-908138",
+      "items": [
+        {
+          "id": 2,
+          "name": "Caesar Salad",
+          "category": "Starters",
+          "price": 12,
+          "description": "Crisp romaine lettuce with caesar dressing",
+          "quantity": 1
+        }
+      ],
+      "subtotal": 12,
+      "tax": 1.2000000000000002,
+      "total": 13.2,
+      "timestamp": "2025-09-20T11:15:08.138Z",
+      "status": "pending",
+      "source": "github-direct",
+      "restaurant": "Bella Vista",
+      "metadata": {
+        "createdAt": "2025-09-20T11:15:08.138Z",
+        "method": "Direct Send to receiver.html"
+      }
+    },
     {
       "id": 1758366857194,
       "orderNumber": "DIRECT-857194",
