@@ -1,9 +1,58 @@
 {
   "restaurant": "Bella Vista",
-  "lastUpdated": "2025-09-20T11:17:53.561Z",
-  "totalOrders": 6,
+  "lastUpdated": "2025-09-20T11:19:00.522Z",
+  "totalOrders": 7,
   "method": "direct-send-to-receiver",
   "orders": [
+    {
+      "id": 1758367139966,
+      "orderNumber": "DIRECT-139966",
+      "items": [
+        {
+          "id": 5,
+          "name": "Chocolate Cake",
+          "category": "Desserts",
+          "price": 10,
+          "description": "Rich chocolate cake with vanilla ice cream",
+          "quantity": 1
+        },
+        {
+          "id": 6,
+          "name": "Ice Cream",
+          "category": "Desserts",
+          "price": 6,
+          "description": "Vanilla, chocolate or strawberry",
+          "quantity": 1
+        },
+        {
+          "id": 7,
+          "name": "Coffee",
+          "category": "Beverages",
+          "price": 5,
+          "description": "Fresh brewed coffee",
+          "quantity": 1
+        },
+        {
+          "id": 8,
+          "name": "Fresh Juice",
+          "category": "Beverages",
+          "price": 7,
+          "description": "Orange, apple or mixed fruit juice",
+          "quantity": 1
+        }
+      ],
+      "subtotal": 28,
+      "tax": 2.8000000000000003,
+      "total": 30.8,
+      "timestamp": "2025-09-20T11:18:59.966Z",
+      "status": "pending",
+      "source": "github-direct",
+      "restaurant": "Bella Vista",
+      "metadata": {
+        "createdAt": "2025-09-20T11:18:59.966Z",
+        "method": "Direct Send to receiver.html"
+      }
+    },
     {
       "id": 1758367073083,
       "orderNumber": "DIRECT-073083",
