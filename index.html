@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Restaurant - GitHub Cross-Device</title>
+    <title>Bella Vista Restaurant - Safe Cross-Device</title>
     <style>
         * {
             margin: 0;
@@ -44,24 +44,24 @@
             font-size: 1.2rem;
         }
 
-        .github-info {
-            background: linear-gradient(45deg, #f6f8fa, #e1e8ed);
-            border: 2px solid #0366d6;
+        .safe-info {
+            background: linear-gradient(45deg, #e8f5e8, #f0f8ff);
+            border: 2px solid #28a745;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
         }
 
-        .github-title {
-            color: #0366d6;
+        .safe-title {
+            color: #28a745;
             font-weight: bold;
             font-size: 1.1rem;
             margin-bottom: 10px;
         }
 
-        .github-subtitle {
-            color: #666;
+        .safe-subtitle {
+            color: #155724;
             font-size: 0.9rem;
         }
 
@@ -318,17 +318,12 @@
         }
 
         .send-to-kitchen-btn {
-            background: #0366d6;
+            background: #28a745;
             color: white;
         }
 
         .send-to-kitchen-btn:hover {
-            background: #0256cc;
-        }
-
-        .send-to-kitchen-btn.sending {
-            background: #6c757d;
-            cursor: not-allowed;
+            background: #218838;
         }
 
         .empty-cart {
@@ -348,80 +343,79 @@
             border: 1px solid #c3e6cb;
         }
 
-        .sync-status {
-            padding: 15px;
-            border-radius: 8px;
+        .order-sent-panel {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
             margin-bottom: 20px;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .status-ready {
-            background: #e7f3ff;
-            border: 2px solid #0366d6;
-            color: #004085;
-        }
-
-        .status-sending {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            color: #856404;
-        }
-
-        .status-sent {
-            background: #d4edda;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
             border: 2px solid #28a745;
-            color: #155724;
         }
 
-        .status-error {
-            background: #f8d7da;
-            border: 2px solid #dc3545;
-            color: #721c24;
+        .order-sent-title {
+            color: #28a745;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
         }
 
-        .sync-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: pulse 2s infinite;
-        }
-
-        .indicator-ready {
-            background: #0366d6;
-        }
-
-        .indicator-sending {
-            background: #ffc107;
-        }
-
-        .indicator-sent {
-            background: #28a745;
-        }
-
-        .indicator-error {
-            background: #dc3545;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        .github-setup {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
-            padding: 15px;
+        .order-url-container {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
             border-radius: 5px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
+            padding: 15px;
+            margin-bottom: 15px;
         }
 
-        .github-setup strong {
-            color: #856404;
+        .order-url {
+            font-family: monospace;
+            word-break: break-all;
+            font-size: 0.9rem;
+            color: #495057;
+            background: white;
+            padding: 10px;
+            border-radius: 3px;
+            border: 1px solid #ced4da;
+            margin: 10px 0;
+        }
+
+        .copy-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #0056b3;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .instructions h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            color: #424242;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 5px;
         }
 
         @media (max-width: 768px) {
@@ -448,25 +442,32 @@
         <!-- Header -->
         <header class="header">
             <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
-            <p class="restaurant-tagline">GitHub Cross-Device Ordering System</p>
+            <p class="restaurant-tagline">Safe Cross-Device System - No External APIs</p>
         </header>
 
-        <!-- GitHub Info -->
-        <div class="github-info">
-            <div class="github-title">🚀 GitHub API Cross-Device Communication</div>
-            <div class="github-subtitle">Orders sync across any devices using GitHub as free database</div>
+        <!-- Safe System Info -->
+        <div class="safe-info">
+            <div class="safe-title">🔒 100% SAFE - No External Dependencies!</div>
+            <div class="safe-subtitle">Orders shared via secure URL links - works on any device, completely safe</div>
         </div>
 
-        <!-- GitHub Setup Info -->
-        <div class="github-setup">
-            <strong>📋 GitHub Setup:</strong> This system uses GitHub Gists API for cross-device communication. 
-            No authentication required - works automatically on GitHub Pages!
-        </div>
-
-        <!-- Sync Status -->
-        <div id="sync-status" class="sync-status status-ready">
-            <span id="sync-indicator" class="sync-indicator indicator-ready"></span>
-            <span id="sync-text">GitHub API ready - Cross-device orders enabled</span>
+        <!-- Order Sent Panel -->
+        <div id="order-sent-panel" class="order-sent-panel">
+            <div class="order-sent-title">✅ Order Sent Successfully!</div>
+            <div class="order-url-container">
+                <strong>Kitchen URL:</strong>
+                <div id="order-url" class="order-url"></div>
+                <button id="copy-url-btn" class="copy-btn" onclick="copyOrderURL()">📋 Copy Kitchen URL</button>
+            </div>
+            <div class="instructions">
+                <h4>📱 How to deliver to kitchen:</h4>
+                <ol>
+                    <li>Copy the Kitchen URL above</li>
+                    <li>Send it to kitchen device (WhatsApp, SMS, Email, etc.)</li>
+                    <li>Kitchen opens the URL → Order appears automatically!</li>
+                    <li>100% safe - no external services used</li>
+                </ol>
+            </div>
         </div>
 
         <!-- Success Message -->
@@ -517,14 +518,14 @@
 
                 <div class="cart-actions">
                     <button id="generate-invoice-btn" class="action-btn generate-invoice-btn">Generate Invoice</button>
-                    <button id="send-to-kitchen-btn" class="action-btn send-to-kitchen-btn">🚀 Send via GitHub API</button>
+                    <button id="send-to-kitchen-btn" class="action-btn send-to-kitchen-btn">🔒 Send Safely</button>
                 </div>
             </aside>
         </div>
     </div>
 
     <script>
-        // GitHub API Cross-Device Restaurant Ordering System
+        // Safe Cross-Device Restaurant Ordering System using URL-based communication
 
         // Menu data
         const menuItems = [
@@ -542,66 +543,16 @@
         let cart = {};
         let currentFilter = 'all';
 
-        // GitHub API configuration
-        const GITHUB_CONFIG = {
-            apiUrl: 'https://api.github.com',
-            gistId: null, // Will be auto-generated
-            restaurantId: 'bella-vista-' + Math.random().toString(36).substr(2, 8)
-        };
-
         // Initialize application
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🍽️ GitHub API Cross-Device Menu System Starting...');
+            console.log('🍽️ Safe Cross-Device Menu System Starting...');
 
             renderMenuItems();
             setupEventListeners();
             updateCartDisplay();
-            initializeGitHubAPI();
 
-            console.log('✅ GitHub API system ready');
+            console.log('✅ Safe cross-device system ready');
         });
-
-        // Initialize GitHub API
-        async function initializeGitHubAPI() {
-            try {
-                updateSyncStatus('ready', 'GitHub API ready - Cross-device orders enabled');
-                console.log('🚀 GitHub API initialized successfully');
-            } catch (error) {
-                console.error('❌ GitHub API initialization failed:', error);
-                updateSyncStatus('error', 'GitHub API connection failed - Orders will be local only');
-            }
-        }
-
-        // Update sync status
-        function updateSyncStatus(status, message) {
-            const statusEl = document.getElementById('sync-status');
-            const indicatorEl = document.getElementById('sync-indicator');
-            const textEl = document.getElementById('sync-text');
-
-            statusEl.className = 'sync-status';
-            indicatorEl.className = 'sync-indicator';
-
-            switch (status) {
-                case 'ready':
-                    statusEl.classList.add('status-ready');
-                    indicatorEl.classList.add('indicator-ready');
-                    break;
-                case 'sending':
-                    statusEl.classList.add('status-sending');
-                    indicatorEl.classList.add('indicator-sending');
-                    break;
-                case 'sent':
-                    statusEl.classList.add('status-sent');
-                    indicatorEl.classList.add('indicator-sent');
-                    break;
-                case 'error':
-                    statusEl.classList.add('status-error');
-                    indicatorEl.classList.add('indicator-error');
-                    break;
-            }
-
-            textEl.textContent = message;
-        }
 
         // Setup event listeners
         function setupEventListeners() {
@@ -617,7 +568,7 @@
 
             // Invoice and kitchen buttons
             document.getElementById('generate-invoice-btn').addEventListener('click', generateInvoice);
-            document.getElementById('send-to-kitchen-btn').addEventListener('click', sendToKitchenGitHubAPI);
+            document.getElementById('send-to-kitchen-btn').addEventListener('click', sendToKitchenSafely);
         }
 
         // Render menu items
@@ -728,7 +679,7 @@
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const tax = subtotal * 0.1;
             const total = subtotal + tax;
-            const orderNumber = `GH-${Date.now().toString().slice(-6)}`;
+            const orderNumber = `SF-${Date.now().toString().slice(-6)}`;
 
             const invoiceContent = `
                 <!DOCTYPE html>
@@ -752,14 +703,14 @@
                 <body>
                     <div class="header">
                         <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
-                        <p>GitHub API Cross-Device Customer Invoice</p>
+                        <p>Safe Cross-Device Customer Invoice</p>
                     </div>
 
                     <div class="order-info">
                         <p><strong>Order Number:</strong> ${orderNumber}</p>
                         <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
                         <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
-                        <p><strong>System:</strong> GitHub API Cross-Device</p>
+                        <p><strong>System:</strong> Safe Cross-Device via URL</p>
                     </div>
 
                     <table class="items-table">
@@ -793,8 +744,8 @@
 
                     <div class="footer">
                         <p>Thank you for dining with us!</p>
-                        <p><em>Generated via GitHub API Cross-Device System</em></p>
-                        <p><small>Order automatically synced to kitchen via GitHub</small></p>
+                        <p><em>Generated via Safe Cross-Device System</em></p>
+                        <p><small>Order sent to kitchen safely via URL</small></p>
                     </div>
                 </body>
                 </html>
@@ -808,131 +759,99 @@
             showSuccessMessage('Invoice generated successfully!');
         }
 
-        // Send to kitchen via GitHub API
-        async function sendToKitchenGitHubAPI() {
+        // Send to kitchen safely using URL-based communication
+        function sendToKitchenSafely() {
             const cartItems = Object.values(cart);
             if (cartItems.length === 0) {
                 showSuccessMessage('Cart is empty!', 'error');
                 return;
             }
 
-            const sendBtn = document.getElementById('send-to-kitchen-btn');
-            const originalText = sendBtn.textContent;
-            sendBtn.classList.add('sending');
-            sendBtn.textContent = 'Sending via GitHub API...';
-            sendBtn.disabled = true;
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
 
-            updateSyncStatus('sending', 'Creating GitHub Gist for cross-device sync...');
+            // Generate unique order ID
+            const orderId = Date.now() + Math.floor(Math.random() * 1000);
+            const orderNumber = `SF-${String(orderId).slice(-6)}`;
 
-            try {
-                const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const tax = subtotal * 0.1;
-                const total = subtotal + tax;
+            const orderData = {
+                id: orderId,
+                orderNumber: orderNumber,
+                items: cartItems,
+                subtotal: subtotal,
+                tax: tax,
+                total: total,
+                timestamp: new Date().toISOString(),
+                status: 'pending',
+                source: 'safe-url-menu',
+                createdAt: Date.now()
+            };
 
-                // Generate unique order ID
-                const orderId = Date.now() + Math.floor(Math.random() * 1000);
-                const orderNumber = `GH-${String(orderId).slice(-6)}`;
+            console.log('🔒 Creating safe URL for order:', orderData);
 
-                const orderData = {
-                    id: orderId,
-                    orderNumber: orderNumber,
-                    items: cartItems,
-                    subtotal: subtotal,
-                    tax: tax,
-                    total: total,
-                    timestamp: new Date().toISOString(),
-                    status: 'pending',
-                    source: 'github-api-menu',
-                    restaurantId: GITHUB_CONFIG.restaurantId,
-                    createdAt: Date.now()
-                };
+            // Encode order data into URL
+            const encodedOrder = btoa(JSON.stringify(orderData));
+            const baseURL = window.location.href.replace('index.html', '').replace(/\/$/, '');
+            const kitchenURL = `${baseURL}/receiver.html#order=${encodedOrder}`;
 
-                console.log('🚀 Sending order via GitHub API:', orderData);
+            // Show the order sent panel
+            document.getElementById('order-url').textContent = kitchenURL;
+            document.getElementById('order-sent-panel').style.display = 'block';
 
-                // Create GitHub Gist with order data
-                const gistData = await createGitHubGist(orderData);
+            // Clear cart after successful send
+            cart = {};
+            updateCartDisplay();
 
-                if (gistData && gistData.id) {
-                    // Success
-                    updateSyncStatus('sent', `Order sent via GitHub API! Gist ID: ${gistData.id.substring(0, 8)}...`);
-                    showSuccessMessage(`Order ${orderNumber} sent to kitchen via GitHub API! 🚀`);
+            showSuccessMessage(`Order ${orderNumber} created successfully! Share the Kitchen URL to deliver the order. 🔒`);
 
-                    // Clear cart
-                    cart = {};
-                    updateCartDisplay();
-                } else {
-                    throw new Error('Failed to create GitHub Gist');
-                }
+            // Scroll to the order sent panel
+            document.getElementById('order-sent-panel').scrollIntoView({ behavior: 'smooth' });
+        }
 
-            } catch (error) {
-                console.error('❌ Error sending order via GitHub API:', error);
+        // Copy order URL to clipboard
+        function copyOrderURL() {
+            const urlElement = document.getElementById('order-url');
+            const url = urlElement.textContent;
 
-                updateSyncStatus('error', 'GitHub API error - Using fallback local storage');
-
-                // Fallback to local storage
-                try {
-                    const fallbackData = {
-                        orders: [orderData],
-                        lastUpdated: new Date().toISOString(),
-                        source: 'github-fallback'
-                    };
-
-                    localStorage.setItem('githubFallbackOrders', JSON.stringify(fallbackData));
-                    showSuccessMessage(`Order sent via fallback method - Kitchen will receive automatically!`);
-
-                    // Clear cart
-                    cart = {};
-                    updateCartDisplay();
-                } catch (fallbackError) {
-                    showSuccessMessage('Error sending order. Please try again.', 'error');
-                }
-            } finally {
-                // Reset button
-                setTimeout(() => {
-                    sendBtn.classList.remove('sending');
-                    sendBtn.textContent = originalText;
-                    sendBtn.disabled = false;
-
-                    // Reset status after 5 seconds
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    showSuccessMessage('Kitchen URL copied to clipboard! 📋');
+                    document.getElementById('copy-url-btn').textContent = '✅ Copied!';
                     setTimeout(() => {
-                        updateSyncStatus('ready', 'GitHub API ready - Cross-device orders enabled');
-                    }, 5000);
-                }, 1000);
+                        document.getElementById('copy-url-btn').textContent = '📋 Copy Kitchen URL';
+                    }, 2000);
+                }).catch(() => {
+                    fallbackCopyToClipboard(url);
+                });
+            } else {
+                fallbackCopyToClipboard(url);
             }
         }
 
-        // Create GitHub Gist
-        async function createGitHubGist(orderData) {
-            const gistPayload = {
-                description: `Bella Vista Restaurant Order ${orderData.orderNumber}`,
-                public: false,
-                files: {
-                    [`order-${orderData.id}.json`]: {
-                        content: JSON.stringify(orderData, null, 2)
-                    },
-                    'restaurant-info.txt': {
-                        content: `Restaurant: Bella Vista\nOrder Number: ${orderData.orderNumber}\nTotal: $${orderData.total}\nTimestamp: ${orderData.timestamp}`
-                    }
-                }
-            };
+        // Fallback copy method
+        function fallbackCopyToClipboard(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
 
-            const response = await fetch(`${GITHUB_CONFIG.apiUrl}/gists`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/vnd.github.v3+json'
-                },
-                body: JSON.stringify(gistPayload)
-            });
-
-            if (!response.ok) {
-                throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+            try {
+                document.execCommand('copy');
+                showSuccessMessage('Kitchen URL copied to clipboard! 📋');
+                document.getElementById('copy-url-btn').textContent = '✅ Copied!';
+                setTimeout(() => {
+                    document.getElementById('copy-url-btn').textContent = '📋 Copy Kitchen URL';
+                }, 2000);
+            } catch (err) {
+                showSuccessMessage('Please manually copy the Kitchen URL above', 'warning');
             }
 
-            const gistData = await response.json();
-            console.log('✅ GitHub Gist created:', gistData.id);
-
-            return gistData;
+            document.body.removeChild(textArea);
         }
 
         // Show success message
