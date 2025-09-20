@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Vista Restaurant - Fixed</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: white; border-radius: 10px; padding: 30px; margin-bottom: 30px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .restaurant-name { font-size: 2.5rem; color: #D2691E; margin-bottom: 10px; }
+        .restaurant-tagline { color: #666; font-size: 1.1rem; }
+        .status { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center; font-weight: bold; }
+        .auth-panel { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .auth-title { font-weight: bold; margin-bottom: 10px; }
+        .token-status { padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 0.9rem; }
+        .token-status.success { background: #d4edda; color: #155724; }
+        .token-status.error { background: #f8d7da; color: #721c24; }
+        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .menu-section { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .menu-section h2 { color: #D2691E; font-size: 1.8rem; margin-bottom: 20px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .menu-item { border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: #f8f9fa; transition: transform 0.2s; }
+        .menu-item:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .item-name { font-size: 1.2rem; font-weight: bold; color: #333; margin-bottom: 8px; }
+        .item-description { color: #666; margin-bottom: 12px; line-height: 1.4; font-size: 0.9rem; }
+        .item-footer { display: flex; justify-content: space-between; align-items: center; }
+        .item-price { font-size: 1.3rem; font-weight: bold; color: #D2691E; }
+        .add-btn { background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        .add-btn:hover { background: #218838; }
+        .cart-sidebar { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: fit-content; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cart-header h3 { color: #D2691E; font-size: 1.4rem; }
+        .cart-count { background: #D2691E; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; }
+        .cart-items { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
+        .cart-item { padding: 12px 0; border-bottom: 1px solid #eee; }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-name { font-weight: 500; margin-bottom: 5px; }
+        .cart-item-price { color: #666; font-size: 0.9rem; margin-bottom: 8px; }
+        .quantity-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .qty-btn { background: #D2691E; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; }
+        .qty-display { min-width: 20px; text-align: center; font-weight: 500; }
+        .remove-btn { background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 0.8rem; }
+        .cart-totals { border-top: 2px solid #ddd; padding-top: 15px; margin-bottom: 20px; }
+        .total-row { display: flex; justify-content: space-between; margin: 5px 0; }
+        .total-row.grand-total { font-weight: bold; font-size: 1.1rem; color: #D2691E; border-top: 1px solid #ddd; padding-top: 8px; margin-top: 8px; }
+        .cart-actions { display: flex; flex-direction: column; gap: 10px; }
+        .action-btn { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; text-align: center; transition: all 0.2s; }
+        .send-btn { background: #ff6b6b; color: white; font-size: 1.1rem; }
+        .send-btn:hover { background: #ff5252; }
+        .send-btn:disabled { background: #6c757d; cursor: not-allowed; }
+        .clear-btn { background: #ffc107; color: #212529; }
+        .clear-btn:hover { background: #ffb300; }
+        .empty-cart { text-align: center; color: #666; padding: 20px 0; }
+        .message { padding: 12px; border-radius: 4px; margin-bottom: 20px; display: none; font-weight: 500; }
+        .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .message.warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; } .restaurant-name { font-size: 2rem; } .menu-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
+            <p class="restaurant-tagline">Fixed Authentication & Auto JSON Generation</p>
+        </header>
+
+        <div class="status">✅ System Ready - Auto JSON Generation - 401 Error Fixed</div>
+
+        <div class="auth-panel">
+            <div class="auth-title">🔐 Authentication Status</div>
+            <div id="token-status" class="token-status">Checking GitHub connection...</div>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="content-grid">
+            <section class="menu-section">
+                <h2>Our Menu</h2>
+                <div id="menu-items" class="menu-grid"></div>
+            </section>
+
+            <aside class="cart-sidebar">
+                <div class="cart-header">
+                    <h3>Your Order</h3>
+                    <span id="cart-count" class="cart-count">0</span>
+                </div>
+
+                <div id="cart-items" class="cart-items"></div>
+
+                <div class="cart-totals">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (10%):</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="cart-actions">
+                    <button id="send-btn" class="action-btn send-btn">🚀 SEND ORDER TO KITCHEN</button>
+                    <button id="clear-btn" class="action-btn clear-btn">🗑️ Clear Cart</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // FIXED SYSTEM - Handles 401 errors and auto-generates JSON
+
+        const CONFIG = {
+            token: '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',
+            repo: 'apurv1155/qrapp',
+            file: 'orders.json',
+            apiBase: 'https://api.github.com',
+            timeout: 15000 // Longer timeout for reliability
+        };
+
+        const MENU = [
+            { id: 1, name: "Garlic Bread", price: 8, description: "Fresh baked bread with garlic butter" },
+            { id: 2, name: "Caesar Salad", price: 12, description: "Crisp romaine lettuce with caesar dressing" },
+            { id: 3, name: "Buffalo Wings", price: 14, description: "Spicy chicken wings with ranch dip" },
+            { id: 4, name: "Margherita Pizza", price: 18, description: "Classic pizza with tomato, mozzarella and basil" },
+            { id: 5, name: "Chicken Alfredo", price: 22, description: "Creamy pasta with grilled chicken" },
+            { id: 6, name: "Grilled Salmon", price: 26, description: "Fresh Atlantic salmon with herbs" },
+            { id: 7, name: "Beef Steak", price: 28, description: "Premium ribeye steak cooked to perfection" },
+            { id: 8, name: "Chocolate Cake", price: 10, description: "Rich chocolate cake with vanilla ice cream" },
+            { id: 9, name: "Coffee", price: 5, description: "Fresh brewed coffee" },
+            { id: 10, name: "Soft Drinks", price: 4, description: "Coke, Sprite, Fanta" }
+        ];
+
+        let cart = {};
+        let isTokenValid = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🍽️ Fixed restaurant system starting...');
+            checkTokenAndSetup();
+        });
+
+        // Check token validity and setup system
+        async function checkTokenAndSetup() {
+            console.log('🔐 Checking GitHub token...');
+            updateTokenStatus('Checking GitHub connection...', 'checking');
+
+            try {
+                // Test token with repository access
+                const response = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}`, {
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'User-Agent': 'BellaVista-Restaurant'
+                    }
+                });
+
+                if (response.ok) {
+                    console.log('✅ Token is valid');
+                    isTokenValid = true;
+                    updateTokenStatus('✅ GitHub connection successful - Ready to send orders', 'success');
+
+                    // Initialize the rest of the system
+                    renderMenu();
+                    updateCart();
+                    setupEvents();
+
+                    // Test JSON file access/creation
+                    await checkOrCreateOrdersFile();
+
+                } else if (response.status === 401) {
+                    console.error('❌ Token is invalid or expired');
+                    updateTokenStatus('❌ GitHub token is invalid or expired - Orders cannot be sent', 'error');
+                    showMessage('❌ Authentication error - please check token configuration', 'error');
+
+                    // Still setup the UI but disable sending
+                    renderMenu();
+                    updateCart();
+                    setupEvents();
+
+                } else {
+                    console.error('❌ GitHub API error:', response.status);
+                    updateTokenStatus(`❌ GitHub API error (${response.status}) - Check repository access`, 'error');
+                    showMessage('❌ GitHub API error - please try again later', 'error');
+
+                    renderMenu();
+                    updateCart();
+                    setupEvents();
+                }
+            } catch (error) {
+                console.error('❌ Network error:', error);
+                updateTokenStatus('❌ Network error - Check internet connection', 'error');
+                showMessage('❌ Network error - please check your connection', 'error');
+
+                // Setup UI anyway for offline use
+                renderMenu();
+                updateCart();
+                setupEvents();
+            }
+        }
+
+        // Check if orders.json exists, create if not
+        async function checkOrCreateOrdersFile() {
+            try {
+                console.log('📁 Checking orders.json file...');
+
+                const response = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (response.ok) {
+                    console.log('✅ orders.json file exists');
+                    updateTokenStatus('✅ GitHub connection successful - orders.json ready', 'success');
+                } else if (response.status === 404) {
+                    console.log('📝 orders.json not found, creating...');
+                    await createInitialOrdersFile();
+                } else {
+                    console.log(`⚠️ Orders file check returned: ${response.status}`);
+                }
+            } catch (error) {
+                console.error('❌ Error checking orders file:', error);
+            }
+        }
+
+        // Create initial orders.json file
+        async function createInitialOrdersFile() {
+            try {
+                console.log('🚀 Creating initial orders.json...');
+
+                const initialContent = {
+                    restaurant: 'Bella Vista Restaurant',
+                    created: new Date().toISOString(),
+                    lastUpdated: new Date().toISOString(),
+                    totalOrders: 0,
+                    system: 'auto-generated',
+                    version: '1.0',
+                    orders: []
+                };
+
+                const response = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Auto-generate initial orders.json file',
+                        content: btoa(JSON.stringify(initialContent, null, 2)),
+                        branch: 'main'
+                    })
+                });
+
+                if (response.ok) {
+                    console.log('✅ Initial orders.json created successfully');
+                    updateTokenStatus('✅ GitHub ready - orders.json auto-generated successfully', 'success');
+                    showMessage('✅ System initialized - orders.json file created automatically', 'success');
+                } else {
+                    const error = await response.json();
+                    console.error('❌ Failed to create orders.json:', error);
+                    updateTokenStatus('❌ Failed to create orders.json file', 'error');
+                }
+            } catch (error) {
+                console.error('❌ Error creating orders file:', error);
+                updateTokenStatus('❌ Error creating orders.json file', 'error');
+            }
+        }
+
+        function updateTokenStatus(message, type) {
+            const statusEl = document.getElementById('token-status');
+            statusEl.textContent = message;
+            statusEl.className = `token-status ${type}`;
+        }
+
+        function setupEvents() {
+            document.getElementById('send-btn').addEventListener('click', sendOrder);
+            document.getElementById('clear-btn').addEventListener('click', clearCart);
+        }
+
+        function renderMenu() {
+            const container = document.getElementById('menu-items');
+            container.innerHTML = MENU.map(item => `
+                <div class="menu-item">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-footer">
+                        <div class="item-price">$${item.price}</div>
+                        <button class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(itemId) {
+            const item = MENU.find(i => i.id === itemId);
+            if (!item) return;
+
+            if (cart[itemId]) {
+                cart[itemId].quantity += 1;
+            } else {
+                cart[itemId] = { ...item, quantity: 1 };
+            }
+
+            updateCart();
+            showMessage(`${item.name} added to cart!`, 'success');
+        }
+
+        function updateCart() {
+            const items = Object.values(cart);
+            const container = document.getElementById('cart-items');
+
+            if (items.length === 0) {
+                container.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                document.getElementById('cart-count').textContent = '0';
+                updateTotals(0, 0, 0);
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-price">$${item.price} each</div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+                        <span class="qty-display">${item.quantity}</span>
+                        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
+                </div>
+            `).join('');
+
+            const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+
+            const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+
+            updateTotals(subtotal, tax, total);
+        }
+
+        function changeQty(itemId, change) {
+            if (cart[itemId]) {
+                cart[itemId].quantity += change;
+                if (cart[itemId].quantity <= 0) {
+                    delete cart[itemId];
+                }
+                updateCart();
+            }
+        }
+
+        function removeItem(itemId) {
+            if (cart[itemId]) {
+                delete cart[itemId];
+                updateCart();
+                showMessage('Item removed', 'success');
+            }
+        }
+
+        function updateTotals(subtotal, tax, total) {
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function clearCart() {
+            if (Object.keys(cart).length > 0 && confirm('Clear cart?')) {
+                cart = {};
+                updateCart();
+                showMessage('Cart cleared', 'success');
+            }
+        }
+
+        // FIXED ORDER SENDING with better error handling
+        async function sendOrder() {
+            const items = Object.values(cart);
+            if (items.length === 0) {
+                showMessage('Cart is empty!', 'error');
+                return;
+            }
+
+            if (!isTokenValid) {
+                showMessage('❌ Cannot send order - GitHub authentication failed', 'error');
+                return;
+            }
+
+            const sendBtn = document.getElementById('send-btn');
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'SENDING...';
+
+            try {
+                console.log('📤 Starting order send process...');
+
+                const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * 0.1;
+                const total = subtotal + tax;
+
+                const order = {
+                    id: Date.now() + Math.random(),
+                    orderNumber: `ORDER-${Date.now().toString().slice(-6)}`,
+                    items: items,
+                    subtotal: subtotal,
+                    tax: tax,
+                    total: total,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending',
+                    source: 'customer-fixed-auth',
+                    customerInfo: {
+                        sessionId: Date.now().toString(),
+                        userAgent: navigator.userAgent.substring(0, 100),
+                        timestamp: Date.now()
+                    }
+                };
+
+                console.log('📋 Order created:', order);
+
+                // Get existing orders with proper error handling
+                let existingOrders = [];
+                let fileSha = null;
+
+                try {
+                    console.log('📥 Getting existing orders...');
+
+                    const getResponse = await Promise.race([
+                        fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
+                            headers: {
+                                'Authorization': `Bearer ${CONFIG.token}`,
+                                'Accept': 'application/vnd.github.v3+json',
+                                'User-Agent': 'BellaVista-Restaurant'
+                            }
+                        }),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), CONFIG.timeout))
+                    ]);
+
+                    if (getResponse.ok) {
+                        const fileData = await getResponse.json();
+                        fileSha = fileData.sha;
+                        const currentContent = JSON.parse(atob(fileData.content));
+                        existingOrders = currentContent.orders || [];
+                        console.log(`📚 Found ${existingOrders.length} existing orders`);
+                    } else if (getResponse.status === 401) {
+                        throw new Error('Authentication failed - token may be expired');
+                    } else if (getResponse.status === 404) {
+                        console.log('📝 orders.json not found, will create new file');
+                        existingOrders = [];
+                        fileSha = null;
+                    } else {
+                        throw new Error(`GitHub API error: ${getResponse.status}`);
+                    }
+                } catch (error) {
+                    if (error.message.includes('Authentication failed')) {
+                        throw error; // Re-throw auth errors
+                    }
+                    console.log('📝 Will create new orders file:', error.message);
+                    existingOrders = [];
+                    fileSha = null;
+                }
+
+                // Add new order
+                existingOrders.unshift(order);
+
+                // Keep last 30 orders for performance
+                if (existingOrders.length > 30) {
+                    existingOrders = existingOrders.slice(0, 30);
+                }
+
+                // Create file content
+                const fileContent = {
+                    restaurant: 'Bella Vista Restaurant',
+                    lastUpdated: new Date().toISOString(),
+                    totalOrders: existingOrders.length,
+                    system: 'fixed-auth-system',
+                    version: '2.0',
+                    orders: existingOrders
+                };
+
+                // Prepare commit data
+                const commitData = {
+                    message: `New order: ${order.orderNumber} ($${total.toFixed(2)})`,
+                    content: btoa(JSON.stringify(fileContent, null, 2)),
+                    branch: 'main'
+                };
+
+                if (fileSha) {
+                    commitData.sha = fileSha;
+                }
+
+                console.log('🚀 Committing to GitHub...');
+
+                // Send to GitHub with timeout
+                const commitResponse = await Promise.race([
+                    fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${CONFIG.token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json',
+                            'User-Agent': 'BellaVista-Restaurant'
+                        },
+                        body: JSON.stringify(commitData)
+                    }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), CONFIG.timeout))
+                ]);
+
+                if (commitResponse.ok) {
+                    console.log('✅ Order sent successfully');
+                    showMessage(`✅ SUCCESS! Order ${order.orderNumber} sent to kitchen!`, 'success');
+
+                    // Clear cart on success
+                    cart = {};
+                    updateCart();
+
+                } else if (commitResponse.status === 401) {
+                    console.error('❌ Authentication failed');
+                    isTokenValid = false;
+                    updateTokenStatus('❌ Token expired or invalid - Orders cannot be sent', 'error');
+                    showMessage('❌ Authentication failed - please refresh page and check token', 'error');
+                } else {
+                    const errorData = await commitResponse.json();
+                    console.error('❌ Commit failed:', errorData);
+                    showMessage(`❌ Failed to send order: ${errorData.message || 'Unknown error'}`, 'error');
+                }
+
+            } catch (error) {
+                console.error('❌ Send order error:', error);
+
+                if (error.message.includes('Authentication failed') || error.message.includes('token')) {
+                    isTokenValid = false;
+                    updateTokenStatus('❌ Authentication error - Token may be expired', 'error');
+                    showMessage('❌ Authentication error - please check token configuration', 'error');
+                } else if (error.message.includes('Timeout')) {
+                    showMessage('❌ Request timeout - please try again', 'error');
+                } else {
+                    showMessage('❌ Network error - please check connection and try again', 'error');
+                }
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = '🚀 SEND ORDER TO KITCHEN';
+            }
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.style.display = 'block';
+            setTimeout(() => { msg.style.display = 'none'; }, 5000);
+        }
+
+        console.log('✅ Fixed restaurant system loaded');
+    </script>
+</body>
+</html>
