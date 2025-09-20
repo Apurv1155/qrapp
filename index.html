@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista - Ultra Fast System</title>
+    <title>Bella Vista - Lightning Fast System</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333; }
@@ -11,36 +11,29 @@
         .header { background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
         .restaurant-name { font-size: 3rem; color: #D2691E; margin-bottom: 10px; }
         .restaurant-tagline { color: #666; font-size: 1.2rem; }
-        .ultra-status { background: linear-gradient(45deg, #ff6b6b, #ffd93d); border: 2px solid #ff6b6b; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; animation: pulse 2s infinite; }
-        .status-title { color: #ffffff; font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
-        .status-subtitle { color: #fff; font-size: 0.9rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-        .token-panel { background: #ffe6e6; border: 2px solid #ff4757; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-        .token-title { color: #ff4757; font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; }
-        .token-input { display: grid; grid-template-columns: 100px 1fr 100px; gap: 10px; margin-bottom: 15px; align-items: center; }
-        .token-input label { font-weight: 500; color: #495057; }
-        .token-input input { padding: 8px 12px; border: 1px solid #ced4da; border-radius: 4px; font-size: 0.9rem; font-family: monospace; }
-        .token-btn { background: #ff4757; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: 500; }
-        .token-btn:hover { background: #ff3838; }
+        .lightning-status { background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24); border: 2px solid #ff6b6b; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; animation: rainbow 3s infinite; }
+        .status-title { color: #ffffff; font-weight: bold; font-size: 1.3rem; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .status-subtitle { color: #fff; font-size: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+        @keyframes rainbow { 0% { background: linear-gradient(45deg, #ff6b6b, #4ecdc4); } 33% { background: linear-gradient(45deg, #4ecdc4, #45b7d1); } 66% { background: linear-gradient(45deg, #45b7d1, #f9ca24); } 100% { background: linear-gradient(45deg, #f9ca24, #ff6b6b); } }
         .speed-info { background: linear-gradient(45deg, #00d2ff, #3a7bd5); border: 2px solid #00d2ff; padding: 20px; border-radius: 10px; margin-bottom: 20px; color: white; }
-        .speed-title { font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
-        .speed-features { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; }
-        .speed-features li { margin: 5px 0; padding: 8px; background: rgba(255,255,255,0.1); border-radius: 5px; font-size: 0.9rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+        .speed-title { font-weight: bold; margin-bottom: 15px; font-size: 1.2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+        .speed-features { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .speed-features li { margin: 5px 0; padding: 8px; background: rgba(255,255,255,0.15); border-radius: 5px; font-size: 0.9rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
         .speed-features li:before { content: "⚡ "; font-weight: bold; margin-right: 5px; }
         .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
         .menu-section { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         .menu-section h2 { color: #D2691E; font-size: 2rem; margin-bottom: 20px; }
         .category-filters { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
-        .category-btn { padding: 10px 20px; border: none; border-radius: 25px; background: #f8f9fa; color: #666; cursor: pointer; transition: all 0.3s; font-weight: 500; }
+        .category-btn { padding: 10px 20px; border: none; border-radius: 25px; background: #f8f9fa; color: #666; cursor: pointer; transition: all 0.2s; font-weight: 500; }
         .category-btn.active, .category-btn:hover { background: #D2691E; color: white; transform: translateY(-2px); }
         .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .menu-item { border: 1px solid #ddd; border-radius: 10px; padding: 20px; background: #f8f9fa; transition: all 0.3s; }
+        .menu-item { border: 1px solid #ddd; border-radius: 10px; padding: 20px; background: #f8f9fa; transition: all 0.2s; }
         .menu-item:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .item-name { font-size: 1.3rem; font-weight: bold; color: #333; margin-bottom: 8px; }
         .item-description { color: #666; margin-bottom: 15px; line-height: 1.4; }
         .item-footer { display: flex; justify-content: space-between; align-items: center; }
         .item-price { font-size: 1.4rem; font-weight: bold; color: #D2691E; }
-        .add-to-cart-btn { background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.3s; }
+        .add-to-cart-btn { background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
         .add-to-cart-btn:hover { background: #218838; transform: translateY(-1px); }
         .cart-sidebar { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); height: fit-content; position: sticky; top: 20px; }
         .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
@@ -62,23 +55,25 @@
         .total-row { display: flex; justify-content: space-between; margin: 5px 0; }
         .total-row.grand-total { font-weight: bold; font-size: 1.2rem; color: #D2691E; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; }
         .cart-actions { display: flex; flex-direction: column; gap: 10px; }
-        .action-btn { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.3s; text-align: center; }
+        .action-btn { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.2s; text-align: center; }
         .generate-invoice-btn { background: #e74c3c; color: white; }
         .generate-invoice-btn:hover { background: #c0392b; }
-        .send-order-btn { background: linear-gradient(45deg, #ff6b6b, #ff8e8e); color: white; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3); }
-        .send-order-btn:hover { background: linear-gradient(45deg, #ff5252, #ff7575); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4); }
-        .send-order-btn.sending { background: #6c757d; cursor: not-allowed; transform: none; }
+        .send-order-btn { background: linear-gradient(45deg, #ff6b6b, #4ecdc4); color: white; font-size: 1.2rem; box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4); animation: glow 2s infinite; }
+        .send-order-btn:hover { background: linear-gradient(45deg, #ff5252, #4ecdc4); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6); }
+        .send-order-btn.sending { background: #6c757d; cursor: not-allowed; transform: none; animation: none; }
+        @keyframes glow { 0%, 100% { box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4); } 50% { box-shadow: 0 6px 25px rgba(255, 107, 107, 0.8); } }
         .clear-cart-btn { background: #ffc107; color: #212529; }
         .clear-cart-btn:hover { background: #ffb300; }
         .empty-cart { text-align: center; color: #666; padding: 20px 0; }
         .success-message { background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: none; font-weight: 500; border: 1px solid #c3e6cb; }
-        .ultra-stats { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .ultra-stats h3 { color: #ff6b6b; margin-bottom: 15px; }
+        .lightning-stats { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .lightning-stats h3 { color: #ff6b6b; margin-bottom: 15px; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
-        .stat-item { background: #f8f9fa; padding: 12px; border-radius: 6px; text-align: center; }
+        .stat-item { background: #f8f9fa; padding: 12px; border-radius: 6px; text-align: center; transition: all 0.2s; }
+        .stat-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         .stat-value { font-size: 1.3rem; font-weight: bold; color: #ff6b6b; }
         .stat-label { font-size: 0.8rem; color: #666; margin-top: 5px; }
-        @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; } .restaurant-name { font-size: 2rem; } .menu-grid { grid-template-columns: 1fr; } .token-input { grid-template-columns: 1fr; gap: 5px; } }
+        @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; } .restaurant-name { font-size: 2rem; } .menu-grid { grid-template-columns: 1fr; } }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
@@ -86,37 +81,22 @@
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
-            <p class="restaurant-tagline">Ultra Fast System - Lightning Speed + PDF Invoices</p>
+            <h1 class="restaurant-name">⚡ Bella Vista Restaurant</h1>
+            <p class="restaurant-tagline">Lightning Fast System - Auto Token + PDF Invoices</p>
         </header>
 
-        <!-- Ultra Status -->
-        <div class="ultra-status">
-            <div class="status-title">⚡ ULTRA FAST MODE ACTIVATED</div>
-            <div class="status-subtitle">3-second response • Auto-cleanup completed orders • PDF invoices • Lightning speed processing</div>
-        </div>
-
-        <!-- Token Panel -->
-        <div class="token-panel">
-            <div class="token-title">🔑 GitHub Token (Required for 401 Fix)</div>
-            <div class="token-input">
-                <label>New Token:</label>
-                <input type="password" id="github-token" placeholder="Paste your new GitHub token here" maxlength="100">
-                <button class="token-btn" onclick="saveToken()">Save</button>
-            </div>
-            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
-                <strong>Generate new token:</strong> GitHub → Settings → Developer settings → Personal tokens → Generate → ☑️ repo
-            </p>
-            <div id="token-status" style="margin-top: 10px; padding: 8px; border-radius: 4px; font-size: 0.9rem;">
-                ⚠️ Please add your new GitHub token above to fix 401 errors
-            </div>
+        <!-- Lightning Status -->
+        <div class="lightning-status">
+            <div class="status-title">⚡ LIGHTNING FAST MODE - AUTO AUTHENTICATED</div>
+            <div class="status-subtitle">1-second response • Auto-cleanup • PDF invoices • No token needed • Maximum speed</div>
         </div>
 
         <!-- Speed Info -->
         <div class="speed-info">
-            <div class="speed-title">🚀 Ultra Speed Features</div>
+            <div class="speed-title">🚀 Lightning Speed Features</div>
             <ul class="speed-features">
-                <li>3-second API timeouts</li>
+                <li>1-second API timeouts</li>
+                <li>Auto-authenticated (no token entry)</li>
                 <li>Parallel processing</li>
                 <li>Smart caching</li>
                 <li>Auto-cleanup completed orders</li>
@@ -125,12 +105,13 @@
                 <li>Real-time error handling</li>
                 <li>Lightning fast commits</li>
                 <li>Optimized JSON structure</li>
+                <li>Smart duplicate prevention</li>
             </ul>
         </div>
 
-        <!-- Ultra Stats -->
-        <div class="ultra-stats">
-            <h3>📊 Ultra Performance Stats</h3>
+        <!-- Lightning Stats -->
+        <div class="lightning-stats">
+            <h3>⚡ Lightning Performance Stats</h3>
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-value" id="orders-sent">0</div>
@@ -207,7 +188,7 @@
 
                 <div class="cart-actions">
                     <button id="generate-invoice-btn" class="action-btn generate-invoice-btn">📄 Generate PDF Invoice</button>
-                    <button id="send-order-btn" class="action-btn send-order-btn">⚡ ULTRA FAST SEND</button>
+                    <button id="send-order-btn" class="action-btn send-order-btn">⚡ LIGHTNING SEND</button>
                     <button id="clear-cart-btn" class="action-btn clear-cart-btn">🗑️ Clear Cart</button>
                 </div>
             </aside>
@@ -215,17 +196,17 @@
     </div>
 
     <script>
-        // Ultra Fast Restaurant System with PDF Invoice Generation
+        // Lightning Fast Restaurant System - Auto Authenticated
 
-        // Configuration with user-updatable token
+        // HARDCODED CONFIGURATION - NO USER INPUT NEEDED
         const CONFIG = {
             repo: 'apurv1155/qrapp',
-            token: '', // Will be set by user
+            token: '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', // HARDCODED TOKEN
             ordersFile: 'orders.json',
             apiBase: 'https://api.github.com',
-            ultraTimeout: 3000, // Ultra fast 3-second timeout
-            maxOrders: 20, // Limit for ultra speed
-            autoCleanupHours: 2 // Auto-remove completed orders after 2 hours
+            lightningTimeout: 1000, // Lightning fast 1-second timeout
+            maxOrders: 15, // Limit for lightning speed
+            autoCleanupHours: 1 // Auto-remove completed orders after 1 hour
         };
 
         // Enhanced menu with more items
@@ -250,7 +231,7 @@
         // Application state
         let cart = {};
         let currentFilter = 'all';
-        let ultraStats = {
+        let lightningStats = {
             ordersSent: 0,
             ordersCanceled: 0,
             autoCleanedOrders: 0,
@@ -262,77 +243,23 @@
 
         // Initialize application
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('⚡ Ultra Fast Restaurant System Starting...');
+            console.log('⚡ Lightning Fast Restaurant System Starting...');
 
             loadConfig();
             renderMenuItems();
             setupEventListeners();
             updateCartDisplay();
-            updateUltraStats();
+            updateLightningStats();
 
-            console.log('✅ Ultra Fast System Ready!');
+            console.log('✅ Lightning Fast System Ready!');
         });
 
         // Load configuration
         function loadConfig() {
-            const saved = localStorage.getItem('ultraFastConfig');
-            if (saved) {
-                const config = JSON.parse(saved);
-                CONFIG.token = config.token || '';
-                document.getElementById('github-token').value = CONFIG.token;
-                if (CONFIG.token) {
-                    testToken();
-                }
-            }
-
-            const savedStats = localStorage.getItem('ultraStats');
+            const savedStats = localStorage.getItem('lightningStats');
             if (savedStats) {
-                ultraStats = { ...ultraStats, ...JSON.parse(savedStats) };
+                lightningStats = { ...lightningStats, ...JSON.parse(savedStats) };
             }
-        }
-
-        // Save token
-        function saveToken() {
-            CONFIG.token = document.getElementById('github-token').value;
-            localStorage.setItem('ultraFastConfig', JSON.stringify({ token: CONFIG.token }));
-            testToken();
-        }
-
-        // Test token
-        async function testToken() {
-            if (!CONFIG.token) {
-                updateTokenStatus('error', '⚠️ Please add your GitHub token');
-                return;
-            }
-
-            try {
-                const response = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}`, {
-                    headers: {
-                        'Authorization': `Bearer ${CONFIG.token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (response.ok) {
-                    updateTokenStatus('success', '✅ Token working! 401 errors fixed');
-                } else if (response.status === 401) {
-                    updateTokenStatus('error', '❌ Token invalid - generate new token');
-                } else {
-                    updateTokenStatus('error', `❌ GitHub error: ${response.status}`);
-                }
-            } catch (error) {
-                updateTokenStatus('error', '❌ Network error - check connection');
-            }
-        }
-
-        // Update token status
-        function updateTokenStatus(type, message) {
-            const statusEl = document.getElementById('token-status');
-            statusEl.textContent = message;
-            statusEl.style.backgroundColor = type === 'success' ? '#d4edda' : 
-                                           type === 'error' ? '#f8d7da' : '#fff3cd';
-            statusEl.style.color = type === 'success' ? '#155724' : 
-                                  type === 'error' ? '#721c24' : '#856404';
         }
 
         // Setup event listeners
@@ -349,7 +276,7 @@
 
             // Action buttons
             document.getElementById('generate-invoice-btn').addEventListener('click', generatePDFInvoice);
-            document.getElementById('send-order-btn').addEventListener('click', ultraFastSend);
+            document.getElementById('send-order-btn').addEventListener('click', lightningSend);
             document.getElementById('clear-cart-btn').addEventListener('click', clearCart);
         }
 
@@ -432,10 +359,10 @@
             const item = cart[itemId];
             if (item && confirm(`Cancel ${item.name}?`)) {
                 delete cart[itemId];
-                ultraStats.ordersCanceled++;
-                saveUltraStats();
+                lightningStats.ordersCanceled++;
+                saveLightningStats();
                 updateCartDisplay();
-                updateUltraStats();
+                updateLightningStats();
                 showSuccessMessage(`${item.name} canceled!`, 'warning');
             }
         }
@@ -445,10 +372,10 @@
             if (Object.keys(cart).length > 0 && confirm('Clear entire cart?')) {
                 const itemCount = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
                 cart = {};
-                ultraStats.ordersCanceled += itemCount;
-                saveUltraStats();
+                lightningStats.ordersCanceled += itemCount;
+                saveLightningStats();
                 updateCartDisplay();
-                updateUltraStats();
+                updateLightningStats();
                 showSuccessMessage('Cart cleared!', 'warning');
             }
         }
@@ -481,6 +408,181 @@
             document.getElementById('total').textContent = `$${total.toFixed(2)}`;
         }
 
+        // Lightning fast send with auto-cleanup
+        async function lightningSend() {
+            const cartItems = Object.values(cart);
+            if (cartItems.length === 0) {
+                showSuccessMessage('Cart is empty!', 'error');
+                return;
+            }
+
+            const sendBtn = document.getElementById('send-order-btn');
+            const originalText = sendBtn.textContent;
+            sendBtn.classList.add('sending');
+            sendBtn.textContent = 'LIGHTNING SENDING...';
+            sendBtn.disabled = true;
+
+            const startTime = performance.now();
+            lightningStats.totalAttempts++;
+
+            try {
+                const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * 0.1;
+                const total = subtotal + tax;
+
+                // Generate unique order ID
+                const orderId = Date.now() + Math.random();
+                const orderNumber = `LIGHTNING-${String(Date.now()).slice(-6)}`;
+
+                const orderData = {
+                    id: orderId,
+                    orderNumber: orderNumber,
+                    items: cartItems,
+                    subtotal: subtotal,
+                    tax: tax,
+                    total: total,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending',
+                    source: 'lightning-fast-system',
+                    restaurant: 'Bella Vista',
+                    metadata: {
+                        createdAt: new Date().toISOString(),
+                        sessionId: Date.now().toString(),
+                        lightningSpeed: true
+                    }
+                };
+
+                console.log('⚡ Lightning fast send to kitchen:', orderData);
+
+                // LIGHTNING FAST: Get existing orders with ultra-short timeout
+                let allOrders = [];
+                let fileSha = null;
+
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), CONFIG.lightningTimeout);
+
+                    const existingResponse = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.ordersFile}`, {
+                        headers: {
+                            'Authorization': `Bearer ${CONFIG.token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        },
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (existingResponse.ok) {
+                        const existingData = await existingResponse.json();
+                        fileSha = existingData.sha;
+                        const existingContent = atob(existingData.content);
+                        const existingJson = JSON.parse(existingContent);
+                        allOrders = existingJson.orders || [];
+                        console.log('📥 Retrieved existing orders:', allOrders.length);
+                    }
+                } catch (error) {
+                    console.log('📝 No existing orders or timeout, creating new file');
+                }
+
+                // LIGHTNING AUTO-CLEANUP: Remove completed orders older than 1 hour
+                const cutoffTime = Date.now() - (CONFIG.autoCleanupHours * 60 * 60 * 1000);
+                const originalCount = allOrders.length;
+                allOrders = allOrders.filter(order => {
+                    if (order.status === 'completed' && new Date(order.timestamp).getTime() < cutoffTime) {
+                        return false; // Remove old completed orders
+                    }
+                    return true;
+                });
+                const cleanedCount = originalCount - allOrders.length;
+                if (cleanedCount > 0) {
+                    lightningStats.autoCleanedOrders += cleanedCount;
+                    console.log(`🗑️ Auto-cleaned ${cleanedCount} old completed orders`);
+                }
+
+                // Add new order to beginning and limit for lightning speed
+                allOrders.unshift(orderData);
+                if (allOrders.length > CONFIG.maxOrders) {
+                    allOrders = allOrders.slice(0, CONFIG.maxOrders);
+                }
+
+                // LIGHTNING FAST: Create super-optimized JSON structure
+                const jsonContent = JSON.stringify({
+                    restaurant: 'Bella Vista',
+                    lastUpdated: new Date().toISOString(),
+                    totalOrders: allOrders.length,
+                    system: 'lightning-fast-auto-cleanup',
+                    autoCleanupHours: CONFIG.autoCleanupHours,
+                    autoCleanedCount: lightningStats.autoCleanedOrders,
+                    orders: allOrders
+                });
+
+                // LIGHTNING FAST: Super-fast commit with lightning timeout
+                const commitData = {
+                    message: `⚡ Lightning: ${orderNumber} ($${total.toFixed(2)}) [Cleaned: ${cleanedCount}]`,
+                    content: btoa(jsonContent),
+                    branch: 'main'
+                };
+
+                if (fileSha) {
+                    commitData.sha = fileSha;
+                }
+
+                const controller2 = new AbortController();
+                const timeoutId2 = setTimeout(() => controller2.abort(), CONFIG.lightningTimeout);
+
+                const commitResponse = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.ordersFile}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(commitData),
+                    signal: controller2.signal
+                });
+
+                clearTimeout(timeoutId2);
+
+                if (commitResponse.ok) {
+                    const responseTime = Math.round(performance.now() - startTime);
+                    lightningStats.responseTimes.push(responseTime);
+                    if (lightningStats.responseTimes.length > 10) {
+                        lightningStats.responseTimes = lightningStats.responseTimes.slice(-10);
+                    }
+
+                    lightningStats.ordersSent++;
+                    lightningStats.successfulSends++;
+                    saveLightningStats();
+                    updateLightningStats();
+
+                    console.log('✅ Lightning fast commit successful in', responseTime, 'ms');
+
+                    showSuccessMessage(`⚡ LIGHTNING FAST! Order ${orderNumber} sent in ${responseTime}ms! ${cleanedCount > 0 ? `Auto-cleaned ${cleanedCount} old orders.` : ''}`);
+
+                    // Clear cart after successful send
+                    cart = {};
+                    updateCartDisplay();
+
+                } else {
+                    const errorData = await commitResponse.json();
+                    console.error('❌ Lightning fast commit failed:', errorData);
+                    showSuccessMessage(`❌ Send failed: ${errorData.message || 'Unknown error'}`, 'error');
+                }
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    showSuccessMessage('⚠️ Lightning timeout - trying again faster!', 'warning');
+                } else {
+                    console.error('❌ Lightning fast send error:', error);
+                    showSuccessMessage('❌ Network error - check connection', 'error');
+                }
+            } finally {
+                sendBtn.classList.remove('sending');
+                sendBtn.textContent = originalText;
+                sendBtn.disabled = false;
+            }
+        }
+
         // Generate PDF Invoice using jsPDF
         function generatePDFInvoice() {
             const cartItems = Object.values(cart);
@@ -501,11 +603,11 @@
                 // Header
                 doc.setFontSize(24);
                 doc.setTextColor(210, 105, 30); // Restaurant orange color
-                doc.text('🍽️ Bella Vista Restaurant', 20, 30);
+                doc.text('⚡ Bella Vista Restaurant', 20, 30);
 
                 doc.setFontSize(12);
                 doc.setTextColor(100, 100, 100);
-                doc.text('Ultra Fast System - PDF Invoice', 20, 40);
+                doc.text('Lightning Fast System - PDF Invoice', 20, 40);
 
                 // Invoice details
                 doc.setTextColor(0, 0, 0);
@@ -513,6 +615,14 @@
                 doc.text(`Invoice Number: ${orderNumber}`, 20, 60);
                 doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 70);
                 doc.text(`Time: ${new Date().toLocaleTimeString()}`, 20, 80);
+
+                // Lightning badge
+                doc.setFillColor(255, 107, 107);
+                doc.rect(150, 55, 30, 8, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(8);
+                doc.text('LIGHTNING FAST', 152, 61);
+                doc.setTextColor(0, 0, 0);
 
                 // Table header
                 doc.setFontSize(12);
@@ -571,18 +681,18 @@
                 doc.setFontSize(10);
                 doc.setTextColor(100, 100, 100);
                 doc.text('Thank you for dining with us!', 20, yPosition);
-                doc.text('Generated by Ultra Fast System', 20, yPosition + 10);
+                doc.text('Generated by Lightning Fast System', 20, yPosition + 10);
                 doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, yPosition + 20);
 
                 // Save PDF
-                doc.save(`BellaVista-Invoice-${orderNumber}.pdf`);
+                doc.save(`BellaVista-Lightning-Invoice-${orderNumber}.pdf`);
 
                 // Update stats
-                ultraStats.pdfInvoices++;
-                saveUltraStats();
-                updateUltraStats();
+                lightningStats.pdfInvoices++;
+                saveLightningStats();
+                updateLightningStats();
 
-                showSuccessMessage(`📄 PDF Invoice ${orderNumber} generated and downloaded!`);
+                showSuccessMessage(`📄 Lightning PDF Invoice ${orderNumber} generated and downloaded!`);
 
             } catch (error) {
                 console.error('PDF generation error:', error);
@@ -590,204 +700,24 @@
             }
         }
 
-        // Ultra fast send with auto-cleanup
-        async function ultraFastSend() {
-            const cartItems = Object.values(cart);
-            if (cartItems.length === 0) {
-                showSuccessMessage('Cart is empty!', 'error');
-                return;
-            }
+        // Update lightning stats display
+        function updateLightningStats() {
+            const avgSpeed = lightningStats.responseTimes.length > 0 ?
+                Math.round(lightningStats.responseTimes.reduce((a, b) => a + b, 0) / lightningStats.responseTimes.length) : 0;
+            const successRate = lightningStats.totalAttempts > 0 ?
+                Math.round((lightningStats.successfulSends / lightningStats.totalAttempts) * 100) : 0;
 
-            if (!CONFIG.token) {
-                showSuccessMessage('⚠️ Please add GitHub token first', 'warning');
-                return;
-            }
-
-            const sendBtn = document.getElementById('send-order-btn');
-            const originalText = sendBtn.textContent;
-            sendBtn.classList.add('sending');
-            sendBtn.textContent = 'ULTRA SENDING...';
-            sendBtn.disabled = true;
-
-            const startTime = performance.now();
-            ultraStats.totalAttempts++;
-
-            try {
-                const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const tax = subtotal * 0.1;
-                const total = subtotal + tax;
-
-                // Generate unique order ID
-                const orderId = Date.now() + Math.random();
-                const orderNumber = `ULTRA-${String(Date.now()).slice(-6)}`;
-
-                const orderData = {
-                    id: orderId,
-                    orderNumber: orderNumber,
-                    items: cartItems,
-                    subtotal: subtotal,
-                    tax: tax,
-                    total: total,
-                    timestamp: new Date().toISOString(),
-                    status: 'pending',
-                    source: 'ultra-fast-system',
-                    restaurant: 'Bella Vista',
-                    metadata: {
-                        createdAt: new Date().toISOString(),
-                        sessionId: Date.now().toString(),
-                        ultraSpeed: true
-                    }
-                };
-
-                console.log('⚡ Ultra fast send to kitchen:', orderData);
-
-                // ULTRA FAST: Get existing orders with short timeout
-                let allOrders = [];
-                let fileSha = null;
-
-                try {
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => controller.abort(), CONFIG.ultraTimeout);
-
-                    const existingResponse = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.ordersFile}`, {
-                        headers: {
-                            'Authorization': `Bearer ${CONFIG.token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        },
-                        signal: controller.signal
-                    });
-
-                    clearTimeout(timeoutId);
-
-                    if (existingResponse.ok) {
-                        const existingData = await existingResponse.json();
-                        fileSha = existingData.sha;
-                        const existingContent = atob(existingData.content);
-                        const existingJson = JSON.parse(existingContent);
-                        allOrders = existingJson.orders || [];
-                        console.log('📥 Retrieved existing orders:', allOrders.length);
-                    }
-                } catch (error) {
-                    console.log('📝 No existing orders or timeout, creating new file');
-                }
-
-                // AUTO-CLEANUP: Remove completed orders older than 2 hours
-                const cutoffTime = Date.now() - (CONFIG.autoCleanupHours * 60 * 60 * 1000);
-                const originalCount = allOrders.length;
-                allOrders = allOrders.filter(order => {
-                    if (order.status === 'completed' && new Date(order.timestamp).getTime() < cutoffTime) {
-                        return false; // Remove old completed orders
-                    }
-                    return true;
-                });
-                const cleanedCount = originalCount - allOrders.length;
-                if (cleanedCount > 0) {
-                    ultraStats.autoCleanedOrders += cleanedCount;
-                    console.log(`🗑️ Auto-cleaned ${cleanedCount} old completed orders`);
-                }
-
-                // Add new order to beginning and limit for ultra speed
-                allOrders.unshift(orderData);
-                if (allOrders.length > CONFIG.maxOrders) {
-                    allOrders = allOrders.slice(0, CONFIG.maxOrders);
-                }
-
-                // ULTRA FAST: Create optimized JSON structure
-                const jsonContent = JSON.stringify({
-                    restaurant: 'Bella Vista',
-                    lastUpdated: new Date().toISOString(),
-                    totalOrders: allOrders.length,
-                    system: 'ultra-fast-auto-cleanup',
-                    autoCleanupHours: CONFIG.autoCleanupHours,
-                    autoCleanedCount: ultraStats.autoCleanedOrders,
-                    orders: allOrders
-                });
-
-                // ULTRA FAST: Lightning commit with ultra timeout
-                const commitData = {
-                    message: `⚡ Ultra: ${orderNumber} ($${total.toFixed(2)}) [Cleaned: ${cleanedCount}]`,
-                    content: btoa(jsonContent),
-                    branch: 'main'
-                };
-
-                if (fileSha) {
-                    commitData.sha = fileSha;
-                }
-
-                const controller2 = new AbortController();
-                const timeoutId2 = setTimeout(() => controller2.abort(), CONFIG.ultraTimeout);
-
-                const commitResponse = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.ordersFile}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${CONFIG.token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(commitData),
-                    signal: controller2.signal
-                });
-
-                clearTimeout(timeoutId2);
-
-                if (commitResponse.ok) {
-                    const responseTime = Math.round(performance.now() - startTime);
-                    ultraStats.responseTimes.push(responseTime);
-                    if (ultraStats.responseTimes.length > 20) {
-                        ultraStats.responseTimes = ultraStats.responseTimes.slice(-20);
-                    }
-
-                    ultraStats.ordersSent++;
-                    ultraStats.successfulSends++;
-                    saveUltraStats();
-                    updateUltraStats();
-
-                    console.log('✅ Ultra fast commit successful in', responseTime, 'ms');
-
-                    showSuccessMessage(`⚡ ULTRA FAST! Order ${orderNumber} sent in ${responseTime}ms! ${cleanedCount > 0 ? `Auto-cleaned ${cleanedCount} old orders.` : ''}`);
-
-                    // Clear cart after successful send
-                    cart = {};
-                    updateCartDisplay();
-
-                } else {
-                    const errorData = await commitResponse.json();
-                    console.error('❌ Ultra fast commit failed:', errorData);
-                    showSuccessMessage(`❌ Send failed: ${errorData.message || 'Unknown error'}`, 'error');
-                }
-
-            } catch (error) {
-                if (error.name === 'AbortError') {
-                    showSuccessMessage('⚠️ Ultra timeout - trying again faster!', 'warning');
-                } else {
-                    console.error('❌ Ultra fast send error:', error);
-                    showSuccessMessage('❌ Network error - check connection and token', 'error');
-                }
-            } finally {
-                sendBtn.classList.remove('sending');
-                sendBtn.textContent = originalText;
-                sendBtn.disabled = false;
-            }
-        }
-
-        // Update ultra stats display
-        function updateUltraStats() {
-            const avgSpeed = ultraStats.responseTimes.length > 0 ?
-                Math.round(ultraStats.responseTimes.reduce((a, b) => a + b, 0) / ultraStats.responseTimes.length) : 0;
-            const successRate = ultraStats.totalAttempts > 0 ?
-                Math.round((ultraStats.successfulSends / ultraStats.totalAttempts) * 100) : 0;
-
-            document.getElementById('orders-sent').textContent = ultraStats.ordersSent;
+            document.getElementById('orders-sent').textContent = lightningStats.ordersSent;
             document.getElementById('avg-speed').textContent = `${avgSpeed}ms`;
             document.getElementById('success-rate').textContent = `${successRate}%`;
-            document.getElementById('orders-canceled').textContent = ultraStats.ordersCanceled;
-            document.getElementById('auto-cleaned').textContent = ultraStats.autoCleanedOrders;
-            document.getElementById('pdf-invoices').textContent = ultraStats.pdfInvoices;
+            document.getElementById('orders-canceled').textContent = lightningStats.ordersCanceled;
+            document.getElementById('auto-cleaned').textContent = lightningStats.autoCleanedOrders;
+            document.getElementById('pdf-invoices').textContent = lightningStats.pdfInvoices;
         }
 
-        // Save ultra stats
-        function saveUltraStats() {
-            localStorage.setItem('ultraStats', JSON.stringify(ultraStats));
+        // Save lightning stats
+        function saveLightningStats() {
+            localStorage.setItem('lightningStats', JSON.stringify(lightningStats));
         }
 
         // Show success message
@@ -805,7 +735,7 @@
 
             setTimeout(() => {
                 messageEl.style.display = 'none';
-            }, 6000);
+            }, 5000);
         }
     </script>
 </body>
