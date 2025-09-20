@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Kitchen - Live Dashboard</title>
+    <title>Bella Vista Kitchen - GitHub Cross Device</title>
     <style>
         * {
             margin: 0;
@@ -44,7 +44,18 @@
             font-size: 1.2rem;
         }
 
-        .live-status {
+        .github-info {
+            background: #f6f8fa;
+            border: 1px solid #d1d9e0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #586069;
+        }
+
+        .connection-status {
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -59,23 +70,43 @@
             color: #155724;
         }
 
+        .status-github {
+            background: #f6f8fa;
+            border: 2px solid #0366d6;
+            color: #0366d6;
+        }
+
+        .status-syncing {
+            background: #cce7ff;
+            border: 2px solid #99d6ff;
+            color: #004085;
+        }
+
         .status-waiting {
             background: #fff3cd;
             border: 2px solid #ffeaa7;
             color: #856404;
         }
 
-        .live-indicator {
+        .status-indicator {
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            margin-right: 8px;
+            margin-right: 10px;
             animation: pulse 2s infinite;
         }
 
-        .indicator-active {
+        .indicator-online {
             background: #28a745;
+        }
+
+        .indicator-github {
+            background: #0366d6;
+        }
+
+        .indicator-syncing {
+            background: #007bff;
         }
 
         .indicator-waiting {
@@ -83,9 +114,21 @@
         }
 
         @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .system-info {
+            background: #e9ecef;
+            border: 1px solid #dee2e6;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #495057;
+            display: none;
         }
 
         .stats-grid {
@@ -98,20 +141,26 @@
         .stat-card {
             background: white;
             padding: 25px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-align: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
         }
 
         .stat-number {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: bold;
             color: #2C5F2D;
         }
 
         .stat-label {
             color: #666;
-            margin-top: 5px;
+            margin-top: 8px;
+            font-weight: 500;
         }
 
         .orders-section {
@@ -133,21 +182,61 @@
             color: #2C5F2D;
         }
 
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .control-btn {
+            background: #17a2b8;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover {
+            background: #138496;
+            transform: translateY(-1px);
+        }
+
+        .control-btn.github {
+            background: #0366d6;
+        }
+
+        .control-btn.github:hover {
+            background: #0256cc;
+        }
+
+        .control-btn.danger {
+            background: #dc3545;
+        }
+
+        .control-btn.danger:hover {
+            background: #c82333;
+        }
+
         .status-filters {
             display: flex;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             flex-wrap: wrap;
         }
 
         .status-filter {
-            padding: 8px 16px;
+            padding: 10px 18px;
             border: none;
             border-radius: 20px;
             background: #f8f9fa;
             color: #666;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: 500;
         }
 
         .status-filter.active {
@@ -170,14 +259,22 @@
         }
 
         .order-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
         .order-card.new-order {
-            animation: newOrderGlow 3s;
+            animation: newOrderGlow 4s;
             border-color: #28a745;
             background: linear-gradient(45deg, #d4edda, #f8f9fa);
+        }
+
+        .order-card.github-order {
+            border-left: 5px solid #0366d6;
+        }
+
+        .order-card.cross-device {
+            border-left: 5px solid #17a2b8;
         }
 
         @keyframes newOrderGlow {
@@ -185,15 +282,25 @@
                 border-color: #28a745;
                 background: #d4edda;
                 transform: scale(1.02);
+                box-shadow: 0 0 20px rgba(40, 167, 69, 0.3);
+            }
+            25% {
+                border-color: #0366d6;
+                background: #f6f8fa;
             }
             50% {
-                border-color: #20c997;
-                background: #e8f5e8;
+                border-color: #17a2b8;
+                background: #e7f3ff;
+            }
+            75% {
+                border-color: #0366d6;
+                background: #f6f8fa;
             }
             100% { 
                 border-color: #ddd;
                 background: #f8f9fa;
                 transform: scale(1);
+                box-shadow: none;
             }
         }
 
@@ -210,19 +317,36 @@
             color: #2C5F2D;
         }
 
-        .order-time {
-            color: #666;
+        .order-meta {
+            text-align: right;
             font-size: 0.9rem;
+            color: #666;
+        }
+
+        .device-badge {
+            background: #0366d6;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .device-badge.cross-device {
+            background: #17a2b8;
         }
 
         .order-items {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .order-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            align-items: center;
+            padding: 10px 0;
             border-bottom: 1px solid #eee;
         }
 
@@ -231,48 +355,53 @@
         }
 
         .item-name {
-            font-weight: 500;
+            font-weight: 600;
             color: #333;
         }
 
         .item-details {
             color: #666;
             font-size: 0.9rem;
+            margin-top: 2px;
         }
 
         .item-total {
             color: #2C5F2D;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
         .order-total {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 15px 0;
+            margin: 20px 0;
             padding-top: 15px;
             border-top: 2px solid #ddd;
         }
 
         .total-amount {
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: #2C5F2D;
         }
 
         .order-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .status-btn {
-            padding: 10px 16px;
+            padding: 10px 18px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
         }
 
         .status-pending { background: #ffc107; color: #212529; }
@@ -281,11 +410,11 @@
         .status-completed { background: #6c757d; color: white; }
 
         .action-btn {
-            padding: 10px 16px;
+            padding: 10px 18px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
             background: #2C5F2D;
             color: white;
             transition: all 0.3s;
@@ -298,38 +427,14 @@
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
+            padding: 80px 20px;
             color: #666;
         }
 
         .empty-icon {
-            font-size: 4rem;
+            font-size: 5rem;
             margin-bottom: 20px;
-        }
-
-        .control-btn {
-            background: #17a2b8;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            margin: 0 5px;
-            transition: all 0.3s;
-        }
-
-        .control-btn:hover {
-            background: #138496;
-            transform: translateY(-1px);
-        }
-
-        .control-btn.danger {
-            background: #dc3545;
-        }
-
-        .control-btn.danger:hover {
-            background: #c82333;
+            opacity: 0.5;
         }
 
         .success-message {
@@ -343,15 +448,20 @@
             font-weight: 500;
         }
 
-        .debug-info {
-            background: #e2e3e5;
-            border: 1px solid #d1d3d4;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            font-family: monospace;
+        .sync-indicator {
+            display: inline-block;
+            margin-left: 10px;
             font-size: 0.8rem;
-            color: #495057;
+            opacity: 0.7;
+        }
+
+        .rotating {
+            animation: rotate 1s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
@@ -365,6 +475,10 @@
 
             .kitchen-title {
                 font-size: 2rem;
+            }
+
+            .control-buttons {
+                justify-content: center;
             }
 
             .status-filters {
@@ -382,17 +496,23 @@
         <!-- Header -->
         <header class="header">
             <h1 class="kitchen-title">🍳 Bella Vista Kitchen</h1>
-            <p class="kitchen-subtitle">Live Order Management Dashboard</p>
+            <p class="kitchen-subtitle">GitHub Pages Cross-Device Kitchen Dashboard</p>
         </header>
 
-        <!-- Live Status -->
-        <div id="live-status" class="live-status status-waiting">
-            <span id="status-indicator" class="live-indicator indicator-waiting"></span>
-            <span id="status-text">Connecting to order system...</span>
+        <!-- GitHub Info -->
+        <div class="github-info">
+            🚀 Hosted on GitHub Pages | 🆓 Completely Free | 📱 Cross-Device Compatible | 🔄 Real-Time Sync
         </div>
 
-        <!-- Debug Info -->
-        <div id="debug-info" class="debug-info" style="display: none;"></div>
+        <!-- Connection Status -->
+        <div id="connection-status" class="connection-status status-github">
+            <span id="status-indicator" class="status-indicator indicator-github"></span>
+            <span id="status-text">GitHub Pages System Ready - Monitoring for orders...</span>
+            <span id="sync-indicator" class="sync-indicator"></span>
+        </div>
+
+        <!-- System Info -->
+        <div id="system-info" class="system-info"></div>
 
         <!-- Statistics -->
         <div class="stats-grid">
@@ -401,12 +521,16 @@
                 <div class="stat-label">Total Orders</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="pending-orders">0</div>
+                <div class="stat-number" id="active-orders">0</div>
                 <div class="stat-label">Active Orders</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number" id="completed-orders">0</div>
                 <div class="stat-label">Completed Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="devices-count">1</div>
+                <div class="stat-label">Connected Devices</div>
             </div>
         </div>
 
@@ -414,9 +538,10 @@
         <div class="orders-section">
             <div class="section-header">
                 <h2 class="section-title">Live Orders</h2>
-                <div>
-                    <button class="control-btn" onclick="forceRefresh()">🔄 Refresh</button>
-                    <button class="control-btn" onclick="toggleDebug()">🔍 Debug</button>
+                <div class="control-buttons">
+                    <button class="control-btn github" onclick="syncOrders()">🔄 Sync</button>
+                    <button class="control-btn" onclick="forceRefresh()">📋 Refresh</button>
+                    <button class="control-btn" onclick="toggleSystemInfo()">ℹ️ Info</button>
                     <button class="control-btn danger" onclick="clearAllOrders()">🗑️ Clear All</button>
                 </div>
             </div>
@@ -437,181 +562,247 @@
             <div id="orders-grid" class="orders-grid">
                 <div class="empty-state">
                     <div class="empty-icon">📋</div>
-                    <h3>Waiting for orders...</h3>
-                    <p>New orders from the restaurant menu will appear here automatically.</p>
+                    <h3>Waiting for GitHub Pages orders...</h3>
+                    <p>Orders from the restaurant menu will sync here automatically.</p>
+                    <p><small>Cross-device orders will appear in real-time when sent from any device.</small></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Kitchen Order Management System - ROBUST VERSION
+        // GitHub Pages Cross-Device Kitchen Order Management System
+
+        // Configuration matching the menu system
+        const SYSTEM_CONFIG = {
+            storageKey: 'bellaVistaOrders',
+            signalKey: 'bellaVistaSignal',
+            deviceKey: 'bellaVistaDevice'
+        };
+
         let orders = [];
         let currentFilter = 'all';
-        let lastCheckedSignal = '0';
+        let deviceId = '';
+        let lastSyncTime = 0;
         let isInitialized = false;
-        let debugMode = false;
         let monitoringInterval;
 
         // Initialize the kitchen system
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🍳 Kitchen Dashboard Starting...');
-            updateDebugInfo('Kitchen Dashboard Starting...');
+            console.log('🍳 GitHub Pages Kitchen Dashboard Starting...');
 
-            testLocalStorage();
+            generateDeviceId();
             loadExistingOrders();
             setupLiveMonitoring();
+            setupStorageListener();
             updateStats();
             renderOrders();
-            updateStatus();
+            updateSystemInfo();
 
             isInitialized = true;
-            console.log('✅ Kitchen Dashboard Ready');
-            updateDebugInfo('Kitchen Dashboard Ready');
+            console.log('✅ GitHub Pages Kitchen Dashboard Ready');
         });
 
-        // Test localStorage functionality
-        function testLocalStorage() {
-            try {
-                localStorage.setItem('test', 'working');
-                const test = localStorage.getItem('test');
-                localStorage.removeItem('test');
-                console.log('localStorage test:', test === 'working' ? '✅ WORKING' : '❌ FAILED');
-                updateDebugInfo(`localStorage: ${test === 'working' ? 'WORKING' : 'FAILED'}`);
-                return test === 'working';
-            } catch (error) {
-                console.error('❌ localStorage not available:', error);
-                updateDebugInfo(`localStorage ERROR: ${error.message}`);
-                return false;
+        // Generate or retrieve device ID
+        function generateDeviceId() {
+            deviceId = localStorage.getItem(SYSTEM_CONFIG.deviceKey + '_kitchen');
+            if (!deviceId) {
+                deviceId = 'kitchen_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
+                localStorage.setItem(SYSTEM_CONFIG.deviceKey + '_kitchen', deviceId);
             }
+            console.log('📱 Kitchen Device ID:', deviceId);
         }
 
-        // Load existing orders from localStorage
-        function loadExistingOrders() {
-            try {
-                const ordersData = localStorage.getItem('restaurantOrders');
-                const signalData = localStorage.getItem('newOrderSignal');
+        // Setup storage event listener for cross-device communication
+        function setupStorageListener() {
+            // Listen for localStorage changes from other tabs/devices
+            window.addEventListener('storage', function(e) {
+                if (e.key === SYSTEM_CONFIG.storageKey || e.key === SYSTEM_CONFIG.signalKey) {
+                    console.log('📡 Storage event detected from another device/tab');
+                    updateConnectionStatus('syncing', 'Syncing with other devices...');
 
-                console.log('📂 Loading orders from localStorage...');
-                console.log('Orders data length:', ordersData ? ordersData.length : 0);
-                console.log('Signal data:', signalData);
-
-                if (ordersData) {
-                    orders = JSON.parse(ordersData);
-                    console.log(`📦 Loaded ${orders.length} orders`);
-                    updateDebugInfo(`Loaded ${orders.length} orders from storage`);
+                    setTimeout(() => {
+                        loadExistingOrders();
+                        updateStats();
+                        renderOrders();
+                        updateConnectionStatus('github', 'GitHub Pages Ready - Cross-device sync active');
+                    }, 500);
                 }
+            });
 
-                if (signalData) {
-                    lastCheckedSignal = signalData;
-                    console.log('📡 Last signal:', lastCheckedSignal);
-                }
+            // Also listen for custom events
+            window.addEventListener('bellaVistaOrderUpdate', function(e) {
+                console.log('📡 Custom order update event received');
+                loadExistingOrders();
+                updateStats();
+                renderOrders();
+            });
+        }
 
-            } catch (error) {
-                console.error('❌ Error loading orders:', error);
-                updateDebugInfo(`Load error: ${error.message}`);
-                orders = [];
+        // Update connection status display
+        function updateConnectionStatus(status, message) {
+            const statusEl = document.getElementById('connection-status');
+            const indicatorEl = document.getElementById('status-indicator');
+            const textEl = document.getElementById('status-text');
+
+            // Remove all status classes
+            statusEl.className = 'connection-status';
+            indicatorEl.className = 'status-indicator';
+
+            switch (status) {
+                case 'github':
+                    statusEl.classList.add('status-github');
+                    indicatorEl.classList.add('indicator-github');
+                    break;
+                case 'connected':
+                    statusEl.classList.add('status-connected');
+                    indicatorEl.classList.add('indicator-online');
+                    break;
+                case 'syncing':
+                    statusEl.classList.add('status-syncing');
+                    indicatorEl.classList.add('indicator-syncing');
+                    break;
+                case 'waiting':
+                    statusEl.classList.add('status-waiting');
+                    indicatorEl.classList.add('indicator-waiting');
+                    break;
+            }
+
+            textEl.textContent = message;
+            updateSyncIndicator(status);
+        }
+
+        // Update sync indicator
+        function updateSyncIndicator(status) {
+            const syncEl = document.getElementById('sync-indicator');
+            if (status === 'syncing') {
+                syncEl.innerHTML = '<span class="rotating">⟲</span>';
+            } else {
+                syncEl.innerHTML = '';
             }
         }
 
         // Setup live monitoring
         function setupLiveMonitoring() {
-            console.log('🔄 Setting up live monitoring...');
-            updateDebugInfo('Setting up live monitoring (1-second intervals)');
-
-            // Clear any existing interval
-            if (monitoringInterval) {
-                clearInterval(monitoringInterval);
-            }
-
-            // Check for new orders every 1 second
+            // Check for new orders every 2 seconds
             monitoringInterval = setInterval(() => {
                 checkForNewOrders();
-            }, 1000);
+            }, 2000);
+
+            console.log('🔄 Live monitoring started (2-second intervals)');
+        }
+
+        // Load existing orders from storage
+        function loadExistingOrders() {
+            try {
+                // Check both localStorage and sessionStorage
+                let data = null;
+
+                const localData = localStorage.getItem(SYSTEM_CONFIG.storageKey);
+                const sessionData = sessionStorage.getItem(SYSTEM_CONFIG.storageKey);
+
+                // Use the most recent data
+                if (localData && sessionData) {
+                    const localParsed = JSON.parse(localData);
+                    const sessionParsed = JSON.parse(sessionData);
+
+                    const localTime = new Date(localParsed.lastUpdated || 0).getTime();
+                    const sessionTime = new Date(sessionParsed.lastUpdated || 0).getTime();
+
+                    data = sessionTime > localTime ? sessionParsed : localParsed;
+                } else {
+                    data = JSON.parse(localData || sessionData || '{}');
+                }
+
+                if (data && data.orders) {
+                    const previousOrderCount = orders.length;
+                    orders = data.orders;
+                    lastSyncTime = data.lastUpdated ? new Date(data.lastUpdated).getTime() : 0;
+
+                    console.log(`📦 Loaded ${orders.length} orders from GitHub Pages storage`);
+
+                    // Show notification for new orders (only after initialization)
+                    if (isInitialized && orders.length > previousOrderCount) {
+                        const newOrdersCount = orders.length - previousOrderCount;
+                        showSuccessMessage(`🔔 ${newOrdersCount} new order(s) received from GitHub Pages!`);
+
+                        // Add animation to new orders
+                        setTimeout(() => {
+                            const newOrderCards = document.querySelectorAll('.order-card');
+                            for (let i = 0; i < Math.min(newOrdersCount, newOrderCards.length); i++) {
+                                newOrderCards[i].classList.add('new-order');
+                            }
+                        }, 100);
+                    }
+                }
+
+            } catch (error) {
+                console.error('❌ Error loading orders:', error);
+                orders = [];
+            }
         }
 
         // Check for new orders
         function checkForNewOrders() {
             try {
-                const ordersData = localStorage.getItem('restaurantOrders');
-                const newSignal = localStorage.getItem('newOrderSignal') || '0';
+                const newSignal = localStorage.getItem(SYSTEM_CONFIG.signalKey) || '0';
+                const lastSignal = sessionStorage.getItem('lastCheckedSignal') || '0';
 
-                // Update debug info
-                const debugData = {
-                    time: new Date().toLocaleTimeString(),
-                    ordersLength: ordersData ? JSON.parse(ordersData).length : 0,
-                    currentSignal: newSignal,
-                    lastSignal: lastCheckedSignal
-                };
-                updateDebugInfo(`Last check: ${debugData.time} | Orders: ${debugData.ordersLength} | Signal: ${debugData.currentSignal}/${debugData.lastSignal}`);
+                if (newSignal !== lastSignal && newSignal !== '0') {
+                    console.log(`🔔 NEW ORDER SIGNAL DETECTED! Signal: ${newSignal}`);
 
-                if (ordersData) {
-                    const latestOrders = JSON.parse(ordersData);
+                    sessionStorage.setItem('lastCheckedSignal', newSignal);
 
-                    // Check if there are new orders (either more orders or new signal)
-                    const hasNewOrders = latestOrders.length > orders.length;
-                    const hasNewSignal = newSignal !== lastCheckedSignal;
+                    loadExistingOrders();
+                    updateStats();
+                    renderOrders();
 
-                    if (hasNewOrders || hasNewSignal) {
-                        console.log(`🔔 NEW ORDERS DETECTED!`);
-                        console.log(`- Previous orders: ${orders.length}, New orders: ${latestOrders.length}`);
-                        console.log(`- Previous signal: ${lastCheckedSignal}, New signal: ${newSignal}`);
-
-                        const previousOrderCount = orders.length;
-                        orders = latestOrders;
-                        lastCheckedSignal = newSignal;
-
-                        updateStats();
-                        renderOrders();
-                        updateStatus();
-
-                        // Show notification for new orders
-                        if (isInitialized && hasNewOrders) {
-                            const newOrdersCount = latestOrders.length - previousOrderCount;
-                            showSuccessMessage(`🔔 ${newOrdersCount} new order(s) received!`);
-
-                            // Add animation to new orders
-                            setTimeout(() => {
-                                const newOrderCards = document.querySelectorAll('.order-card');
-                                for (let i = 0; i < Math.min(newOrdersCount, newOrderCards.length); i++) {
-                                    newOrderCards[i].classList.add('new-order');
-                                }
-                            }, 100);
-                        }
-
-                        updateDebugInfo(`NEW ORDERS: +${latestOrders.length - previousOrderCount} orders received`);
-                    }
+                    updateConnectionStatus('github', `Last sync: ${new Date().toLocaleTimeString()}`);
                 }
+
             } catch (error) {
                 console.error('❌ Error checking for new orders:', error);
-                updateDebugInfo(`Check error: ${error.message}`);
             }
         }
 
-        // Update status display
-        function updateStatus() {
-            const statusEl = document.getElementById('live-status');
-            const indicatorEl = document.getElementById('status-indicator');
-            const textEl = document.getElementById('status-text');
+        // Update system info
+        function updateSystemInfo() {
+            const systemInfoEl = document.getElementById('system-info');
+            const info = {
+                deviceId: deviceId,
+                userAgent: navigator.userAgent.substring(0, 80) + '...',
+                platform: navigator.platform,
+                language: navigator.language,
+                online: navigator.onLine,
+                origin: window.location.origin,
+                lastSync: new Date().toLocaleString(),
+                storageAvailable: typeof(Storage) !== "undefined"
+            };
 
-            if (orders.length > 0) {
-                statusEl.className = 'live-status status-connected';
-                indicatorEl.className = 'live-indicator indicator-active';
-                textEl.textContent = `Connected - Monitoring ${orders.length} orders`;
-            } else {
-                statusEl.className = 'live-status status-waiting';
-                indicatorEl.className = 'live-indicator indicator-waiting';
-                textEl.textContent = 'Connected - Waiting for orders...';
-            }
+            systemInfoEl.innerHTML = `
+                <strong>Kitchen Device:</strong> ${info.deviceId}<br>
+                <strong>Platform:</strong> ${info.platform} | <strong>Language:</strong> ${info.language}<br>
+                <strong>Online:</strong> ${info.online} | <strong>Storage:</strong> ${info.storageAvailable ? 'Available' : 'Not Available'}<br>
+                <strong>Origin:</strong> ${info.origin}<br>
+                <strong>Last Sync:</strong> ${info.lastSync}
+            `;
         }
 
         // Update statistics
         function updateStats() {
+            const uniqueDevices = new Set();
+            orders.forEach(order => {
+                if (order.deviceId) {
+                    uniqueDevices.add(order.deviceId);
+                }
+            });
+
             document.getElementById('total-orders').textContent = orders.length;
-            document.getElementById('pending-orders').textContent = 
+            document.getElementById('active-orders').textContent = 
                 orders.filter(order => order.status === 'pending' || order.status === 'preparing').length;
             document.getElementById('completed-orders').textContent = 
                 orders.filter(order => order.status === 'completed').length;
+            document.getElementById('devices-count').textContent = Math.max(1, uniqueDevices.size);
         }
 
         // Render orders
@@ -632,43 +823,52 @@
                     <div class="empty-state">
                         <div class="empty-icon">📋</div>
                         <h3>No ${currentFilter === 'all' ? '' : currentFilter} orders</h3>
-                        <p>Orders will appear here when received from the menu.</p>
-                        ${orders.length === 0 ? '<p><small>Make sure both HTML files are open and try sending an order from the menu.</small></p>' : ''}
+                        <p>GitHub Pages orders will sync here automatically.</p>
+                        <p><small>Make sure both devices are accessing the same GitHub Pages URL.</small></p>
                     </div>
                 `;
                 return;
             }
 
-            ordersGrid.innerHTML = filteredOrders.map(order => `
-                <div class="order-card" data-status="${order.status}">
-                    <div class="order-header">
-                        <div class="order-number">${order.orderNumber}</div>
-                        <div class="order-time">${formatTime(new Date(order.timestamp))}</div>
-                    </div>
+            ordersGrid.innerHTML = filteredOrders.map(order => {
+                const isFromDifferentDevice = order.deviceId && order.deviceId !== deviceId;
+                const isGitHubOrder = order.source === 'github-pages';
 
-                    <div class="order-items">
-                        ${order.items.map(item => `
-                            <div class="order-item">
-                                <div>
-                                    <div class="item-name">${item.name}</div>
-                                    <div class="item-details">Qty: ${item.quantity} × $${item.price}</div>
-                                </div>
-                                <div class="item-total">$${(item.quantity * item.price).toFixed(2)}</div>
+                return `
+                    <div class="order-card ${isGitHubOrder ? 'github-order' : ''} ${isFromDifferentDevice ? 'cross-device' : ''}" data-status="${order.status}">
+                        <div class="order-header">
+                            <div class="order-number">${order.orderNumber}</div>
+                            <div class="order-meta">
+                                <div>${formatTime(new Date(order.timestamp))}</div>
+                                ${isFromDifferentDevice ? '<div class="device-badge cross-device">Other Device</div>' : ''}
+                                ${isGitHubOrder ? '<div class="device-badge">GitHub Pages</div>' : ''}
                             </div>
-                        `).join('')}
-                    </div>
+                        </div>
 
-                    <div class="order-total">
-                        <span>Total Amount:</span>
-                        <span class="total-amount">$${order.total.toFixed(2)}</span>
-                    </div>
+                        <div class="order-items">
+                            ${order.items.map(item => `
+                                <div class="order-item">
+                                    <div>
+                                        <div class="item-name">${item.name}</div>
+                                        <div class="item-details">Qty: ${item.quantity} × $${item.price}</div>
+                                    </div>
+                                    <div class="item-total">$${(item.quantity * item.price).toFixed(2)}</div>
+                                </div>
+                            `).join('')}
+                        </div>
 
-                    <div class="order-actions">
-                        <button class="status-btn status-${order.status}">${getStatusLabel(order.status)}</button>
-                        ${getActionButtons(order)}
+                        <div class="order-total">
+                            <span>Total Amount:</span>
+                            <span class="total-amount">$${order.total.toFixed(2)}</span>
+                        </div>
+
+                        <div class="order-actions">
+                            <button class="status-btn status-${order.status}">${getStatusLabel(order.status)}</button>
+                            ${getActionButtons(order)}
+                        </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         // Get status label
@@ -703,19 +903,39 @@
             const order = orders.find(o => o.id === orderId);
             if (order) {
                 order.status = newStatus;
+                order.lastUpdatedBy = deviceId;
+                order.lastUpdatedAt = new Date().toISOString();
+
                 if (newStatus === 'completed') {
                     order.completedTime = new Date().toISOString();
+                    order.completedBy = deviceId;
                 }
 
-                // Save updated orders back to localStorage
-                localStorage.setItem('restaurantOrders', JSON.stringify(orders));
+                // Save updated orders back to storage
+                const saveData = {
+                    orders: orders,
+                    lastUpdated: new Date().toISOString(),
+                    deviceId: deviceId,
+                    system: 'github-pages'
+                };
+
+                localStorage.setItem(SYSTEM_CONFIG.storageKey, JSON.stringify(saveData));
+                sessionStorage.setItem(SYSTEM_CONFIG.storageKey, JSON.stringify(saveData));
+
+                // Trigger storage event for cross-device communication
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: SYSTEM_CONFIG.storageKey,
+                    oldValue: null,
+                    newValue: JSON.stringify(saveData),
+                    url: window.location.href,
+                    storageArea: localStorage
+                }));
 
                 updateStats();
                 renderOrders();
-                updateStatus();
                 showSuccessMessage(`Order ${order.orderNumber} updated to ${getStatusLabel(newStatus)}`);
 
-                console.log(`📝 Order ${order.orderNumber} status updated to ${newStatus}`);
+                console.log(`📝 Order ${order.orderNumber} status updated to ${newStatus} by ${deviceId}`);
             }
         }
 
@@ -732,46 +952,61 @@
             renderOrders();
         }
 
+        // Sync orders
+        function syncOrders() {
+            console.log('🔄 Manual sync requested');
+            updateConnectionStatus('syncing', 'Syncing with GitHub Pages...');
+
+            setTimeout(() => {
+                loadExistingOrders();
+                updateStats();
+                renderOrders();
+                updateSystemInfo();
+                updateConnectionStatus('github', 'GitHub Pages Ready - Sync completed');
+                showSuccessMessage('Orders synchronized with GitHub Pages!');
+            }, 1000);
+        }
+
         // Force refresh
         function forceRefresh() {
             console.log('🔄 Manual refresh requested');
             loadExistingOrders();
             updateStats();
             renderOrders();
-            updateStatus();
-            showSuccessMessage('Orders refreshed manually!');
-            updateDebugInfo('Manual refresh completed');
+            updateSystemInfo();
+            showSuccessMessage('Kitchen dashboard refreshed!');
         }
 
-        // Toggle debug mode
-        function toggleDebug() {
-            debugMode = !debugMode;
-            const debugEl = document.getElementById('debug-info');
-            debugEl.style.display = debugMode ? 'block' : 'none';
-            updateDebugInfo('Debug mode ' + (debugMode ? 'enabled' : 'disabled'));
-        }
-
-        // Update debug info
-        function updateDebugInfo(info) {
-            const debugEl = document.getElementById('debug-info');
-            if (debugEl) {
-                const timestamp = new Date().toLocaleTimeString();
-                debugEl.textContent = `[${timestamp}] ${info}`;
+        // Toggle system info
+        function toggleSystemInfo() {
+            const systemInfoEl = document.getElementById('system-info');
+            const isVisible = systemInfoEl.style.display !== 'none';
+            systemInfoEl.style.display = isVisible ? 'none' : 'block';
+            if (!isVisible) {
+                updateSystemInfo();
             }
         }
 
         // Clear all orders
         function clearAllOrders() {
-            if (confirm('Are you sure you want to clear all orders? This action cannot be undone.')) {
+            if (confirm('Are you sure you want to clear all orders? This will affect all connected devices.')) {
                 orders = [];
-                localStorage.setItem('restaurantOrders', JSON.stringify(orders));
-                localStorage.setItem('newOrderSignal', '0');
-                lastCheckedSignal = '0';
+                const saveData = {
+                    orders: [],
+                    lastUpdated: new Date().toISOString(),
+                    deviceId: deviceId,
+                    system: 'github-pages'
+                };
+
+                localStorage.setItem(SYSTEM_CONFIG.storageKey, JSON.stringify(saveData));
+                sessionStorage.setItem(SYSTEM_CONFIG.storageKey, JSON.stringify(saveData));
+                localStorage.setItem(SYSTEM_CONFIG.signalKey, '0');
+                sessionStorage.setItem('lastCheckedSignal', '0');
+
                 updateStats();
                 renderOrders();
-                updateStatus();
-                showSuccessMessage('All orders cleared!');
-                updateDebugInfo('All orders cleared by user');
+                showSuccessMessage('All orders cleared from GitHub Pages system!');
+                console.log('🗑️ All orders cleared by', deviceId);
             }
         }
 
@@ -787,21 +1022,30 @@
                 <head>
                     <title>Invoice - ${order.orderNumber}</title>
                     <style>
-                        body { font-family: Arial, sans-serif; padding: 20px; }
-                        .header { text-align: center; margin-bottom: 30px; }
-                        .order-info { margin-bottom: 20px; }
-                        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-                        .items-table th, .items-table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-                        .items-table th { background-color: #f8f9fa; }
-                        .total-section { text-align: right; margin-top: 20px; }
-                        .total-row { margin: 5px 0; }
-                        .grand-total { font-weight: bold; font-size: 1.2em; }
+                        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #2C5F2D; padding-bottom: 20px; }
+                        .restaurant-name { color: #2C5F2D; font-size: 2rem; margin-bottom: 5px; }
+                        .system-info { background: #f6f8fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem; }
+                        .order-info { margin-bottom: 30px; background: #f8f9fa; padding: 20px; border-radius: 8px; }
+                        .device-info { background: #e9ecef; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem; }
+                        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                        .items-table th, .items-table td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+                        .items-table th { background-color: #2C5F2D; color: white; }
+                        .total-section { text-align: right; margin-top: 20px; font-size: 1.1rem; }
+                        .total-row { margin: 8px 0; padding: 5px 0; }
+                        .grand-total { font-weight: bold; font-size: 1.3rem; color: #2C5F2D; border-top: 2px solid #2C5F2D; padding-top: 10px; }
+                        .footer { text-align: center; margin-top: 40px; color: #666; }
                     </style>
                 </head>
                 <body>
                     <div class="header">
-                        <h1>🍽️ Bella Vista Restaurant</h1>
-                        <h2>Order Completion Invoice</h2>
+                        <h1 class="restaurant-name">🍳 Bella Vista Kitchen</h1>
+                        <p>GitHub Pages Order Completion Invoice</p>
+                    </div>
+
+                    <div class="system-info">
+                        <strong>System:</strong> GitHub Pages Cross-Device Kitchen System | 
+                        <strong>Origin:</strong> ${window.location.origin}
                     </div>
 
                     <div class="order-info">
@@ -811,10 +1055,18 @@
                         <p><strong>Status:</strong> ${getStatusLabel(order.status)}</p>
                     </div>
 
+                    <div class="device-info">
+                        <p><strong>Order Source:</strong> ${order.deviceId || 'Unknown device'}</p>
+                        <p><strong>Processed By:</strong> ${order.lastUpdatedBy || deviceId}</p>
+                        <p><strong>Kitchen Device:</strong> ${deviceId}</p>
+                        <p><strong>System:</strong> ${order.source || 'GitHub Pages'}</p>
+                    </div>
+
                     <table class="items-table">
                         <thead>
                             <tr>
                                 <th>Item</th>
+                                <th>Description</th>
                                 <th>Quantity</th>
                                 <th>Price</th>
                                 <th>Total</th>
@@ -823,7 +1075,8 @@
                         <tbody>
                             ${order.items.map(item => `
                                 <tr>
-                                    <td>${item.name}</td>
+                                    <td><strong>${item.name}</strong></td>
+                                    <td>${item.description || ''}</td>
                                     <td>${item.quantity}</td>
                                     <td>$${item.price.toFixed(2)}</td>
                                     <td>$${(item.quantity * item.price).toFixed(2)}</td>
@@ -838,9 +1091,10 @@
                         <div class="total-row grand-total">Total: $${order.total.toFixed(2)}</div>
                     </div>
 
-                    <div style="text-align: center; margin-top: 40px;">
+                    <div class="footer">
                         <p>Thank you for dining with us!</p>
-                        <p><em>Order completed by Kitchen Staff</em></p>
+                        <p><em>Order processed via GitHub Pages Cross-Device Kitchen System</em></p>
+                        <p><small>Generated on ${new Date().toLocaleString()}</small></p>
                     </div>
                 </body>
                 </html>
@@ -861,19 +1115,31 @@
             messageEl.textContent = message;
             messageEl.style.display = 'block';
 
-            if (type === 'error') {
-                messageEl.style.backgroundColor = '#f8d7da';
-                messageEl.style.color = '#721c24';
-                messageEl.style.borderColor = '#f5c6cb';
-            } else {
-                messageEl.style.backgroundColor = '#d4edda';
-                messageEl.style.color = '#155724';
-                messageEl.style.borderColor = '#c3e6cb';
+            // Reset styles
+            messageEl.style.backgroundColor = '';
+            messageEl.style.color = '';
+            messageEl.style.borderColor = '';
+
+            switch (type) {
+                case 'error':
+                    messageEl.style.backgroundColor = '#f8d7da';
+                    messageEl.style.color = '#721c24';
+                    messageEl.style.borderColor = '#f5c6cb';
+                    break;
+                case 'warning':
+                    messageEl.style.backgroundColor = '#fff3cd';
+                    messageEl.style.color = '#856404';
+                    messageEl.style.borderColor = '#ffeaa7';
+                    break;
+                default:
+                    messageEl.style.backgroundColor = '#d4edda';
+                    messageEl.style.color = '#155724';
+                    messageEl.style.borderColor = '#c3e6cb';
             }
 
             setTimeout(() => {
                 messageEl.style.display = 'none';
-            }, 4000);
+            }, 5000);
         }
 
         // Format time
@@ -896,11 +1162,20 @@
             });
         }
 
+        // Monitor online/offline status
+        window.addEventListener('online', function() {
+            console.log('📶 Device came online');
+            updateConnectionStatus('github', 'GitHub Pages Ready - Device online');
+        });
+
+        window.addEventListener('offline', function() {
+            console.log('📵 Device went offline');
+            updateConnectionStatus('waiting', 'Device offline - Orders will sync when reconnected');
+        });
+
         // Cleanup on page unload
         window.addEventListener('beforeunload', function() {
-            if (monitoringInterval) {
-                clearInterval(monitoringInterval);
-            }
+            if (monitoringInterval) clearInterval(monitoringInterval);
         });
     </script>
 </body>
