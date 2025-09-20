@@ -1,0 +1,33 @@
+{
+  "restaurant": "Bella Vista",
+  "lastUpdated": "2025-09-20T11:13:52.718Z",
+  "totalOrders": 1,
+  "method": "direct-send-to-receiver",
+  "orders": [
+    {
+      "id": 1758366832317,
+      "orderNumber": "DIRECT-832317",
+      "items": [
+        {
+          "id": 4,
+          "name": "Chicken Alfredo",
+          "category": "Main Course",
+          "price": 22,
+          "description": "Creamy pasta with grilled chicken",
+          "quantity": 1
+        }
+      ],
+      "subtotal": 22,
+      "tax": 2.2,
+      "total": 24.2,
+      "timestamp": "2025-09-20T11:13:52.317Z",
+      "status": "pending",
+      "source": "github-direct",
+      "restaurant": "Bella Vista",
+      "metadata": {
+        "createdAt": "2025-09-20T11:13:52.317Z",
+        "method": "Direct Send to receiver.html"
+      }
+    }
+  ]
+}
