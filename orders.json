@@ -1,9 +1,34 @@
 {
   "restaurant": "Bella Vista",
-  "lastUpdated": "2025-09-20T11:13:52.718Z",
-  "totalOrders": 1,
+  "lastUpdated": "2025-09-20T11:14:17.701Z",
+  "totalOrders": 2,
   "method": "direct-send-to-receiver",
   "orders": [
+    {
+      "id": 1758366857194,
+      "orderNumber": "DIRECT-857194",
+      "items": [
+        {
+          "id": 3,
+          "name": "Margherita Pizza",
+          "category": "Main Course",
+          "price": 18,
+          "description": "Classic pizza with tomato, mozzarella and basil",
+          "quantity": 1
+        }
+      ],
+      "subtotal": 18,
+      "tax": 1.8,
+      "total": 19.8,
+      "timestamp": "2025-09-20T11:14:17.195Z",
+      "status": "pending",
+      "source": "github-direct",
+      "restaurant": "Bella Vista",
+      "metadata": {
+        "createdAt": "2025-09-20T11:14:17.195Z",
+        "method": "Direct Send to receiver.html"
+      }
+    },
     {
       "id": 1758366832317,
       "orderNumber": "DIRECT-832317",
