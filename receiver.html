@@ -108,7 +108,7 @@
         // SIMPLE WORKING KITCHEN SYSTEM - No complex optimizations
 
         const CONFIG = {
-            token: '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',
+            token: 'YOUR_NEW_GITHUB_TOKEN_HERE', // Replace this with your new token
             repo: 'apurv1155/qrapp',
             file: 'orders.json'
         };
@@ -155,7 +155,6 @@
         async function fetchOrders() {
             try {
                 console.log('📥 Fetching orders...');
-
                 const url = `https://raw.githubusercontent.com/${CONFIG.repo}/main/${CONFIG.file}?t=${Date.now()}`;
                 const response = await fetch(url);
 
@@ -164,10 +163,7 @@
 
                     if (data.orders && Array.isArray(data.orders)) {
                         const newOrders = data.orders.filter(order => !seenIds.has(order.id));
-
                         orders = data.orders;
-
-                        // Mark as seen
                         data.orders.forEach(order => seenIds.add(order.id));
 
                         if (newOrders.length > 0) {
@@ -177,7 +173,6 @@
 
                         renderOrders();
                         updateStats();
-
                         console.log(`✅ Loaded ${orders.length} orders`);
                     } else {
                         orders = [];
@@ -190,10 +185,12 @@
                     renderOrders();
                     updateStats();
                 } else {
-                    console.error('❌ Fetch error:', response.status);
+                    console.error('❌ Fetch error:', response.status, response.statusText);
+                    showMessage('❌ Failed to fetch orders', 'error');
                 }
             } catch (error) {
                 console.error('❌ Network error:', error);
+                showMessage('❌ Network error - cannot connect to GitHub', 'error');
             }
         }
 
@@ -215,7 +212,6 @@
             try {
                 console.log(`🗑️ Removing order ${orderId} from GitHub...`);
 
-                // Get current file
                 const getResponse = await fetch(`https://api.github.com/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
                     headers: {
                         'Authorization': `Bearer ${CONFIG.token}`,
@@ -224,13 +220,11 @@
                 });
 
                 if (!getResponse.ok) {
-                    throw new Error('Failed to get orders file');
+                    throw new Error(`Failed to get orders file: ${getResponse.statusText}`);
                 }
 
                 const fileData = await getResponse.json();
                 const currentData = JSON.parse(atob(fileData.content));
-
-                // Remove the order
                 const filteredOrders = currentData.orders.filter(order => order.id != orderId);
 
                 if (filteredOrders.length === currentData.orders.length) {
@@ -239,7 +233,6 @@
 
                 console.log(`📝 Removing order: ${currentData.orders.length} → ${filteredOrders.length}`);
 
-                // Create updated content
                 const updatedData = {
                     ...currentData,
                     lastUpdated: new Date().toISOString(),
@@ -247,7 +240,6 @@
                     orders: filteredOrders
                 };
 
-                // Commit changes
                 const commitData = {
                     message: `Kitchen: Order removed from system`,
                     content: btoa(JSON.stringify(updatedData, null, 2)),
@@ -271,17 +263,19 @@
                 } else {
                     const error = await commitResponse.json();
                     console.error('❌ Commit failed:', error);
+                    showMessage(`❌ Failed to remove order: ${error.message}`, 'error');
                     return false;
                 }
 
             } catch (error) {
                 console.error('❌ Remove error:', error);
+                showMessage('❌ Failed to remove order due to network or API error', 'error');
                 return false;
             }
         }
 
         // Complete order and remove
-        async function completeOrder(orderId) {
+        async function completeOrder(orderId, event) {
             const order = orders.find(o => o.id == orderId);
             if (!order) return;
 
@@ -298,13 +292,9 @@
                 stats.completed++;
                 stats.removed++;
                 saveStats();
-
-                // Remove locally
                 orders = orders.filter(o => o.id != orderId);
                 seenIds.delete(orderId);
-
                 showMessage(`✅ Order ${order.orderNumber} completed and removed!`, 'success');
-
                 setTimeout(() => {
                     renderOrders();
                     updateStats();
@@ -313,12 +303,11 @@
                 btn.disabled = false;
                 btn.textContent = 'Complete & Remove';
                 if (card) card.classList.remove('removing');
-                showMessage('❌ Failed to remove order', 'error');
             }
         }
 
         // Cancel order and remove
-        async function cancelOrder(orderId) {
+        async function cancelOrder(orderId, event) {
             const order = orders.find(o => o.id == orderId);
             if (!order) return;
 
@@ -336,13 +325,9 @@
             if (success) {
                 stats.removed++;
                 saveStats();
-
-                // Remove locally
                 orders = orders.filter(o => o.id != orderId);
                 seenIds.delete(orderId);
-
                 showMessage(`✅ Order ${order.orderNumber} canceled and removed!`, 'success');
-
                 setTimeout(() => {
                     renderOrders();
                     updateStats();
@@ -351,7 +336,6 @@
                 btn.disabled = false;
                 btn.textContent = 'Cancel & Remove';
                 if (card) card.classList.remove('removing');
-                showMessage('❌ Failed to remove order', 'error');
             }
         }
 
@@ -408,8 +392,8 @@
                     <div class="order-actions">
                         <button class="status-btn status-${order.status}">${order.status.toUpperCase()}</button>
                         ${getActionButtons(order)}
-                        <button class="action-btn success" onclick="completeOrder('${order.id}')">✅ Complete & Remove</button>
-                        <button class="action-btn danger" onclick="cancelOrder('${order.id}')">❌ Cancel & Remove</button>
+                        <button class="action-btn success" onclick="completeOrder('${order.id}', event)">✅ Complete & Remove</button>
+                        <button class="action-btn danger" onclick="cancelOrder('${order.id}', event)">❌ Cancel & Remove</button>
                     </div>
                 </div>
             `).join('');
