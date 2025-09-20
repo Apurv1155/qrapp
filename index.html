@@ -3,1696 +3,785 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Restaurant - Gourmet Menu</title>
+    <title>Bella Vista Restaurant</title>
     <style>
-:root {
-  /* Primitive Color Tokens */
-  --color-white: rgba(255, 255, 255, 1);
-  --color-black: rgba(0, 0, 0, 1);
-  --color-cream-50: rgba(252, 252, 249, 1);
-  --color-cream-100: rgba(255, 255, 253, 1);
-  --color-gray-200: rgba(245, 245, 245, 1);
-  --color-gray-300: rgba(167, 169, 169, 1);
-  --color-gray-400: rgba(119, 124, 124, 1);
-  --color-slate-500: rgba(98, 108, 113, 1);
-  --color-brown-600: rgba(94, 82, 64, 1);
-  --color-charcoal-700: rgba(31, 33, 33, 1);
-  --color-charcoal-800: rgba(38, 40, 40, 1);
-  --color-slate-900: rgba(19, 52, 59, 1);
-  --color-teal-300: rgba(50, 184, 198, 1);
-  --color-teal-400: rgba(45, 166, 178, 1);
-  --color-teal-500: rgba(33, 128, 141, 1);
-  --color-teal-600: rgba(29, 116, 128, 1);
-  --color-teal-700: rgba(26, 104, 115, 1);
-  --color-teal-800: rgba(41, 150, 161, 1);
-  --color-red-400: rgba(255, 84, 89, 1);
-  --color-red-500: rgba(192, 21, 47, 1);
-  --color-orange-400: rgba(230, 129, 97, 1);
-  --color-orange-500: rgba(168, 75, 47, 1);
-
-  /* RGB versions for opacity control */
-  --color-brown-600-rgb: 94, 82, 64;
-  --color-teal-500-rgb: 33, 128, 141;
-  --color-slate-900-rgb: 19, 52, 59;
-  --color-slate-500-rgb: 98, 108, 113;
-  --color-red-500-rgb: 192, 21, 47;
-  --color-red-400-rgb: 255, 84, 89;
-  --color-orange-500-rgb: 168, 75, 47;
-  --color-orange-400-rgb: 230, 129, 97;
-
-  /* Background color tokens (Light Mode) */
-  --color-bg-1: rgba(59, 130, 246, 0.08); /* Light blue */
-  --color-bg-2: rgba(245, 158, 11, 0.08); /* Light yellow */
-  --color-bg-3: rgba(34, 197, 94, 0.08); /* Light green */
-  --color-bg-4: rgba(239, 68, 68, 0.08); /* Light red */
-  --color-bg-5: rgba(147, 51, 234, 0.08); /* Light purple */
-  --color-bg-6: rgba(249, 115, 22, 0.08); /* Light orange */
-  --color-bg-7: rgba(236, 72, 153, 0.08); /* Light pink */
-  --color-bg-8: rgba(6, 182, 212, 0.08); /* Light cyan */
-
-  /* Semantic Color Tokens (Light Mode) */
-  --color-background: var(--color-cream-50);
-  --color-surface: var(--color-cream-100);
-  --color-text: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-500);
-  --color-primary: var(--color-teal-500);
-  --color-primary-hover: var(--color-teal-600);
-  --color-primary-active: var(--color-teal-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-error: var(--color-red-500);
-  --color-success: var(--color-teal-500);
-  --color-warning: var(--color-orange-500);
-  --color-info: var(--color-slate-500);
-  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
-  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
-
-  /* Common style patterns */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-  /* RGB versions for opacity control */
-  --color-success-rgb: 33, 128, 141;
-  --color-error-rgb: 192, 21, 47;
-  --color-warning-rgb: 168, 75, 47;
-  --color-info-rgb: 98, 108, 113;
-
-  /* Typography */
-  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
-    Monaco, Consolas, monospace;
-  --font-size-xs: 11px;
-  --font-size-sm: 12px;
-  --font-size-base: 14px;
-  --font-size-md: 14px;
-  --font-size-lg: 16px;
-  --font-size-xl: 18px;
-  --font-size-2xl: 20px;
-  --font-size-3xl: 24px;
-  --font-size-4xl: 30px;
-  --font-weight-normal: 400;
-  --font-weight-medium: 500;
-  --font-weight-semibold: 550;
-  --font-weight-bold: 600;
-  --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --letter-spacing-tight: -0.01em;
-
-  /* Spacing */
-  --space-0: 0;
-  --space-1: 1px;
-  --space-2: 2px;
-  --space-4: 4px;
-  --space-6: 6px;
-  --space-8: 8px;
-  --space-10: 10px;
-  --space-12: 12px;
-  --space-16: 16px;
-  --space-20: 20px;
-  --space-24: 24px;
-  --space-32: 32px;
-
-  /* Border Radius */
-  --radius-sm: 6px;
-  --radius-base: 8px;
-  --radius-md: 10px;
-  --radius-lg: 12px;
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
-    0 2px 4px -1px rgba(0, 0, 0, 0.02);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
-    0 4px 6px -2px rgba(0, 0, 0, 0.02);
-  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
-
-  /* Animation */
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* Layout */
-  --container-sm: 640px;
-  --container-md: 768px;
-  --container-lg: 1024px;
-  --container-xl: 1280px;
-}
-
-/* Dark mode colors */
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* RGB versions for opacity control (Dark Mode) */
-    --color-gray-400-rgb: 119, 124, 124;
-    --color-teal-300-rgb: 50, 184, 198;
-    --color-gray-300-rgb: 167, 169, 169;
-    --color-gray-200-rgb: 245, 245, 245;
-
-    /* Background color tokens (Dark Mode) */
-    --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
-    --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
-    --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
-    --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
-    --color-bg-5: rgba(107, 33, 168, 0.15); /* Dark purple */
-    --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
-    --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
-    --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
-
-    /* Semantic Color Tokens (Dark Mode) */
-    --color-background: var(--color-charcoal-700);
-    --color-surface: var(--color-charcoal-800);
-    --color-text: var(--color-gray-200);
-    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-    --color-primary: var(--color-teal-300);
-    --color-primary-hover: var(--color-teal-400);
-    --color-primary-active: var(--color-teal-800);
-    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
-    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
-    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
-    --color-error: var(--color-red-400);
-    --color-success: var(--color-teal-300);
-    --color-warning: var(--color-orange-400);
-    --color-info: var(--color-gray-300);
-    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-    --color-btn-primary-text: var(--color-slate-900);
-    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
-    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
-    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-    --button-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-    --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-    --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
-
-    /* Common style patterns - updated for dark mode */
-    --focus-ring: 0 0 0 3px var(--color-focus-ring);
-    --focus-outline: 2px solid var(--color-primary);
-    --status-bg-opacity: 0.15;
-    --status-border-opacity: 0.25;
-    --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-    /* RGB versions for dark mode */
-    --color-success-rgb: var(--color-teal-300-rgb);
-    --color-error-rgb: var(--color-red-400-rgb);
-    --color-warning-rgb: var(--color-orange-400-rgb);
-    --color-info-rgb: var(--color-gray-300-rgb);
-  }
-}
-
-/* Data attribute for manual theme switching */
-[data-color-scheme="dark"] {
-  /* RGB versions for opacity control (dark mode) */
-  --color-gray-400-rgb: 119, 124, 124;
-  --color-teal-300-rgb: 50, 184, 198;
-  --color-gray-300-rgb: 167, 169, 169;
-  --color-gray-200-rgb: 245, 245, 245;
-
-  /* Colorful background palette - Dark Mode */
-  --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
-  --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
-  --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
-  --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
-  --color-bg-5: rgba(107, 33, 168, 0.15); /* Dark purple */
-  --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
-  --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
-  --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
-
-  /* Semantic Color Tokens (Dark Mode) */
-  --color-background: var(--color-charcoal-700);
-  --color-surface: var(--color-charcoal-800);
-  --color-text: var(--color-gray-200);
-  --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
-  --color-primary: var(--color-teal-300);
-  --color-primary-hover: var(--color-teal-400);
-  --color-primary-active: var(--color-teal-800);
-  --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
-  --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
-  --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
-  --color-border: rgba(var(--color-gray-400-rgb), 0.3);
-  --color-error: var(--color-red-400);
-  --color-success: var(--color-teal-300);
-  --color-warning: var(--color-orange-400);
-  --color-info: var(--color-gray-300);
-  --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
-  --color-btn-primary-text: var(--color-slate-900);
-  --color-card-border: rgba(var(--color-gray-400-rgb), 0.15);
-  --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
-  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
-  --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
-
-  /* Common style patterns - updated for dark mode */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-  /* RGB versions for dark mode */
-  --color-success-rgb: var(--color-teal-300-rgb);
-  --color-error-rgb: var(--color-red-400-rgb);
-  --color-warning-rgb: var(--color-orange-400-rgb);
-  --color-info-rgb: var(--color-gray-300-rgb);
-}
-[data-color-scheme="light"] {
-  /* RGB versions for opacity control (light mode) */
-  --color-brown-600-rgb: 94, 82, 64;
-  --color-teal-500-rgb: 33, 128, 141;
-  --color-slate-900-rgb: 19, 52, 59;
-  /* Semantic Color Tokens (Light Mode) */
-  --color-background: var(--color-cream-50);
-  --color-surface: var(--color-cream-100);
-  --color-text: var(--color-slate-900);
-  --color-text-secondary: var(--color-slate-500);
-  --color-primary: var(--color-teal-500);
-  --color-primary-hover: var(--color-teal-600);
-  --color-primary-active: var(--color-teal-700);
-  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
-  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
-  --color-btn-primary-text: var(--color-cream-50);
-  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
-  --color-error: var(--color-red-500);
-  --color-success: var(--color-teal-500);
-  --color-warning: var(--color-orange-500);
-  --color-info: var(--color-slate-500);
-  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
-  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
-
-  /* Common style patterns - updated for light mode */
-  --focus-ring: 0 0 0 3px var(--color-focus-ring);
-  --focus-outline: 2px solid var(--color-primary);
-  --status-bg-opacity: 0.15;
-  --status-border-opacity: 0.25;
-  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-
-  /* RGB versions for light mode */
-  --color-success-rgb: var(--color-teal-500-rgb);
-  --color-error-rgb: var(--color-red-500-rgb);
-  --color-warning-rgb: var(--color-orange-500-rgb);
-  --color-info-rgb: var(--color-slate-500-rgb);
-}
-/* General reset and base styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-family: var(--font-family-base);
-  font-size: 16px;
-  line-height: var(--line-height-normal);
-  color: var(--color-text);
-  background: var(--color-background);
-  transition: all var(--duration-normal) var(--ease-standard);
-  scroll-behavior: smooth;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: var(--container-lg);
-  margin-inline: auto;
-  padding-inline: 1rem;
-}
-
-.section {
-  padding-block: 2rem 4rem;
-}
-
-/* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-family-base);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-tight);
-  color: var(--color-text);
-}
-
-h1 {
-  font-size: var(--font-size-4xl);
-}
-h2 {
-  font-size: var(--font-size-3xl);
-}
-h3 {
-  font-size: var(--font-size-2xl);
-}
-p {
-  font-size: var(--font-size-base);
-  line-height: 1.6;
-}
-
-/* Buttons and Links */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--font-size-base);
-  padding: var(--space-12) var(--space-20);
-  border-radius: var(--radius-base);
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-standard);
-  white-space: nowrap;
-}
-
-.btn:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-ring);
-}
-
-.btn--primary {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-}
-
-.btn--primary:hover {
-  background: var(--color-primary-hover);
-}
-
-.btn--primary:active {
-  background: var(--color-primary-active);
-}
-
-.btn--secondary {
-  background: var(--color-secondary);
-  color: var(--color-text);
-  border-color: var(--color-secondary);
-}
-
-.btn--secondary:hover {
-  background: var(--color-secondary-hover);
-}
-
-.btn--secondary:active {
-  background: var(--color-secondary-active);
-}
-
-.btn--outline {
-  background: transparent;
-  color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-.btn--outline:hover {
-  color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
-}
-
-.btn--outline:active {
-  color: var(--color-primary-active);
-  border-color: var(--color-primary-active);
-}
-
-.btn--icon {
-  background: transparent;
-  border: none;
-  padding: var(--space-8);
-  border-radius: var(--radius-md);
-  color: var(--color-text-secondary);
-  transition: background var(--duration-fast) var(--ease-standard);
-}
-
-.btn--icon:hover {
-  background: var(--color-secondary);
-  color: var(--color-text);
-}
-
-/* Header */
-.header {
-  padding-block: 1rem;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.header-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-16);
-}
-
-.logo h1 {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-semibold);
-}
-
-.logo p {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.nav {
-  display: flex;
-  gap: var(--space-10);
-  align-items: center;
-}
-
-.cart-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.cart-toggle span {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-  border-radius: var(--radius-full);
-  padding: 0.1rem 0.5rem;
-  font-size: var(--font-size-xs);
-  min-width: 20px;
-  text-align: center;
-}
-
-/* Main Content Sections */
-.menu-section,
-.cart-section,
-.invoice-section {
-  padding-block: var(--space-24) 4rem;
-}
-
-.section-header {
-  text-align: center;
-  margin-bottom: var(--space-24);
-}
-
-.section-header p {
-  color: var(--color-text-secondary);
-  max-width: 600px;
-  margin-inline: auto;
-}
-
-/* Menu Grid */
-.category-filter {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-12);
-  margin-bottom: var(--space-32);
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  background: var(--color-surface);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  padding: var(--space-8) var(--space-16);
-  border-radius: var(--radius-full);
-  cursor: pointer;
-  transition: all var(--duration-fast) var(--ease-standard);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-}
-
-.filter-btn.active,
-.filter-btn:hover {
-  background: var(--color-primary);
-  color: var(--color-btn-primary-text);
-  border-color: var(--color-primary);
-}
-
-.menu-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-24);
-}
-
-.menu-item {
-  background: var(--color-surface);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  transition: transform var(--duration-normal) var(--ease-standard),
-    box-shadow var(--duration-normal) var(--ease-standard);
-  border: 1px solid var(--color-card-border);
-}
-
-.menu-item:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
-}
-
-.menu-item-image {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-bottom: 1px solid var(--color-card-border-inner);
-}
-
-.menu-item-content {
-  padding: var(--space-20);
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.menu-item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--space-12);
-  margin-bottom: var(--space-8);
-}
-
-.menu-item-name {
-  font-size: var(--font-size-lg);
-}
-
-.menu-item-price {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-primary);
-  white-space: nowrap;
-}
-
-.menu-item-description {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-  flex-grow: 1;
-  margin-bottom: var(--space-16);
-}
-
-.menu-item-category {
-  font-size: var(--font-size-xs);
-  color: var(--color-text-secondary);
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: var(--space-4);
-}
-
-.add-to-cart {
-  width: 100%;
-}
-
-/* Cart Section */
-.cart-container {
-  max-width: var(--container-sm);
-  margin-inline: auto;
-}
-
-.cart-content {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-24);
-}
-
-.cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-24);
-}
-
-.cart-items {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-16);
-}
-
-.cart-item {
-  display: flex;
-  gap: var(--space-16);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: var(--space-16);
-  border-radius: var(--radius-md);
-  align-items: center;
-}
-
-.cart-item-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: var(--radius-sm);
-}
-
-.cart-item-details {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  flex-grow: 1;
-}
-
-.cart-item-name {
-  font-weight: var(--font-weight-semibold);
-  font-size: var(--font-size-lg);
-}
-
-.cart-item-price {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
-.quantity-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--space-8);
-  margin-top: var(--space-8);
-}
-
-.quantity-btn {
-  background: var(--color-secondary);
-  border: none;
-  width: 24px;
-  height: 24px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-xl);
-  color: var(--color-text);
-  font-weight: var(--font-weight-bold);
-  transition: background var(--duration-fast) var(--ease-standard);
-}
-
-.quantity-btn:hover {
-  background: var(--color-secondary-hover);
-}
-
-.quantity-display {
-  width: 24px;
-  text-align: center;
-  font-size: var(--font-size-base);
-  font-weight: var(--font-weight-medium);
-}
-
-.remove-item {
-  cursor: pointer;
-  font-size: var(--font-size-sm);
-  color: var(--color-error);
-  margin-top: var(--space-8);
-  transition: opacity var(--duration-fast) var(--ease-standard);
-}
-
-.remove-item:hover {
-  opacity: 0.8;
-}
-
-.cart-summary {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: var(--space-24);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-}
-
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: var(--space-12);
-}
-
-.summary-row.total {
-  font-weight: var(--font-weight-bold);
-  font-size: var(--font-size-lg);
-  border-top: 1px dashed var(--color-border);
-  padding-top: var(--space-12);
-  margin-top: var(--space-12);
-}
-
-.checkout-btn {
-  width: 100%;
-  margin-top: var(--space-20);
-}
-
-.empty-cart {
-  text-align: center;
-  padding-block: 4rem;
-}
-
-.empty-cart h3 {
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-8);
-}
-
-.empty-cart p {
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-20);
-}
-
-/* Invoice Section */
-.invoice-container {
-  max-width: var(--container-sm);
-  margin-inline: auto;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: var(--space-32);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-}
-
-.invoice-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: var(--space-32);
-}
-
-.invoice-title {
-  text-align: center;
-  margin-bottom: var(--space-24);
-  padding-bottom: var(--space-12);
-  border-bottom: 1px dashed var(--color-border);
-}
-
-.invoice-title h2 {
-  font-size: var(--font-size-3xl);
-  color: var(--color-primary);
-}
-
-.invoice-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-24);
-  margin-bottom: var(--space-24);
-}
-
-.invoice-section-title {
-  font-weight: var(--font-weight-bold);
-  color: var(--color-text);
-  margin-bottom: var(--space-8);
-}
-
-.invoice-details p {
-  font-size: var(--font-size-sm);
-  line-height: 1.5;
-  color: var(--color-text-secondary);
-}
-
-.invoice-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: var(--space-24);
-}
-
-.invoice-table th,
-.invoice-table td {
-  text-align: left;
-  padding: var(--space-12);
-  border-bottom: 1px solid var(--color-border);
-  font-size: var(--font-size-sm);
-}
-
-.invoice-table th {
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-text);
-}
-
-.invoice-table td:last-child,
-.invoice-table th:last-child {
-  text-align: right;
-}
-
-.invoice-summary {
-  width: 100%;
-  max-width: 300px;
-  margin-left: auto;
-  margin-bottom: var(--space-32);
-}
-
-.invoice-summary .summary-row.total {
-  font-size: var(--font-size-xl);
-}
-
-.invoice-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--space-12);
-}
-
-/* Loading overlay */
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(var(--color-slate-900-rgb), 0.8);
-  backdrop-filter: blur(8px);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-white);
-  flex-direction: column;
-  gap: var(--space-16);
-}
-
-.loading-spinner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-12);
-}
-
-.spinner {
-  border: 4px solid rgba(var(--color-white), 0.3);
-  border-top: 4px solid var(--color-white);
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Toast/notification message */
-.toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-16) var(--space-24);
-  box-shadow: var(--shadow-lg);
-  z-index: 1001;
-  animation: slideIn 0.5s forwards;
-}
-
-.toast-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-16);
-}
-
-.toast-content button {
-  background: none;
-  border: none;
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-xl);
-  cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* Utility classes for restaurant */
-.hidden {
-  display: none !important;
-}
-
-.fade-in {
-  animation: fadeIn 0.5s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .header-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .menu-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cart-item {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .cart-item-image {
-    align-self: center;
-  }
-
-  .invoice-details {
-    grid-template-columns: 1fr;
-  }
-
-  .invoice-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .invoice-actions {
-    justify-content: center;
-  }
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .restaurant-name {
+            font-size: 3rem;
+            color: #D2691E;
+            margin-bottom: 10px;
+        }
+
+        .restaurant-tagline {
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .menu-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .menu-section h2 {
+            color: #D2691E;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .category-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: #f8f9fa;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .category-btn.active,
+        .category-btn:hover {
+            background: #D2691E;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-item {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .item-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #D2691E;
+        }
+
+        .add-to-cart-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #218838;
+            transform: translateY(-1px);
+        }
+
+        .cart-sidebar {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-header h3 {
+            color: #D2691E;
+            font-size: 1.5rem;
+        }
+
+        .cart-count {
+            background: #D2691E;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .cart-items {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .qty-btn {
+            background: #D2691E;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-display {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .remove-item {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .cart-totals {
+            border-top: 2px solid #ddd;
+            padding-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+        }
+
+        .total-row.grand-total {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #D2691E;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .cart-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .generate-invoice-btn {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .generate-invoice-btn:hover {
+            background: #138496;
+        }
+
+        .send-to-kitchen-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .send-to-kitchen-btn:hover {
+            background: #218838;
+        }
+
+        .send-to-kitchen-btn.sending {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #666;
+            padding: 20px 0;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .connection-status {
+            background: #e7f3ff;
+            border: 1px solid #b6d7ff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #0056b3;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #28a745;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .restaurant-name {
+                font-size: 2rem;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-filters {
+                justify-content: center;
+            }
+        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>Bella Vista</h1>
-                    <p>Gourmet Restaurant</p>
-                </div>
-                <nav class="nav">
-                    <button class="btn btn--secondary" onclick="showSection('menu')">Menu</button>
-                    <button class="btn btn--outline cart-toggle" onclick="showSection('cart')">
-                        Cart (<span id="cart-count">0</span>)
-                    </button>
-                </nav>
-            </div>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
+            <p class="restaurant-tagline">Authentic Italian Cuisine</p>
+        </header>
+
+        <!-- Connection Status -->
+        <div class="connection-status">
+            <span class="status-indicator"></span>
+            Kitchen Connection: Ready for Orders
         </div>
-    </header>
 
-    <section id="menu" class="menu-section">
-        <div class="container">
-            <div class="section-header">
-                <h2>Our Exquisite Menu</h2>
-                <p>Discover our carefully crafted dishes made with the finest ingredients</p>
-            </div>
+        <!-- Success Message -->
+        <div id="success-message" class="success-message"></div>
 
-            <div class="category-filter">
-                <button class="filter-btn active" onclick="filterMenu('all')">All Items</button>
-                <button class="filter-btn" onclick="filterMenu('appetizer')">Appetizers</button>
-                <button class="filter-btn" onclick="filterMenu('main')">Main Course</button>
-                <button class="filter-btn" onclick="filterMenu('dessert')">Desserts</button>
-                <button class="filter-btn" onclick="filterMenu('beverage')">Beverages</button>
-            </div>
+        <!-- Main Content -->
+        <div class="content-grid">
+            <!-- Menu Section -->
+            <section class="menu-section">
+                <h2>Our Menu</h2>
 
-            <div class="menu-grid" id="menu-grid">
+                <!-- Category Filters -->
+                <div class="category-filters">
+                    <button class="category-btn active" data-category="all">All Items</button>
+                    <button class="category-btn" data-category="Starters">Starters</button>
+                    <button class="category-btn" data-category="Main Course">Main Course</button>
+                    <button class="category-btn" data-category="Desserts">Desserts</button>
+                    <button class="category-btn" data-category="Beverages">Beverages</button>
                 </div>
-        </div>
-    </section>
 
-    <section id="cart" class="cart-section hidden">
-        <div class="container">
-            <div class="cart-container">
+                <!-- Menu Items Grid -->
+                <div id="menu-items" class="menu-grid"></div>
+            </section>
+
+            <!-- Cart Sidebar -->
+            <aside class="cart-sidebar">
                 <div class="cart-header">
-                    <h2>Your Order</h2>
-                    <button class="btn btn--secondary" onclick="showSection('menu')">← Back to Menu</button>
+                    <h3>Your Order</h3>
+                    <span id="cart-count" class="cart-count">0</span>
                 </div>
 
-                <div class="cart-content">
-                    <div id="cart-items" class="cart-items">
-                        </div>
+                <div id="cart-items" class="cart-items"></div>
 
-                    <div id="cart-summary" class="cart-summary hidden">
-                        <div class="summary-row">
-                            <span>Subtotal</span>
-                            <span id="subtotal">$0.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Tax (10%)</span>
-                            <span id="tax">$0.00</span>
-                        </div>
-                        <div class="summary-row total">
-                            <span>Total</span>
-                            <span id="total">$0.00</span>
-                        </div>
-                        <button class="btn btn--primary checkout-btn" onclick="generateInvoice()">Checkout</button>
-                        <button class="btn btn--outline checkout-btn" onclick="clearCart()">Clear Cart</button>
+                <div class="cart-totals">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (10%):</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <section id="invoice" class="invoice-section hidden">
-        <div class="container">
-            <div class="invoice-container">
-                <div class="invoice-header">
-                    <h2>Invoice</h2>
-                    <button class="btn btn--secondary" onclick="showSection('cart')">← Back to Cart</button>
+                <div class="cart-actions">
+                    <button id="generate-invoice-btn" class="action-btn generate-invoice-btn">Generate Invoice</button>
+                    <button id="send-to-kitchen-btn" class="action-btn send-to-kitchen-btn">Send to Kitchen</button>
                 </div>
-
-                <div class="invoice-content" id="invoice-content">
-                    </div>
-
-                <div class="invoice-actions">
-                    <button class="btn btn--primary" onclick="downloadInvoice()">Download Invoice</button>
-                    <button class="btn btn--outline" onclick="sendOrder()">Send Order Live</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="loading-overlay hidden" id="loading">
-        <div class="loading-spinner">
-            <div class="spinner"></div>
-            <p>Processing your order...</p>
-        </div>
-    </div>
-
-    <div class="toast hidden" id="toast">
-        <div class="toast-content">
-            <span id="toast-message"></span>
-            <button onclick="hideToast()">&times;</button>
+            </aside>
         </div>
     </div>
 
     <script>
-// Restaurant Menu Application
-class RestaurantApp {
-    constructor() {
-        this.menuItems = [
-            {
-                id: 1,
-                name: "Caesar Salad",
-                category: "appetizer",
-                price: 12.99,
-                description: "Fresh romaine lettuce with parmesan cheese, croutons and caesar dressing",
-                image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=300&h=200&fit=crop"
-            },
-            {
-                id: 2,
-                name: "Garlic Bread",
-                category: "appetizer", 
-                price: 8.99,
-                description: "Toasted bread with garlic butter and herbs",
-                image: "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?w=300&h=200&fit=crop"
-            },
-            {
-                id: 3,
-                name: "Bruschetta",
-                category: "appetizer",
-                price: 10.99,
-                description: "Grilled bread with tomatoes, basil and balsamic glaze",
-                image: "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=300&h=200&fit=crop"
-            },
-            {
-                id: 4,
-                name: "Grilled Salmon",
-                category: "main",
-                price: 24.99,
-                description: "Fresh Atlantic salmon with lemon butter sauce and vegetables",
-                image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300&h=200&fit=crop"
-            },
-            {
-                id: 5,
-                name: "Ribeye Steak",
-                category: "main",
-                price: 32.99,
-                description: "Prime ribeye steak cooked to perfection with mashed potatoes",
-                image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=300&h=200&fit=crop"
-            },
-            {
-                id: 6,
-                name: "Chicken Alfredo",
-                category: "main",
-                price: 18.99,
-                description: "Grilled chicken breast with fettuccine in creamy alfredo sauce",
-                image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?w=300&h=200&fit=crop"
-            },
-            {
-                id: 7,
-                name: "Margherita Pizza",
-                category: "main",
-                price: 16.99,
-                description: "Wood-fired pizza with fresh mozzarella, tomatoes and basil",
-                image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&h=200&fit=crop"
-            },
-            {
-                id: 8,
-                name: "Lobster Bisque",
-                category: "main",
-                price: 22.99,
-                description: "Rich and creamy lobster soup with a touch of brandy",
-                image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&h=200&fit=crop"
-            },
-            {
-                id: 9,
-                name: "Chocolate Lava Cake",
-                category: "dessert",
-                price: 9.99,
-                description: "Warm chocolate cake with molten center and vanilla ice cream",
-                image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=300&h=200&fit=crop"
-            },
-            {
-                id: 10,
-                name: "Tiramisu",
-                category: "dessert",
-                price: 8.99,
-                description: "Classic Italian dessert with mascarpone and coffee",
-                image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=300&h=200&fit=crop"
-            },
-            {
-                id: 11,
-                name: "Cheesecake",
-                category: "dessert",
-                price: 7.99,
-                description: "New York style cheesecake with berry compote",
-                image: "https://images.unsplash.com/photo-1567958947166-aa5b74985095?w=300&h=200&fit=crop"
-            },
-            {
-                id: 12,
-                name: "Craft Beer",
-                category: "beverage",
-                price: 6.99,
-                description: "Local brewery selection of craft beers",
-                image: "https://images.unsplash.com/photo-1608270586620-248524c67de9?w=300&h=200&fit=crop"
-            },
-            {
-                id: 13,
-                name: "House Wine",
-                category: "beverage",
-                price: 8.99,
-                description: "Red or white wine selection from our cellar",
-                image: "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=300&h=200&fit=crop"
-            },
-            {
-                id: 14,
-                name: "Fresh Juice",
-                category: "beverage",
-                price: 4.99,
-                description: "Orange, apple, or cranberry juice freshly squeezed",
-                image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=300&h=200&fit=crop"
-            },
-            {
-                id: 15,
-                name: "Coffee",
-                category: "beverage", 
-                price: 3.99,
-                description: "Freshly brewed coffee, espresso, or cappuccino",
-                image: "https://images.unsplash.com/photo-1495774856032-8b90bbb32b32?w=300&h=200&fit=crop"
-            }
+        // Menu data
+        const menuItems = [
+            { id: 1, name: "Garlic Bread", category: "Starters", price: 8, description: "Fresh baked bread with garlic butter" },
+            { id: 2, name: "Caesar Salad", category: "Starters", price: 12, description: "Crisp romaine lettuce with caesar dressing" },
+            { id: 3, name: "Margherita Pizza", category: "Main Course", price: 18, description: "Classic pizza with tomato, mozzarella and basil" },
+            { id: 4, name: "Chicken Alfredo", category: "Main Course", price: 22, description: "Creamy pasta with grilled chicken" },
+            { id: 5, name: "Chocolate Cake", category: "Desserts", price: 10, description: "Rich chocolate cake with vanilla ice cream" },
+            { id: 6, name: "Ice Cream", category: "Desserts", price: 6, description: "Vanilla, chocolate or strawberry" },
+            { id: 7, name: "Coffee", category: "Beverages", price: 5, description: "Fresh brewed coffee" },
+            { id: 8, name: "Fresh Juice", category: "Beverages", price: 7, description: "Orange, apple or mixed fruit juice" }
         ];
 
-        this.restaurantInfo = {
-            name: "Bella Vista Restaurant",
-            address: "123 Gourmet Street, Culinary District",
-            phone: "+1 (555) 123-4567",
-            email: "orders@bellavista.com"
-        };
+        // Application state
+        let cart = {};
+        let currentFilter = 'all';
 
-        this.cart = [];
-        this.currentFilter = 'all';
-        this.invoiceData = null;
-        
-        this.init();
-    }
-
-    init() {
-        this.renderMenu();
-        this.updateCartCount();
-        this.showSection('menu');
-    }
-
-    renderMenu(filter = 'all') {
-        const menuGrid = document.getElementById('menu-grid');
-        if (!menuGrid) return;
-
-        const filteredItems = filter === 'all' ? 
-            this.menuItems : 
-            this.menuItems.filter(item => item.category === filter);
-
-        menuGrid.innerHTML = filteredItems.map(item => `
-            <div class="menu-item fade-in" data-category="${item.category}">
-                <img src="${item.image}" alt="${item.name}" class="menu-item-image" loading="lazy">
-                <div class="menu-item-content">
-                    <div class="menu-item-category">${this.capitalizeFirst(item.category)}</div>
-                    <div class="menu-item-header">
-                        <h3 class="menu-item-name">${item.name}</h3>
-                        <div class="menu-item-price">$${item.price.toFixed(2)}</div>
-                    </div>
-                    <p class="menu-item-description">${item.description}</p>
-                    <button class="btn btn--primary add-to-cart" data-item-id="${item.id}">
-                        Add to Cart
-                    </button>
-                </div>
-            </div>
-        `).join('');
-
-        // Add event listeners to add-to-cart buttons
-        const addToCartButtons = menuGrid.querySelectorAll('.add-to-cart');
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const itemId = parseInt(button.getAttribute('data-item-id'));
-                this.addToCart(itemId);
-            });
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Menu website initialized');
+            renderMenuItems();
+            setupEventListeners();
+            updateCartDisplay();
+            testLocalStorage();
         });
-    }
 
-    capitalizeFirst(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
+        // Test localStorage functionality
+        function testLocalStorage() {
+            try {
+                localStorage.setItem('test', 'working');
+                const test = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                console.log('localStorage test:', test === 'working' ? 'WORKING' : 'FAILED');
+            } catch (error) {
+                console.error('localStorage not available:', error);
+            }
+        }
 
-    addToCart(itemId) {
-        const item = this.menuItems.find(item => item.id === itemId);
-        if (!item) return;
-        
-        const existingItem = this.cart.find(cartItem => cartItem.id === itemId);
-
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            this.cart.push({
-                ...item,
-                quantity: 1
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category filter buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.category;
+                    renderMenuItems();
+                });
             });
+
+            // Invoice and kitchen buttons
+            document.getElementById('generate-invoice-btn').addEventListener('click', generateInvoice);
+            document.getElementById('send-to-kitchen-btn').addEventListener('click', sendToKitchen);
         }
 
-        this.updateCartCount();
-        this.showToast(`${item.name} added to cart!`);
-        
-        // Add visual feedback
-        const button = document.querySelector(`[data-item-id="${itemId}"]`);
-        if (button) {
-            button.style.background = 'var(--color-success)';
-            button.textContent = 'Added!';
-            setTimeout(() => {
-                button.style.background = 'var(--color-primary)';
-                button.textContent = 'Add to Cart';
-            }, 1000);
-        }
-    }
+        // Render menu items
+        function renderMenuItems() {
+            const container = document.getElementById('menu-items');
+            const filteredItems = currentFilter === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => item.category === currentFilter);
 
-    removeFromCart(itemId) {
-        const item = this.cart.find(cartItem => cartItem.id === itemId);
-        if (item) {
-            this.cart = this.cart.filter(cartItem => cartItem.id !== itemId);
-            this.updateCartCount();
-            this.renderCart();
-            this.showToast(`${item.name} removed from cart`);
+            container.innerHTML = filteredItems.map(item => `
+                <div class="menu-item">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-footer">
+                        <div class="item-price">$${item.price}</div>
+                        <button class="add-to-cart-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
         }
-    }
 
-    updateQuantity(itemId, change) {
-        const item = this.cart.find(cartItem => cartItem.id === itemId);
-        if (item) {
-            item.quantity += change;
-            if (item.quantity <= 0) {
-                this.removeFromCart(itemId);
+        // Add item to cart
+        function addToCart(itemId) {
+            const item = menuItems.find(i => i.id === itemId);
+            if (!item) return;
+
+            if (cart[itemId]) {
+                cart[itemId].quantity += 1;
             } else {
-                this.updateCartCount();
-                this.renderCart();
+                cart[itemId] = { ...item, quantity: 1 };
             }
-        }
-    }
 
-    updateCartCount() {
-        const count = this.cart.reduce((total, item) => total + item.quantity, 0);
-        const cartCountElement = document.getElementById('cart-count');
-        if (cartCountElement) {
-            cartCountElement.textContent = count;
-        }
-    }
-
-    renderCart() {
-        const cartItems = document.getElementById('cart-items');
-        const cartSummary = document.getElementById('cart-summary');
-
-        if (!cartItems || !cartSummary) return;
-
-        if (this.cart.length === 0) {
-            cartItems.innerHTML = `
-                <div class="empty-cart">
-                    <h3>Your cart is empty</h3>
-                    <p>Start adding some delicious items from our menu</p>
-                    <button class="btn btn--primary" onclick="window.showSection('menu')">Browse Menu</button>
-                </div>
-            `;
-            cartSummary.classList.add('hidden');
-            return;
+            updateCartDisplay();
+            showSuccessMessage(`${item.name} added to cart!`);
         }
 
-        cartItems.innerHTML = this.cart.map(item => `
-            <div class="cart-item">
-                <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                <div class="cart-item-details">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">$${item.price.toFixed(2)} each</div>
-                    <div class="quantity-controls">
-                        <button class="quantity-btn" data-action="decrease" data-item-id="${item.id}">-</button>
-                        <span class="quantity-display">${item.quantity}</span>
-                        <button class="quantity-btn" data-action="increase" data-item-id="${item.id}">+</button>
-                        <span style="margin-left: 12px;">Total: $${(item.price * item.quantity).toFixed(2)}</span>
-                    </div>
-                    <div class="remove-item" data-item-id="${item.id}">Remove item</div>
-                </div>
-            </div>
-        `).join('');
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItems = Object.values(cart);
+            const container = document.getElementById('cart-items');
 
-        // Add event listeners for quantity controls and remove buttons
-        const quantityBtns = cartItems.querySelectorAll('.quantity-btn');
-        const removeItems = cartItems.querySelectorAll('.remove-item');
-
-        quantityBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const itemId = parseInt(btn.getAttribute('data-item-id'));
-                const action = btn.getAttribute('data-action');
-                const change = action === 'increase' ? 1 : -1;
-                this.updateQuantity(itemId, change);
-            });
-        });
-
-        removeItems.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                const itemId = parseInt(btn.getAttribute('data-item-id'));
-                this.removeFromCart(itemId);
-            });
-        });
-
-        // Update summary
-        const subtotal = this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-        const tax = subtotal * 0.1;
-        const total = subtotal + tax;
-        const subtotalEl = document.getElementById('subtotal');
-        const taxEl = document.getElementById('tax');
-        const totalEl = document.getElementById('total');
-        if (subtotalEl) subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-        if (taxEl) taxEl.textContent = `$${tax.toFixed(2)}`;
-        if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
-        cartSummary.classList.remove('hidden');
-    }
-
-    clearCart() {
-        if (confirm('Are you sure you want to clear your cart?')) {
-            this.cart = [];
-            this.updateCartCount();
-            this.renderCart();
-            this.showToast('Cart cleared');
-        }
-    }
-
-    generateInvoice() {
-        if (this.cart.length === 0) {
-            this.showToast('Your cart is empty!');
-            return;
-        }
-        const subtotal = this.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
-        const tax = subtotal * 0.1;
-        const total = subtotal + tax;
-        const now = new Date();
-        this.invoiceData = {
-            invoiceNumber: `BV-${Date.now()}`,
-            date: now.toLocaleDateString(),
-            time: now.toLocaleTimeString(),
-            items: [...this.cart],
-            subtotal,
-            tax,
-            total
-        };
-        const invoiceContent = document.getElementById('invoice-content');
-        if (invoiceContent) {
-            invoiceContent.innerHTML = `
-                <div class="invoice-title">
-                    <h2>INVOICE</h2>
-                    <p>Invoice #: ${this.invoiceData.invoiceNumber}</p>
-                    <p>Date: ${this.invoiceData.date} | Time: ${this.invoiceData.time}</p>
-                </div>
-                <div class="invoice-details">
-                    <div>
-                        <div class="invoice-section-title">Restaurant Information</div>
-                        <p><strong>${this.restaurantInfo.name}</strong></p>
-                        <p>${this.restaurantInfo.address}</p>
-                        <p>Phone: ${this.restaurantInfo.phone}</p>
-                        <p>Email: ${this.restaurantInfo.email}</p>
-                    </div>
-                    <div>
-                        <div class="invoice-section-title">Order Details</div>
-                        <p>Total Items: ${this.cart.reduce((total, item) => total + item.quantity, 0)}</p>
-                        <p>Order Date: ${this.invoiceData.date}</p>
-                        <p>Order Time: ${this.invoiceData.time}</p>
-                    </div>
-                </div>
-                <table class="invoice-table">
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Quantity</th>
-                            <th>Price</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${this.invoiceData.items.map(item => `
-                            <tr>
-                                <td>${item.name}</td>
-                                <td>${item.quantity}</td>
-                                <td>$${item.price.toFixed(2)}</td>
-                                <td>$${(item.price * item.quantity).toFixed(2)}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-                <div class="invoice-summary">
-                    <div class="summary-row">
-                        <span>Subtotal</span>
-                        <span>$${this.invoiceData.subtotal.toFixed(2)}</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Tax (10%)</span>
-                        <span>$${this.invoiceData.tax.toFixed(2)}</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Total</span>
-                        <span>$${this.invoiceData.total.toFixed(2)}</span>
-                    </div>
-                </div>
-            `;
-            this.showSection('invoice');
-        }
-    }
-
-    showSection(sectionId) {
-        const sections = document.querySelectorAll('section');
-        sections.forEach(section => {
-            section.classList.add('hidden');
-        });
-        const activeSection = document.getElementById(sectionId);
-        if (activeSection) {
-            activeSection.classList.remove('hidden');
-            if (sectionId === 'cart') {
-                this.renderCart();
-            } else if (sectionId === 'menu') {
-                this.renderMenu(this.currentFilter);
-            }
-        }
-    }
-
-    showToast(message) {
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toast-message');
-        if (toast && toastMessage) {
-            toastMessage.textContent = message;
-            toast.classList.remove('hidden');
-            setTimeout(() => {
-                this.hideToast();
-            }, 3000);
-        }
-    }
-
-    hideToast() {
-        const toast = document.getElementById('toast');
-        if (toast) {
-            toast.classList.add('hidden');
-        }
-    }
-
-    // New and updated function for PDF download
-    async downloadInvoice() {
-        if (!this.invoiceData) {
-            this.showToast('Please generate an invoice first.');
-            return;
-        }
-
-        this.showToast('Generating PDF invoice...');
-        const loadingOverlay = document.getElementById('loading');
-        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
-
-        try {
-            // Wait a moment for the toast and loading indicator to appear
-            await new Promise(resolve => setTimeout(resolve, 500)); 
-
-            const invoiceContainer = document.querySelector('.invoice-container');
-            if (!invoiceContainer) {
-                this.showToast('Invoice container not found.');
+            if (cartItems.length === 0) {
+                container.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                document.getElementById('cart-count').textContent = '0';
+                updateTotals(0, 0, 0);
                 return;
             }
 
-            // Temporarily hide the buttons for the screenshot
-            const actions = invoiceContainer.querySelector('.invoice-actions');
-            actions.style.display = 'none';
+            container.innerHTML = cartItems.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">$${item.price} each</div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">−</button>
+                            <span class="qty-display">${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
 
-            // Generate a canvas from the invoice HTML
-            const canvas = await html2canvas(invoiceContainer, {
-                scale: 2, // Increase scale for better quality on high-res displays
-                useCORS: true // Required if images are from a different domain
-            });
+            // Update cart count
+            const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
 
-            // Re-show the buttons
-            actions.style.display = 'flex';
+            // Calculate totals
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
 
-            const imgData = canvas.toDataURL('image/png');
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF('p', 'mm', 'a4');
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-            // Add the image to the PDF
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            
-            // Download the PDF
-            pdf.save(`invoice-${this.invoiceData.invoiceNumber}.pdf`);
-            this.showToast('Download complete!');
-        } catch (error) {
-            this.showToast('Failed to download invoice.');
-            console.error('PDF generation error:', error);
-        } finally {
-            if (loadingOverlay) loadingOverlay.classList.add('hidden');
+            updateTotals(subtotal, tax, total);
         }
-    }
 
-    // This function can be expanded with real-world logic
-    async sendOrder() {
-        this.showToast('Sending order live...');
-        const loadingOverlay = document.getElementById('loading');
-        if (loadingOverlay) loadingOverlay.classList.remove('hidden');
-
-        try {
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            this.showToast('Order sent!');
-            this.clearCart();
-            this.showSection('menu');
-        } catch (error) {
-            this.showToast('Failed to send order.');
-            console.error('Order sending error:', error);
-        } finally {
-            if (loadingOverlay) loadingOverlay.classList.add('hidden');
-        }
-    }
-}
-
-// Global functions to be accessible from HTML
-document.addEventListener('DOMContentLoaded', () => {
-    const app = new RestaurantApp();
-    window.app = app;
-
-    // Attach filter functionality
-    const filterContainer = document.querySelector('.category-filter');
-    if (filterContainer) {
-        filterContainer.addEventListener('click', (e) => {
-            if (e.target.classList.contains('filter-btn')) {
-                // Update active state
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                e.target.classList.add('active');
-
-                // Determine category
-                const buttonText = e.target.textContent.toLowerCase();
-                let category = 'all';
-                if (buttonText.includes('appetizer')) category = 'appetizer';
-                else if (buttonText.includes('main')) category = 'main';
-                else if (buttonText.includes('dessert')) category = 'dessert';
-                else if (buttonText.includes('beverage')) category = 'beverage';
-
-                // Filter menu
-                app.renderMenu(category);
-                app.currentFilter = category;
+        // Update item quantity
+        function updateQuantity(itemId, change) {
+            if (cart[itemId]) {
+                cart[itemId].quantity += change;
+                if (cart[itemId].quantity <= 0) {
+                    delete cart[itemId];
+                }
+                updateCartDisplay();
             }
-        });
-    }
-});
+        }
 
-// Global functions for HTML onclick handlers
-window.showSection = function(sectionId) {
-    if (window.app) {
-        window.app.showSection(sectionId);
-    }
-};
+        // Remove item from cart
+        function removeFromCart(itemId) {
+            delete cart[itemId];
+            updateCartDisplay();
+        }
 
-window.generateInvoice = function() {
-    if (window.app) {
-        window.app.generateInvoice();
-    }
-};
+        // Update totals display
+        function updateTotals(subtotal, tax, total) {
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
 
-window.downloadInvoice = function() {
-    if (window.app) {
-        window.app.downloadInvoice();
-    }
-};
+        // Generate invoice
+        function generateInvoice() {
+            const cartItems = Object.values(cart);
+            if (cartItems.length === 0) {
+                showSuccessMessage('Cart is empty!', 'error');
+                return;
+            }
 
-window.sendOrder = function() {
-    if (window.app) {
-        window.app.sendOrder();
-    }
-};
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+            const orderNumber = `ORD-${Date.now()}`;
 
-window.clearCart = function() {
-    if (window.app) {
-        window.app.clearCart();
-    }
-};
+            const invoiceContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Invoice - ${orderNumber}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .header { text-align: center; margin-bottom: 30px; }
+                        .order-info { margin-bottom: 20px; }
+                        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+                        .items-table th, .items-table td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+                        .items-table th { background-color: #f8f9fa; }
+                        .total-section { text-align: right; margin-top: 20px; }
+                        .total-row { margin: 5px 0; }
+                        .grand-total { font-weight: bold; font-size: 1.2em; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>🍽️ Bella Vista Restaurant</h1>
+                        <h2>Customer Invoice</h2>
+                    </div>
 
-window.hideToast = function() {
-    if (window.app) {
-        window.app.hideToast();
-    }
-};
+                    <div class="order-info">
+                        <p><strong>Order Number:</strong> ${orderNumber}</p>
+                        <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                        <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
+                    </div>
 
-window.filterMenu = function(category) {
-    if (window.app) {
-        window.app.renderMenu(category);
-    }
-};
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${cartItems.map(item => `
+                                <tr>
+                                    <td>${item.name}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>$${item.price.toFixed(2)}</td>
+                                    <td>$${(item.quantity * item.price).toFixed(2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="total-section">
+                        <div class="total-row">Subtotal: $${subtotal.toFixed(2)}</div>
+                        <div class="total-row">Tax (10%): $${tax.toFixed(2)}</div>
+                        <div class="total-row grand-total">Total: $${total.toFixed(2)}</div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 40px;">
+                        <p>Thank you for dining with us!</p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const invoiceWindow = window.open('', '_blank');
+            invoiceWindow.document.write(invoiceContent);
+            invoiceWindow.document.close();
+            invoiceWindow.print();
+
+            showSuccessMessage('Invoice generated successfully!');
+        }
+
+        // Send to kitchen (ROBUST VERSION)
+        function sendToKitchen() {
+            const cartItems = Object.values(cart);
+            if (cartItems.length === 0) {
+                showSuccessMessage('Cart is empty!', 'error');
+                return;
+            }
+
+            console.log('Sending order to kitchen...', cartItems);
+
+            const sendBtn = document.getElementById('send-to-kitchen-btn');
+            const originalText = sendBtn.textContent;
+            sendBtn.classList.add('sending');
+            sendBtn.textContent = 'Sending to Kitchen...';
+            sendBtn.disabled = true;
+
+            try {
+                const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * 0.1;
+                const total = subtotal + tax;
+
+                // Generate unique order ID
+                const orderId = Date.now();
+                const orderNumber = `ORD-${String(orderId).slice(-4)}`;
+
+                const orderData = {
+                    id: orderId,
+                    orderNumber: orderNumber,
+                    items: cartItems,
+                    subtotal: subtotal,
+                    tax: tax,
+                    total: total,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending',
+                    createdAt: Date.now()
+                };
+
+                console.log('Order data prepared:', orderData);
+
+                // Get existing orders from localStorage
+                let existingOrders = [];
+                try {
+                    const stored = localStorage.getItem('restaurantOrders');
+                    if (stored) {
+                        existingOrders = JSON.parse(stored);
+                    }
+                } catch (error) {
+                    console.warn('Could not read existing orders:', error);
+                    existingOrders = [];
+                }
+
+                // Add new order to the beginning of the array
+                existingOrders.unshift(orderData);
+
+                // Save back to localStorage
+                localStorage.setItem('restaurantOrders', JSON.stringify(existingOrders));
+                console.log('Order saved to localStorage. Total orders:', existingOrders.length);
+
+                // Set a signal for the receiver to detect new orders
+                localStorage.setItem('newOrderSignal', orderId.toString());
+                localStorage.setItem('lastOrderTime', Date.now().toString());
+
+                // Success feedback
+                setTimeout(() => {
+                    sendBtn.classList.remove('sending');
+                    sendBtn.textContent = originalText;
+                    sendBtn.disabled = false;
+
+                    showSuccessMessage(`Order ${orderNumber} sent to kitchen successfully! 🍽️`);
+
+                    // Clear cart after successful send
+                    cart = {};
+                    updateCartDisplay();
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error sending order:', error);
+
+                sendBtn.classList.remove('sending');
+                sendBtn.textContent = originalText;
+                sendBtn.disabled = false;
+
+                showSuccessMessage('Error sending order to kitchen. Please try again.', 'error');
+            }
+        }
+
+        // Show success message
+        function showSuccessMessage(message, type = 'success') {
+            const messageEl = document.getElementById('success-message');
+            messageEl.textContent = message;
+            messageEl.style.display = 'block';
+
+            if (type === 'error') {
+                messageEl.style.backgroundColor = '#f8d7da';
+                messageEl.style.color = '#721c24';
+                messageEl.style.borderColor = '#f5c6cb';
+            } else {
+                messageEl.style.backgroundColor = '#d4edda';
+                messageEl.style.color = '#155724';
+                messageEl.style.borderColor = '#c3e6cb';
+            }
+
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 4000);
+        }
     </script>
 </body>
 </html>
