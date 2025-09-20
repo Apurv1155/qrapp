@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Vista Restaurant</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: white; border-radius: 10px; padding: 30px; margin-bottom: 30px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .restaurant-name { font-size: 2.5rem; color: #D2691E; margin-bottom: 10px; }
+        .restaurant-tagline { color: #666; font-size: 1.1rem; }
+        .status { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center; font-weight: bold; }
+        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .menu-section { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .menu-section h2 { color: #D2691E; font-size: 1.8rem; margin-bottom: 20px; }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .menu-item { border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: #f8f9fa; transition: transform 0.2s; }
+        .menu-item:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .item-name { font-size: 1.2rem; font-weight: bold; color: #333; margin-bottom: 8px; }
+        .item-description { color: #666; margin-bottom: 12px; line-height: 1.4; font-size: 0.9rem; }
+        .item-footer { display: flex; justify-content: space-between; align-items: center; }
+        .item-price { font-size: 1.3rem; font-weight: bold; color: #D2691E; }
+        .add-btn { background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 500; }
+        .add-btn:hover { background: #218838; }
+        .cart-sidebar { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: fit-content; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cart-header h3 { color: #D2691E; font-size: 1.4rem; }
+        .cart-count { background: #D2691E; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; }
+        .cart-items { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
+        .cart-item { padding: 12px 0; border-bottom: 1px solid #eee; }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-name { font-weight: 500; margin-bottom: 5px; }
+        .cart-item-price { color: #666; font-size: 0.9rem; margin-bottom: 8px; }
+        .quantity-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .qty-btn { background: #D2691E; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; }
+        .qty-display { min-width: 20px; text-align: center; font-weight: 500; }
+        .remove-btn { background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 0.8rem; }
+        .cart-totals { border-top: 2px solid #ddd; padding-top: 15px; margin-bottom: 20px; }
+        .total-row { display: flex; justify-content: space-between; margin: 5px 0; }
+        .total-row.grand-total { font-weight: bold; font-size: 1.1rem; color: #D2691E; border-top: 1px solid #ddd; padding-top: 8px; margin-top: 8px; }
+        .cart-actions { display: flex; flex-direction: column; gap: 10px; }
+        .action-btn { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; text-align: center; transition: all 0.2s; }
+        .send-btn { background: #ff6b6b; color: white; font-size: 1.1rem; }
+        .send-btn:hover { background: #ff5252; }
+        .send-btn:disabled { background: #6c757d; cursor: not-allowed; }
+        .clear-btn { background: #ffc107; color: #212529; }
+        .clear-btn:hover { background: #ffb300; }
+        .empty-cart { text-align: center; color: #666; padding: 20px 0; }
+        .message { padding: 12px; border-radius: 4px; margin-bottom: 20px; display: none; font-weight: 500; }
+        .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; } .restaurant-name { font-size: 2rem; } .menu-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
+            <p class="restaurant-tagline">Simple & Reliable Ordering System</p>
+        </header>
+
+        <div class="status">✅ System Ready - Token Configured - Orders Will Send to Kitchen</div>
+
+        <div id="message" class="message"></div>
+
+        <div class="content-grid">
+            <section class="menu-section">
+                <h2>Our Menu</h2>
+                <div id="menu-items" class="menu-grid"></div>
+            </section>
+
+            <aside class="cart-sidebar">
+                <div class="cart-header">
+                    <h3>Your Order</h3>
+                    <span id="cart-count" class="cart-count">0</span>
+                </div>
+
+                <div id="cart-items" class="cart-items"></div>
+
+                <div class="cart-totals">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (10%):</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="cart-actions">
+                    <button id="send-btn" class="action-btn send-btn">🚀 SEND ORDER TO KITCHEN</button>
+                    <button id="clear-btn" class="action-btn clear-btn">🗑️ Clear Cart</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // SIMPLE WORKING SYSTEM - No complex optimizations
+
+        const CONFIG = {
+            token: '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',
+            repo: 'apurv1155/qrapp',
+            file: 'orders.json'
+        };
+
+        const MENU = [
+            { id: 1, name: "Garlic Bread", price: 8, description: "Fresh baked bread with garlic butter" },
+            { id: 2, name: "Caesar Salad", price: 12, description: "Crisp romaine lettuce with caesar dressing" },
+            { id: 3, name: "Buffalo Wings", price: 14, description: "Spicy chicken wings with ranch dip" },
+            { id: 4, name: "Margherita Pizza", price: 18, description: "Classic pizza with tomato, mozzarella and basil" },
+            { id: 5, name: "Chicken Alfredo", price: 22, description: "Creamy pasta with grilled chicken" },
+            { id: 6, name: "Grilled Salmon", price: 26, description: "Fresh Atlantic salmon with herbs" },
+            { id: 7, name: "Beef Steak", price: 28, description: "Premium ribeye steak cooked to perfection" },
+            { id: 8, name: "Chocolate Cake", price: 10, description: "Rich chocolate cake with vanilla ice cream" },
+            { id: 9, name: "Coffee", price: 5, description: "Fresh brewed coffee" },
+            { id: 10, name: "Soft Drinks", price: 4, description: "Coke, Sprite, Fanta" }
+        ];
+
+        let cart = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🍽️ Restaurant system starting...');
+            renderMenu();
+            updateCart();
+            setupEvents();
+            console.log('✅ System ready');
+        });
+
+        function setupEvents() {
+            document.getElementById('send-btn').addEventListener('click', sendOrder);
+            document.getElementById('clear-btn').addEventListener('click', clearCart);
+        }
+
+        function renderMenu() {
+            const container = document.getElementById('menu-items');
+            container.innerHTML = MENU.map(item => `
+                <div class="menu-item">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-footer">
+                        <div class="item-price">$${item.price}</div>
+                        <button class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(itemId) {
+            const item = MENU.find(i => i.id === itemId);
+            if (!item) return;
+
+            if (cart[itemId]) {
+                cart[itemId].quantity += 1;
+            } else {
+                cart[itemId] = { ...item, quantity: 1 };
+            }
+
+            updateCart();
+            showMessage(`${item.name} added to cart!`, 'success');
+        }
+
+        function updateCart() {
+            const items = Object.values(cart);
+            const container = document.getElementById('cart-items');
+
+            if (items.length === 0) {
+                container.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                document.getElementById('cart-count').textContent = '0';
+                updateTotals(0, 0, 0);
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-price">$${item.price} each</div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+                        <span class="qty-display">${item.quantity}</span>
+                        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+                    </div>
+                    <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
+                </div>
+            `).join('');
+
+            const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+
+            const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+
+            updateTotals(subtotal, tax, total);
+        }
+
+        function changeQty(itemId, change) {
+            if (cart[itemId]) {
+                cart[itemId].quantity += change;
+                if (cart[itemId].quantity <= 0) {
+                    delete cart[itemId];
+                }
+                updateCart();
+            }
+        }
+
+        function removeItem(itemId) {
+            if (cart[itemId]) {
+                delete cart[itemId];
+                updateCart();
+                showMessage('Item removed', 'success');
+            }
+        }
+
+        function updateTotals(subtotal, tax, total) {
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function clearCart() {
+            if (Object.keys(cart).length > 0 && confirm('Clear cart?')) {
+                cart = {};
+                updateCart();
+                showMessage('Cart cleared', 'success');
+            }
+        }
+
+        // SIMPLE ORDER SENDING - Based on working approach
+        async function sendOrder() {
+            const items = Object.values(cart);
+            if (items.length === 0) {
+                showMessage('Cart is empty!', 'error');
+                return;
+            }
+
+            const sendBtn = document.getElementById('send-btn');
+            sendBtn.disabled = true;
+            sendBtn.textContent = 'SENDING...';
+
+            try {
+                console.log('📤 Sending order...');
+
+                const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * 0.1;
+                const total = subtotal + tax;
+
+                const order = {
+                    id: Date.now(),
+                    orderNumber: `ORDER-${Date.now().toString().slice(-6)}`,
+                    items: items,
+                    subtotal: subtotal,
+                    tax: tax,
+                    total: total,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending',
+                    source: 'customer'
+                };
+
+                console.log('📋 Order created:', order);
+
+                // Get existing orders
+                let orders = [];
+                let sha = null;
+
+                try {
+                    const getResponse = await fetch(`https://api.github.com/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
+                        headers: {
+                            'Authorization': `Bearer ${CONFIG.token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        }
+                    });
+
+                    if (getResponse.ok) {
+                        const data = await getResponse.json();
+                        sha = data.sha;
+                        const content = JSON.parse(atob(data.content));
+                        orders = content.orders || [];
+                        console.log(`📥 Found ${orders.length} existing orders`);
+                    }
+                } catch (e) {
+                    console.log('📝 Creating new orders file');
+                }
+
+                // Add new order
+                orders.unshift(order);
+
+                // Keep last 20 orders only
+                if (orders.length > 20) {
+                    orders = orders.slice(0, 20);
+                }
+
+                const fileContent = {
+                    restaurant: 'Bella Vista',
+                    lastUpdated: new Date().toISOString(),
+                    totalOrders: orders.length,
+                    orders: orders
+                };
+
+                // Send to GitHub
+                const commitData = {
+                    message: `New order: ${order.orderNumber}`,
+                    content: btoa(JSON.stringify(fileContent, null, 2)),
+                    branch: 'main'
+                };
+
+                if (sha) {
+                    commitData.sha = sha;
+                }
+
+                console.log('🚀 Committing to GitHub...');
+
+                const response = await fetch(`https://api.github.com/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(commitData)
+                });
+
+                if (response.ok) {
+                    console.log('✅ Order sent successfully');
+                    showMessage(`✅ Order ${order.orderNumber} sent to kitchen successfully!`, 'success');
+                    cart = {};
+                    updateCart();
+                } else {
+                    const error = await response.json();
+                    console.error('❌ Send failed:', error);
+                    showMessage(`❌ Failed to send order: ${error.message}`, 'error');
+                }
+
+            } catch (error) {
+                console.error('❌ Error:', error);
+                showMessage('❌ Network error - please try again', 'error');
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.textContent = '🚀 SEND ORDER TO KITCHEN';
+            }
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.style.display = 'block';
+            setTimeout(() => { msg.style.display = 'none'; }, 4000);
+        }
+
+        console.log('✅ Simple restaurant system loaded');
+    </script>
+</body>
+</html>
