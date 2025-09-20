@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Kitchen - Safe Order Receiver</title>
+    <title>Bella Vista Kitchen - Auto Receiver</title>
     <style>
         * {
             margin: 0;
@@ -44,9 +44,9 @@
             font-size: 1.2rem;
         }
 
-        .safe-status {
+        .auto-status {
             background: linear-gradient(45deg, #e8f5e8, #f0f8ff);
-            border: 2px solid #28a745;
+            border: 2px solid #007bff;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -54,15 +54,58 @@
         }
 
         .status-title {
-            color: #28a745;
+            color: #007bff;
             font-weight: bold;
             font-size: 1.1rem;
             margin-bottom: 10px;
         }
 
         .status-subtitle {
-            color: #155724;
+            color: #004085;
             font-size: 0.9rem;
+        }
+
+        .monitoring-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .monitor-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #007bff;
+            text-align: center;
+        }
+
+        .monitor-title {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .monitor-status {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .monitor-counter {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #28a745;
+            margin-top: 5px;
+        }
+
+        .monitor-active {
+            border-left-color: #28a745;
+        }
+
+        .monitor-active .monitor-title {
+            color: #28a745;
         }
 
         .stats-grid {
@@ -139,12 +182,12 @@
             transform: translateY(-1px);
         }
 
-        .control-btn.safe {
-            background: #28a745;
+        .control-btn.auto {
+            background: #007bff;
         }
 
-        .control-btn.safe:hover {
-            background: #218838;
+        .control-btn.auto:hover {
+            background: #0056b3;
         }
 
         .control-btn.danger {
@@ -199,32 +242,32 @@
 
         .order-card.new-order {
             animation: newOrderGlow 4s;
-            border-color: #28a745;
-            background: linear-gradient(45deg, #e8f5e8, #f8f9fa);
+            border-color: #007bff;
+            background: linear-gradient(45deg, #e7f3ff, #f8f9fa);
         }
 
-        .order-card.safe-order {
-            border-left: 5px solid #28a745;
+        .order-card.auto-order {
+            border-left: 5px solid #007bff;
         }
 
         @keyframes newOrderGlow {
             0% { 
-                border-color: #28a745;
-                background: #e8f5e8;
-                transform: scale(1.02);
-                box-shadow: 0 0 20px rgba(40, 167, 69, 0.3);
-            }
-            25% {
                 border-color: #007bff;
                 background: #e7f3ff;
+                transform: scale(1.02);
+                box-shadow: 0 0 20px rgba(0, 123, 255, 0.3);
+            }
+            25% {
+                border-color: #28a745;
+                background: #d4edda;
             }
             50% {
                 border-color: #17a2b8;
                 background: #cce7ff;
             }
             75% {
-                border-color: #28a745;
-                background: #e8f5e8;
+                border-color: #007bff;
+                background: #e7f3ff;
             }
             100% { 
                 border-color: #ddd;
@@ -253,8 +296,8 @@
             color: #666;
         }
 
-        .safe-badge {
-            background: #28a745;
+        .auto-badge {
+            background: #007bff;
             color: white;
             padding: 3px 10px;
             border-radius: 12px;
@@ -363,28 +406,6 @@
             opacity: 0.5;
         }
 
-        .url-instructions {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            padding: 20px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 30px;
-        }
-
-        .url-instructions h3 {
-            color: #1976d2;
-            margin-bottom: 15px;
-        }
-
-        .url-instructions ol {
-            color: #424242;
-            padding-left: 20px;
-        }
-
-        .url-instructions li {
-            margin-bottom: 8px;
-        }
-
         .success-message {
             background: #d4edda;
             color: #155724;
@@ -394,6 +415,26 @@
             margin-bottom: 20px;
             display: none;
             font-weight: 500;
+        }
+
+        .debug-info {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            display: none;
+        }
+
+        .rotating {
+            animation: rotate 1s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
@@ -420,6 +461,10 @@
             .order-actions {
                 justify-content: center;
             }
+
+            .monitoring-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -428,26 +473,20 @@
         <!-- Header -->
         <header class="header">
             <h1 class="kitchen-title">🍳 Bella Vista Kitchen</h1>
-            <p class="kitchen-subtitle">Safe Order Receiver - No External Dependencies</p>
+            <p class="kitchen-subtitle">Automatic Order Receiver - No User Action Required</p>
         </header>
 
-        <!-- Safe Status -->
-        <div class="safe-status">
-            <div class="status-title">🔒 100% Safe Order Reception</div>
-            <div class="status-subtitle">Orders received via secure URLs - no external services used</div>
+        <!-- Auto Status -->
+        <div class="auto-status">
+            <div class="status-title" id="auto-title">🤖 Automatic Monitoring Active</div>
+            <div class="status-subtitle" id="auto-subtitle">Continuously scanning for new orders from customer devices - NO action required</div>
         </div>
 
-        <!-- URL Instructions -->
-        <div class="url-instructions">
-            <h3>📱 How to receive orders:</h3>
-            <ol>
-                <li><strong>Customer</strong> places order and clicks "Send Safely"</li>
-                <li><strong>Customer</strong> copies the generated Kitchen URL</li>
-                <li><strong>Customer</strong> sends URL to kitchen (WhatsApp, SMS, Email, etc.)</li>
-                <li><strong>Kitchen</strong> opens the URL → Order appears instantly!</li>
-                <li>Process the order normally using the buttons below</li>
-            </ol>
-        </div>
+        <!-- Monitoring Grid -->
+        <div class="monitoring-grid" id="monitoring-grid"></div>
+
+        <!-- Debug Info -->
+        <div id="debug-info" class="debug-info"></div>
 
         <!-- Statistics -->
         <div class="stats-grid">
@@ -464,18 +503,19 @@
                 <div class="stat-label">Completed Today</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="safe-orders">0</div>
-                <div class="stat-label">Safe Orders</div>
+                <div class="stat-number" id="auto-orders">0</div>
+                <div class="stat-label">Auto Orders</div>
             </div>
         </div>
 
         <!-- Orders Section -->
         <div class="orders-section">
             <div class="section-header">
-                <h2 class="section-title">Kitchen Orders</h2>
+                <h2 class="section-title">Live Kitchen Orders</h2>
                 <div class="control-buttons">
-                    <button class="control-btn safe" onclick="testSafeOrder()">🧪 Test Safe Order</button>
-                    <button class="control-btn" onclick="refreshOrders()">🔄 Refresh</button>
+                    <button class="control-btn auto" onclick="testAutoOrder()">🧪 Test Auto Order</button>
+                    <button class="control-btn" onclick="toggleDebug()">🐛 Debug Monitor</button>
+                    <button class="control-btn" onclick="forceRefresh()">🔄 Force Check</button>
                     <button class="control-btn danger" onclick="clearAllOrders()">🗑️ Clear All</button>
                 </div>
             </div>
@@ -495,67 +535,361 @@
             <!-- Orders Grid -->
             <div id="orders-grid" class="orders-grid">
                 <div class="empty-state">
-                    <div class="empty-icon">🔒</div>
-                    <h3>Safe Order Receiver Ready</h3>
-                    <p>Waiting for orders via secure URLs from customer devices.</p>
-                    <p><small>When customers send Kitchen URLs, orders will appear here automatically.</small></p>
+                    <div class="empty-icon">🤖</div>
+                    <h3>Automatic Order Monitoring Active</h3>
+                    <p>Continuously scanning for new orders from customer devices.</p>
+                    <p><small>Orders will appear automatically - NO user action required!</small></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Safe Cross-Device Kitchen Order Reception System
+        // Automatic Cross-Device Kitchen Order Reception System
 
         let orders = [];
         let currentFilter = 'all';
         let isInitialized = false;
+        let monitoringIntervals = {};
+        let autoStats = {
+            totalScans: 0,
+            ordersDetected: 0,
+            lastScanTime: null,
+            systemStartTime: new Date(),
+            lastOrderCounter: 0,
+            lastSignalCheck: 0,
+            monitoring: {
+                counterPolling: { active: false, scans: 0, detections: 0 },
+                signalDetection: { active: false, scans: 0, detections: 0 },
+                recentOrders: { active: false, scans: 0, detections: 0 },
+                timestampScan: { active: false, scans: 0, detections: 0 },
+                titleMonitor: { active: false, scans: 0, detections: 0 },
+                hashMonitor: { active: false, scans: 0, detections: 0 }
+            }
+        };
 
-        // Initialize the safe kitchen system
+        // Auto-sync configuration - must match index.html
+        const AUTO_CONFIG = {
+            orderPrefix: 'BellaVistaOrder_',
+            signalPrefix: 'BellaVistaSignal_',
+            counterKey: 'BellaVistaCounter',
+            scanInterval: 3000 // 3 seconds
+        };
+
+        // Initialize the automatic kitchen system
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🍳 Safe Kitchen Order Reception System Starting...');
+            console.log('🍳 Automatic Kitchen Order Reception System Starting...');
 
             loadStoredOrders();
-            checkForOrderInURL();
+            setupAutomaticMonitoring();
             updateStats();
             renderOrders();
+            updateMonitoringDisplay();
 
             isInitialized = true;
-            console.log('✅ Safe Kitchen Reception System Ready');
+            console.log('✅ Automatic Kitchen Reception System Ready - Monitoring Started!');
         });
 
-        // Check for order in URL hash
-        function checkForOrderInURL() {
-            const hash = window.location.hash;
-            if (hash && hash.includes('order=')) {
-                try {
-                    const orderParam = hash.split('order=')[1];
-                    const orderData = JSON.parse(atob(orderParam));
+        // Setup automatic monitoring
+        function setupAutomaticMonitoring() {
+            // Method 1: Counter-based polling
+            setupCounterPolling();
 
-                    // Add order if not already present
-                    if (!orders.find(o => o.id === orderData.id)) {
-                        processReceivedOrder(orderData);
+            // Method 2: Signal detection
+            setupSignalDetection();
+
+            // Method 3: Recent orders monitoring
+            setupRecentOrdersMonitoring();
+
+            // Method 4: Timestamp-based scanning
+            setupTimestampScanning();
+
+            // Method 5: Title monitoring
+            setupTitleMonitoring();
+
+            // Method 6: Hash monitoring
+            setupHashMonitoring();
+
+            console.log('🤖 All automatic monitoring methods initialized');
+            updateAutoStatus();
+        }
+
+        // Method 1: Counter-based polling
+        function setupCounterPolling() {
+            try {
+                // Get initial counter value
+                autoStats.lastOrderCounter = parseInt(localStorage.getItem(AUTO_CONFIG.counterKey) || '0');
+
+                monitoringIntervals.counterPolling = setInterval(() => {
+                    autoStats.totalScans++;
+                    autoStats.lastScanTime = new Date();
+                    autoStats.monitoring.counterPolling.scans++;
+
+                    try {
+                        const currentCounter = parseInt(localStorage.getItem(AUTO_CONFIG.counterKey) || '0');
+
+                        if (currentCounter > autoStats.lastOrderCounter) {
+                            // New orders detected
+                            for (let i = autoStats.lastOrderCounter + 1; i <= currentCounter; i++) {
+                                const orderKey = AUTO_CONFIG.orderPrefix + i;
+                                const orderData = localStorage.getItem(orderKey);
+
+                                if (orderData) {
+                                    try {
+                                        const order = JSON.parse(orderData);
+                                        if (!orders.find(o => o.id === order.id)) {
+                                            processDetectedOrder(order, 'Counter Polling');
+                                            autoStats.monitoring.counterPolling.detections++;
+                                        }
+                                    } catch (parseError) {
+                                        console.warn('Error parsing counter order:', parseError);
+                                    }
+                                }
+                            }
+                            autoStats.lastOrderCounter = currentCounter;
+                        }
+                    } catch (error) {
+                        console.warn('Counter polling error:', error);
                     }
-                } catch (error) {
-                    console.error('Error parsing order from URL:', error);
-                }
+                }, AUTO_CONFIG.scanInterval);
+
+                autoStats.monitoring.counterPolling.active = true;
+                console.log('✅ Counter polling active');
+            } catch (error) {
+                console.error('❌ Counter polling setup failed:', error);
             }
         }
 
-        // Process received order
-        function processReceivedOrder(orderData) {
-            console.log('🔔 NEW SAFE ORDER RECEIVED:', orderData);
+        // Method 2: Signal detection
+        function setupSignalDetection() {
+            try {
+                monitoringIntervals.signalDetection = setInterval(() => {
+                    autoStats.monitoring.signalDetection.scans++;
+
+                    try {
+                        // Scan for new signal keys
+                        for (let i = 0; i < localStorage.length; i++) {
+                            const key = localStorage.key(i);
+                            if (key && key.startsWith(AUTO_CONFIG.signalPrefix)) {
+                                const signalData = localStorage.getItem(key);
+                                if (signalData) {
+                                    try {
+                                        const signal = JSON.parse(signalData);
+                                        const signalTimestamp = parseInt(key.replace(AUTO_CONFIG.signalPrefix, ''));
+
+                                        if (signalTimestamp > autoStats.lastSignalCheck) {
+                                            console.log('🔔 New signal detected:', signal);
+
+                                            // Try to find and load the corresponding order
+                                            if (signal.orderId) {
+                                                findAndLoadOrder(signal.orderId, 'Signal Detection');
+                                                autoStats.monitoring.signalDetection.detections++;
+                                            }
+
+                                            autoStats.lastSignalCheck = signalTimestamp;
+                                        }
+                                    } catch (parseError) {
+                                        console.warn('Error parsing signal:', parseError);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        console.warn('Signal detection error:', error);
+                    }
+                }, AUTO_CONFIG.scanInterval);
+
+                autoStats.monitoring.signalDetection.active = true;
+                console.log('✅ Signal detection active');
+            } catch (error) {
+                console.error('❌ Signal detection setup failed:', error);
+            }
+        }
+
+        // Method 3: Recent orders monitoring
+        function setupRecentOrdersMonitoring() {
+            try {
+                let lastRecentCheck = 0;
+
+                monitoringIntervals.recentOrders = setInterval(() => {
+                    autoStats.monitoring.recentOrders.scans++;
+
+                    try {
+                        const recentData = localStorage.getItem('BellaVistaRecent');
+                        if (recentData) {
+                            const recentOrders = JSON.parse(recentData);
+                            if (Array.isArray(recentOrders)) {
+                                recentOrders.forEach(orderData => {
+                                    if (orderData.createdAt > lastRecentCheck) {
+                                        if (!orders.find(o => o.id === orderData.id)) {
+                                            processDetectedOrder(orderData, 'Recent Orders Monitor');
+                                            autoStats.monitoring.recentOrders.detections++;
+                                        }
+                                        lastRecentCheck = orderData.createdAt;
+                                    }
+                                });
+                            }
+                        }
+                    } catch (error) {
+                        console.warn('Recent orders monitoring error:', error);
+                    }
+                }, AUTO_CONFIG.scanInterval);
+
+                autoStats.monitoring.recentOrders.active = true;
+                console.log('✅ Recent orders monitoring active');
+            } catch (error) {
+                console.error('❌ Recent orders monitoring setup failed:', error);
+            }
+        }
+
+        // Method 4: Timestamp-based scanning
+        function setupTimestampScanning() {
+            try {
+                monitoringIntervals.timestampScan = setInterval(() => {
+                    autoStats.monitoring.timestampScan.scans++;
+
+                    try {
+                        // Scan for timestamp-based keys
+                        for (let i = 0; i < localStorage.length; i++) {
+                            const key = localStorage.key(i);
+                            if (key && key.startsWith('BellaVistaTime_')) {
+                                const timeData = localStorage.getItem(key);
+                                if (timeData) {
+                                    try {
+                                        const timeOrder = JSON.parse(timeData);
+                                        if (timeOrder.fullOrder && !orders.find(o => o.id === timeOrder.orderId)) {
+                                            processDetectedOrder(timeOrder.fullOrder, 'Timestamp Scanning');
+                                            autoStats.monitoring.timestampScan.detections++;
+                                        }
+                                    } catch (parseError) {
+                                        console.warn('Error parsing timestamp order:', parseError);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (error) {
+                        console.warn('Timestamp scanning error:', error);
+                    }
+                }, AUTO_CONFIG.scanInterval);
+
+                autoStats.monitoring.timestampScan.active = true;
+                console.log('✅ Timestamp scanning active');
+            } catch (error) {
+                console.error('❌ Timestamp scanning setup failed:', error);
+            }
+        }
+
+        // Method 5: Title monitoring
+        function setupTitleMonitoring() {
+            try {
+                monitoringIntervals.titleMonitor = setInterval(() => {
+                    autoStats.monitoring.titleMonitor.scans++;
+
+                    try {
+                        const currentTitle = document.title;
+                        if (currentTitle.includes('[AUTO_ORDER:')) {
+                            const match = currentTitle.match(/\[AUTO_ORDER:([^:]+):([^:]+):([^\]]+)\]/);
+                            if (match) {
+                                const [, orderNumber, total, orderId] = match;
+                                console.log('📄 Title order signal detected:', orderNumber, total, orderId);
+
+                                findAndLoadOrder(parseInt(orderId), 'Title Monitoring');
+                                autoStats.monitoring.titleMonitor.detections++;
+                            }
+                        }
+                    } catch (error) {
+                        console.warn('Title monitoring error:', error);
+                    }
+                }, AUTO_CONFIG.scanInterval);
+
+                autoStats.monitoring.titleMonitor.active = true;
+                console.log('✅ Title monitoring active');
+            } catch (error) {
+                console.error('❌ Title monitoring setup failed:', error);
+            }
+        }
+
+        // Method 6: Hash monitoring
+        function setupHashMonitoring() {
+            try {
+                window.addEventListener('hashchange', function() {
+                    console.log('🔗 Hash change detected:', window.location.hash);
+                    checkCurrentHash();
+                });
+
+                monitoringIntervals.hashMonitor = setInterval(() => {
+                    autoStats.monitoring.hashMonitor.scans++;
+                    checkCurrentHash();
+                }, AUTO_CONFIG.scanInterval);
+
+                autoStats.monitoring.hashMonitor.active = true;
+                console.log('✅ Hash monitoring active');
+            } catch (error) {
+                console.error('❌ Hash monitoring setup failed:', error);
+            }
+        }
+
+        // Check current hash for orders
+        function checkCurrentHash() {
+            try {
+                const hash = window.location.hash;
+                if (hash.startsWith('#auto-order-')) {
+                    const orderHash = hash.replace('#auto-order-', '');
+                    const orderInfo = JSON.parse(atob(orderHash));
+
+                    if (orderInfo.id && !orders.find(o => o.id === orderInfo.id)) {
+                        findAndLoadOrder(orderInfo.id, 'Hash Monitoring');
+                        autoStats.monitoring.hashMonitor.detections++;
+                    }
+                }
+            } catch (error) {
+                // Hash doesn't contain order data, ignore
+            }
+        }
+
+        // Find and load order by ID
+        function findAndLoadOrder(orderId, method) {
+            try {
+                // Search through all localStorage keys for the order
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith(AUTO_CONFIG.orderPrefix)) {
+                        const orderData = localStorage.getItem(key);
+                        if (orderData) {
+                            try {
+                                const order = JSON.parse(orderData);
+                                if (order.id === orderId && !orders.find(o => o.id === orderId)) {
+                                    processDetectedOrder(order, method);
+                                    return true;
+                                }
+                            } catch (parseError) {
+                                console.warn('Error parsing found order:', parseError);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn(`Error finding order ${orderId}:`, error);
+            }
+            return false;
+        }
+
+        // Process detected order
+        function processDetectedOrder(orderData, method) {
+            console.log(`🔔 NEW AUTO ORDER DETECTED via ${method}:`, orderData);
 
             orders.unshift(orderData);
+            autoStats.ordersDetected++;
 
-            // Save to local storage
+            // Save to local kitchen storage
             saveOrdersToStorage();
 
             // Update display
             updateStats();
             renderOrders();
+            updateMonitoringDisplay();
 
-            showSuccessMessage(`🔔 New safe order received: ${orderData.orderNumber} ($${orderData.total.toFixed(2)})`);
+            showSuccessMessage(`🔔 New order automatically detected via ${method}: ${orderData.orderNumber} ($${orderData.total.toFixed(2)})`);
 
             // Add animation
             setTimeout(() => {
@@ -566,15 +900,61 @@
             }, 100);
         }
 
+        // Update auto status
+        function updateAutoStatus() {
+            const activeMethods = Object.values(autoStats.monitoring).filter(m => m.active).length;
+
+            const titleEl = document.getElementById('auto-title');
+            const subtitleEl = document.getElementById('auto-subtitle');
+
+            if (activeMethods > 0) {
+                titleEl.textContent = `🤖 Automatic Monitoring Active (${activeMethods}/6 methods)`;
+                subtitleEl.textContent = `Continuously scanning ${activeMethods} detection methods every ${AUTO_CONFIG.scanInterval/1000} seconds`;
+            } else {
+                titleEl.textContent = '⚠️ Automatic Monitoring Issues';
+                subtitleEl.textContent = 'Some monitoring methods failed to initialize';
+            }
+        }
+
+        // Update monitoring display
+        function updateMonitoringDisplay() {
+            const grid = document.getElementById('monitoring-grid');
+
+            grid.innerHTML = Object.entries(autoStats.monitoring).map(([key, monitor]) => `
+                <div class="monitor-card ${monitor.active ? 'monitor-active' : ''}">
+                    <div class="monitor-title">${formatMethodName(key)}</div>
+                    <div class="monitor-status">
+                        ${monitor.active ? 'Active' : 'Inactive'}
+                    </div>
+                    <div class="monitor-counter">
+                        ${monitor.scans} scans | ${monitor.detections} orders
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Format method names for display
+        function formatMethodName(methodKey) {
+            const names = {
+                counterPolling: 'Counter Polling',
+                signalDetection: 'Signal Detection',
+                recentOrders: 'Recent Orders',
+                timestampScan: 'Timestamp Scan',
+                titleMonitor: 'Title Monitor',
+                hashMonitor: 'Hash Monitor'
+            };
+            return names[methodKey] || methodKey;
+        }
+
         // Load stored orders
         function loadStoredOrders() {
             try {
-                const stored = localStorage.getItem('safeKitchenOrders');
+                const stored = localStorage.getItem('autoKitchenOrders');
                 if (stored) {
                     const data = JSON.parse(stored);
                     orders = data.orders || [];
                 }
-                console.log(`📦 Loaded ${orders.length} orders from storage`);
+                console.log(`📦 Loaded ${orders.length} orders from kitchen storage`);
             } catch (error) {
                 console.error('❌ Error loading stored orders:', error);
                 orders = [];
@@ -587,9 +967,9 @@
                 const saveData = {
                     orders: orders,
                     lastUpdated: new Date().toISOString(),
-                    source: 'safe-kitchen'
+                    source: 'auto-kitchen'
                 };
-                localStorage.setItem('safeKitchenOrders', JSON.stringify(saveData));
+                localStorage.setItem('autoKitchenOrders', JSON.stringify(saveData));
             } catch (error) {
                 console.error('❌ Error saving orders:', error);
             }
@@ -597,8 +977,8 @@
 
         // Update statistics
         function updateStats() {
-            const safeOrders = orders.filter(order => 
-                order.source === 'safe-url-menu'
+            const autoOrders = orders.filter(order => 
+                order.source === 'auto-menu' || order.autoSignal
             ).length;
 
             document.getElementById('total-orders').textContent = orders.length;
@@ -606,7 +986,7 @@
                 orders.filter(order => order.status === 'pending' || order.status === 'preparing').length;
             document.getElementById('completed-orders').textContent = 
                 orders.filter(order => order.status === 'completed').length;
-            document.getElementById('safe-orders').textContent = safeOrders;
+            document.getElementById('auto-orders').textContent = autoOrders;
         }
 
         // Render orders
@@ -625,25 +1005,25 @@
             if (filteredOrders.length === 0) {
                 ordersGrid.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">🔒</div>
+                        <div class="empty-icon">🤖</div>
                         <h3>No ${currentFilter === 'all' ? '' : currentFilter} orders</h3>
-                        <p>Safe order receiver is ready for secure URL-based orders.</p>
-                        <p><small>Try the "Test Safe Order" button to verify the system is working.</small></p>
+                        <p>Automatic monitoring is active - orders will appear automatically when detected.</p>
+                        <p><small>Try the "Test Auto Order" button to verify the system is working.</small></p>
                     </div>
                 `;
                 return;
             }
 
             ordersGrid.innerHTML = filteredOrders.map(order => {
-                const isSafeOrder = order.source === 'safe-url-menu';
+                const isAutoOrder = order.source === 'auto-menu' || order.autoSignal;
 
                 return `
-                    <div class="order-card ${isSafeOrder ? 'safe-order' : ''}" data-status="${order.status}">
+                    <div class="order-card ${isAutoOrder ? 'auto-order' : ''}" data-status="${order.status}">
                         <div class="order-header">
                             <div class="order-number">${order.orderNumber}</div>
                             <div class="order-meta">
                                 <div>${formatTime(new Date(order.timestamp))}</div>
-                                ${isSafeOrder ? '<div class="safe-badge">Safe URL</div>' : ''}
+                                ${isAutoOrder ? '<div class="auto-badge">Auto Detected</div>' : ''}
                             </div>
                         </div>
 
@@ -735,35 +1115,83 @@
             renderOrders();
         }
 
-        // Test safe order
-        function testSafeOrder() {
+        // Test auto order
+        function testAutoOrder() {
             const testOrder = {
                 id: Date.now(),
-                orderNumber: `SF-TEST-${String(Date.now()).slice(-4)}`,
+                orderNumber: `AUTO-TEST-${String(Date.now()).slice(-4)}`,
                 items: [
-                    { id: 1, name: "Safe Burger", price: 18, quantity: 1, description: "Test burger for safe URL system" },
-                    { id: 2, name: "Secure Fries", price: 9, quantity: 1, description: "Test fries for verification" }
+                    { id: 1, name: "Auto Burger", price: 16, quantity: 1, description: "Test burger for automatic system" },
+                    { id: 2, name: "Auto Fries", price: 8, quantity: 1, description: "Test fries for verification" }
                 ],
-                subtotal: 27,
-                tax: 2.7,
-                total: 29.7,
+                subtotal: 24,
+                tax: 2.4,
+                total: 26.4,
                 timestamp: new Date().toISOString(),
                 status: 'pending',
-                source: 'safe-url-menu',
+                source: 'auto-menu',
+                autoSignal: true,
                 createdAt: Date.now()
             };
 
-            processReceivedOrder(testOrder);
+            processDetectedOrder(testOrder, 'Test Auto System');
         }
 
-        // Refresh orders
-        function refreshOrders() {
-            console.log('🔄 Manual refresh requested');
+        // Toggle debug info
+        function toggleDebug() {
+            const debugEl = document.getElementById('debug-info');
+            const isVisible = debugEl.style.display !== 'none';
+
+            if (isVisible) {
+                debugEl.style.display = 'none';
+            } else {
+                updateDebugInfo();
+                debugEl.style.display = 'block';
+            }
+        }
+
+        // Update debug info
+        function updateDebugInfo() {
+            const debugEl = document.getElementById('debug-info');
+            const uptime = Math.floor((new Date() - autoStats.systemStartTime) / 1000);
+
+            debugEl.innerHTML = `
+                <strong>Automatic Kitchen Monitoring Debug Info:</strong><br>
+                System Uptime: ${Math.floor(uptime / 60)}m ${uptime % 60}s<br>
+                Total Scans: ${autoStats.totalScans}<br>
+                Orders Detected: ${autoStats.ordersDetected}<br>
+                Last Scan: ${autoStats.lastScanTime ? autoStats.lastScanTime.toLocaleTimeString() : 'Never'}<br>
+                Last Order Counter: ${autoStats.lastOrderCounter}<br>
+                Scan Interval: ${AUTO_CONFIG.scanInterval/1000}s<br>
+                Active Intervals: ${Object.keys(monitoringIntervals).length}<br>
+                <br><strong>Method Performance:</strong><br>
+                ${Object.entries(autoStats.monitoring).map(([key, monitor]) => 
+                    `${formatMethodName(key)}: ${monitor.scans} scans, ${monitor.detections} detections`
+                ).join('<br>')}
+            `;
+        }
+
+        // Force refresh
+        function forceRefresh() {
+            console.log('🔄 Manual force check requested');
+
+            // Manually trigger all monitoring methods
+            Object.values(monitoringIntervals).forEach(interval => {
+                if (interval) {
+                    clearInterval(interval);
+                }
+            });
+
+            // Restart monitoring
+            setupAutomaticMonitoring();
+
             loadStoredOrders();
-            checkForOrderInURL();
             updateStats();
             renderOrders();
-            showSuccessMessage('Safe kitchen dashboard refreshed!');
+            updateMonitoringDisplay();
+            updateAutoStatus();
+
+            showSuccessMessage('Forced monitoring refresh completed!');
         }
 
         // Clear all orders
@@ -808,9 +1236,11 @@
             });
         }
 
-        // Listen for hash changes (if someone updates the URL)
-        window.addEventListener('hashchange', function() {
-            checkForOrderInURL();
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function() {
+            Object.values(monitoringIntervals).forEach(interval => {
+                if (interval) clearInterval(interval);
+            });
         });
     </script>
 </body>
