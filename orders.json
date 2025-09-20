@@ -1,9 +1,34 @@
 {
   "restaurant": "Bella Vista",
-  "lastUpdated": "2025-09-20T11:19:00.522Z",
-  "totalOrders": 7,
+  "lastUpdated": "2025-09-20T11:22:38.848Z",
+  "totalOrders": 8,
   "method": "direct-send-to-receiver",
   "orders": [
+    {
+      "id": 1758367358021,
+      "orderNumber": "DIRECT-358021",
+      "items": [
+        {
+          "id": 7,
+          "name": "Coffee",
+          "category": "Beverages",
+          "price": 5,
+          "description": "Fresh brewed coffee",
+          "quantity": 1
+        }
+      ],
+      "subtotal": 5,
+      "tax": 0.5,
+      "total": 5.5,
+      "timestamp": "2025-09-20T11:22:38.021Z",
+      "status": "pending",
+      "source": "github-direct",
+      "restaurant": "Bella Vista",
+      "metadata": {
+        "createdAt": "2025-09-20T11:22:38.030Z",
+        "method": "Direct Send to receiver.html"
+      }
+    },
     {
       "id": 1758367139966,
       "orderNumber": "DIRECT-139966",
