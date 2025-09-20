@@ -106,7 +106,7 @@
         // SIMPLE WORKING SYSTEM - No complex optimizations
 
         const CONFIG = {
-            token: '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',
+            token: 'YOUR_NEW_GITHUB_TOKEN_HERE', // Replace this with your new token
             repo: 'apurv1155/qrapp',
             file: 'orders.json'
         };
@@ -176,6 +176,7 @@
                 container.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
                 document.getElementById('cart-count').textContent = '0';
                 updateTotals(0, 0, 0);
+                document.getElementById('send-btn').disabled = true;
                 return;
             }
 
@@ -200,6 +201,7 @@
             const total = subtotal + tax;
 
             updateTotals(subtotal, tax, total);
+            document.getElementById('send-btn').disabled = false;
         }
 
         function changeQty(itemId, change) {
@@ -285,9 +287,13 @@
                         const content = JSON.parse(atob(data.content));
                         orders = content.orders || [];
                         console.log(`📥 Found ${orders.length} existing orders`);
+                    } else if (getResponse.status === 404) {
+                        console.log('📝 orders.json not found, will create a new file.');
+                    } else {
+                        throw new Error(`Failed to fetch existing orders: ${getResponse.statusText}`);
                     }
                 } catch (e) {
-                    console.log('📝 Creating new orders file');
+                    console.error('Error fetching existing orders:', e);
                 }
 
                 // Add new order
@@ -341,7 +347,7 @@
 
             } catch (error) {
                 console.error('❌ Error:', error);
-                showMessage('❌ Network error - please try again', 'error');
+                showMessage('❌ Network error or failed to send - please try again', 'error');
             } finally {
                 sendBtn.disabled = false;
                 sendBtn.textContent = '🚀 SEND ORDER TO KITCHEN';
