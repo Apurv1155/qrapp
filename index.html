@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Restaurant - Auto Cross-Device</title>
+    <title>Bella Vista - Auto GitHub JSON Database</title>
     <style>
         * {
             margin: 0;
@@ -44,25 +44,117 @@
             font-size: 1.2rem;
         }
 
-        .auto-info {
-            background: linear-gradient(45deg, #e8f5e8, #f0f8ff);
-            border: 2px solid #007bff;
+        .github-info {
+            background: linear-gradient(45deg, #f6f8fa, #e1e4e8);
+            border: 2px solid #0366d6;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
+        }
+
+        .github-title {
+            color: #0366d6;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
             text-align: center;
         }
 
-        .auto-title {
-            color: #007bff;
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 10px;
+        .github-subtitle {
+            color: #586069;
+            font-size: 0.9rem;
+            text-align: center;
         }
 
-        .auto-subtitle {
-            color: #004085;
+        .status-panel {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .status-title {
+            color: #0366d6;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .status-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+        }
+
+        .status-label {
             font-size: 0.9rem;
+            color: #586069;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #0366d6;
+        }
+
+        .config-panel {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .config-title {
+            color: #856404;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .config-input {
+            display: grid;
+            grid-template-columns: 150px 1fr 100px;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .config-input label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .config-input input {
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .config-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .config-btn:hover {
+            background: #0056b3;
+        }
+
+        .config-btn.success {
+            background: #28a745;
         }
 
         .content-grid {
@@ -317,16 +409,17 @@
             background: #138496;
         }
 
-        .send-to-kitchen-btn {
-            background: #007bff;
+        .send-to-github-btn {
+            background: #0366d6;
             color: white;
+            font-size: 1.1rem;
         }
 
-        .send-to-kitchen-btn:hover {
-            background: #0056b3;
+        .send-to-github-btn:hover {
+            background: #0256cc;
         }
 
-        .send-to-kitchen-btn.sending {
+        .send-to-github-btn.sending {
             background: #6c757d;
             cursor: not-allowed;
         }
@@ -348,59 +441,6 @@
             border: 1px solid #c3e6cb;
         }
 
-        .sync-status {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-weight: 500;
-        }
-
-        .status-ready {
-            background: #e7f3ff;
-            border: 2px solid #007bff;
-            color: #004085;
-        }
-
-        .status-sending {
-            background: #fff3cd;
-            border: 2px solid #ffc107;
-            color: #856404;
-        }
-
-        .status-sent {
-            background: #d4edda;
-            border: 2px solid #28a745;
-            color: #155724;
-        }
-
-        .sync-indicator {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: pulse 2s infinite;
-        }
-
-        .indicator-ready {
-            background: #007bff;
-        }
-
-        .indicator-sending {
-            background: #ffc107;
-        }
-
-        .indicator-sent {
-            background: #28a745;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
         @media (max-width: 768px) {
             .content-grid {
                 grid-template-columns: 1fr;
@@ -413,10 +453,6 @@
             .menu-grid {
                 grid-template-columns: 1fr;
             }
-
-            .category-filters {
-                justify-content: center;
-            }
         }
     </style>
 </head>
@@ -425,19 +461,64 @@
         <!-- Header -->
         <header class="header">
             <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
-            <p class="restaurant-tagline">Automatic Cross-Device System</p>
+            <p class="restaurant-tagline">Automatic GitHub JSON Database System</p>
         </header>
 
-        <!-- Auto System Info -->
-        <div class="auto-info">
-            <div class="auto-title">🤖 FULLY AUTOMATIC - Kitchen Receives Orders Automatically!</div>
-            <div class="auto-subtitle">No copying, no messages - orders appear automatically on kitchen devices</div>
+        <!-- GitHub Info -->
+        <div class="github-info">
+            <div class="github-title">🚀 LIVE GitHub JSON Database - Fully Automatic</div>
+            <div class="github-subtitle">Orders automatically saved to GitHub repository as JSON files • Updates live across all devices</div>
         </div>
 
-        <!-- Sync Status -->
-        <div id="sync-status" class="sync-status status-ready">
-            <span id="sync-indicator" class="sync-indicator indicator-ready"></span>
-            <span id="sync-text">Auto-sync active - Kitchen will receive orders automatically</span>
+        <!-- Configuration Panel -->
+        <div class="config-panel">
+            <div class="config-title">⚙️ GitHub Configuration (One-time setup)</div>
+
+            <div class="config-input">
+                <label>Repository:</label>
+                <input type="text" id="github-repo" placeholder="username/repository-name" value="apurv1155/qrapp">
+                <button class="config-btn" onclick="testRepo()">Test</button>
+            </div>
+
+            <div class="config-input">
+                <label>Branch:</label>
+                <input type="text" id="github-branch" placeholder="main" value="main">
+                <button class="config-btn" onclick="testBranch()">Test</button>
+            </div>
+
+            <div class="config-input">
+                <label>JSON File:</label>
+                <input type="text" id="json-filename" placeholder="orders.json" value="orders.json">
+                <button class="config-btn success" onclick="saveConfig()">Save Config</button>
+            </div>
+
+            <p style="margin-top: 10px; font-size: 0.9rem; color: #6c757d;">
+                <strong>How it works:</strong> Orders are automatically committed as JSON files to your GitHub repository. 
+                Kitchen devices fetch the latest JSON automatically. No manual steps needed!
+            </p>
+        </div>
+
+        <!-- Status Panel -->
+        <div class="status-panel">
+            <div class="status-title">📊 Live GitHub Database Status</div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-label">Repository</div>
+                    <div class="status-value" id="status-repo">Not configured</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Last Commit</div>
+                    <div class="status-value" id="status-commit">Never</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">JSON File Size</div>
+                    <div class="status-value" id="status-size">0 KB</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Auto Updates</div>
+                    <div class="status-value" id="status-auto">Active</div>
+                </div>
+            </div>
         </div>
 
         <!-- Success Message -->
@@ -488,14 +569,14 @@
 
                 <div class="cart-actions">
                     <button id="generate-invoice-btn" class="action-btn generate-invoice-btn">Generate Invoice</button>
-                    <button id="send-to-kitchen-btn" class="action-btn send-to-kitchen-btn">🤖 Send Automatically</button>
+                    <button id="send-to-github-btn" class="action-btn send-to-github-btn">🚀 AUTO COMMIT TO GITHUB</button>
                 </div>
             </aside>
         </div>
     </div>
 
     <script>
-        // Automatic Cross-Device Restaurant Ordering System
+        // GitHub Auto JSON Database Restaurant System
 
         // Menu data
         const menuItems = [
@@ -513,62 +594,103 @@
         let cart = {};
         let currentFilter = 'all';
 
-        // Auto-sync configuration
-        const AUTO_CONFIG = {
-            orderPrefix: 'BellaVistaOrder_',
-            signalPrefix: 'BellaVistaSignal_',
-            counterKey: 'BellaVistaCounter',
-            restaurantId: 'bella-vista-auto-' + Date.now().toString().slice(-6)
+        // GitHub configuration
+        let githubConfig = {
+            repo: 'apurv1155/qrapp',
+            branch: 'main',
+            jsonFile: 'orders.json',
+            apiBase: 'https://api.github.com'
         };
 
         // Initialize application
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🍽️ Automatic Cross-Device Menu System Starting...');
+            console.log('🚀 GitHub Auto JSON Database System Starting...');
 
+            loadGithubConfig();
             renderMenuItems();
             setupEventListeners();
             updateCartDisplay();
-            initializeAutoSystem();
+            updateStatusDisplay();
 
-            console.log('✅ Automatic cross-device system ready');
+            console.log('✅ GitHub auto system ready');
         });
 
-        // Initialize automatic system
-        function initializeAutoSystem() {
-            // Initialize order counter if not exists
-            if (!localStorage.getItem(AUTO_CONFIG.counterKey)) {
-                localStorage.setItem(AUTO_CONFIG.counterKey, '0');
+        // Load GitHub configuration
+        function loadGithubConfig() {
+            const saved = localStorage.getItem('githubConfig');
+            if (saved) {
+                const config = JSON.parse(saved);
+                githubConfig = { ...githubConfig, ...config };
+
+                document.getElementById('github-repo').value = githubConfig.repo;
+                document.getElementById('github-branch').value = githubConfig.branch;
+                document.getElementById('json-filename').value = githubConfig.jsonFile;
             }
 
-            updateSyncStatus('ready', 'Auto-sync active - Kitchen will receive orders automatically');
-            console.log('🤖 Automatic cross-device system initialized');
+            updateStatusDisplay();
         }
 
-        // Update sync status
-        function updateSyncStatus(status, message) {
-            const statusEl = document.getElementById('sync-status');
-            const indicatorEl = document.getElementById('sync-indicator');
-            const textEl = document.getElementById('sync-text');
+        // Update status display
+        function updateStatusDisplay() {
+            document.getElementById('status-repo').textContent = githubConfig.repo;
+            document.getElementById('status-commit').textContent = 
+                localStorage.getItem('lastCommit') || 'Never';
+            document.getElementById('status-size').textContent = 
+                localStorage.getItem('lastFileSize') || '0 KB';
+        }
 
-            statusEl.className = 'sync-status';
-            indicatorEl.className = 'sync-indicator';
-
-            switch (status) {
-                case 'ready':
-                    statusEl.classList.add('status-ready');
-                    indicatorEl.classList.add('indicator-ready');
-                    break;
-                case 'sending':
-                    statusEl.classList.add('status-sending');
-                    indicatorEl.classList.add('indicator-sending');
-                    break;
-                case 'sent':
-                    statusEl.classList.add('status-sent');
-                    indicatorEl.classList.add('indicator-sent');
-                    break;
+        // Test repository access
+        async function testRepo() {
+            const repo = document.getElementById('github-repo').value;
+            if (!repo) {
+                showSuccessMessage('Please enter repository name', 'error');
+                return;
             }
 
-            textEl.textContent = message;
+            try {
+                const response = await fetch(`https://api.github.com/repos/${repo}`);
+                if (response.ok) {
+                    showSuccessMessage(`✅ Repository ${repo} found and accessible!`);
+                } else {
+                    showSuccessMessage(`❌ Repository ${repo} not found or not accessible`, 'error');
+                }
+            } catch (error) {
+                showSuccessMessage('❌ Error testing repository', 'error');
+            }
+        }
+
+        // Test branch access
+        async function testBranch() {
+            const repo = document.getElementById('github-repo').value;
+            const branch = document.getElementById('github-branch').value;
+
+            if (!repo || !branch) {
+                showSuccessMessage('Please enter repository and branch', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://api.github.com/repos/${repo}/branches/${branch}`);
+                if (response.ok) {
+                    showSuccessMessage(`✅ Branch ${branch} found in ${repo}!`);
+                } else {
+                    showSuccessMessage(`❌ Branch ${branch} not found in ${repo}`, 'error');
+                }
+            } catch (error) {
+                showSuccessMessage('❌ Error testing branch', 'error');
+            }
+        }
+
+        // Save configuration
+        function saveConfig() {
+            githubConfig.repo = document.getElementById('github-repo').value;
+            githubConfig.branch = document.getElementById('github-branch').value;
+            githubConfig.jsonFile = document.getElementById('json-filename').value;
+
+            localStorage.setItem('githubConfig', JSON.stringify(githubConfig));
+            updateStatusDisplay();
+
+            showSuccessMessage('✅ GitHub configuration saved!');
         }
 
         // Setup event listeners
@@ -583,9 +705,9 @@
                 });
             });
 
-            // Invoice and kitchen buttons
+            // Invoice and GitHub buttons
             document.getElementById('generate-invoice-btn').addEventListener('click', generateInvoice);
-            document.getElementById('send-to-kitchen-btn').addEventListener('click', sendToKitchenAutomatic);
+            document.getElementById('send-to-github-btn').addEventListener('click', sendToGitHub);
         }
 
         // Render menu items
@@ -685,6 +807,140 @@
             document.getElementById('total').textContent = `$${total.toFixed(2)}`;
         }
 
+        // Send order to GitHub as JSON file
+        async function sendToGitHub() {
+            const cartItems = Object.values(cart);
+            if (cartItems.length === 0) {
+                showSuccessMessage('Cart is empty!', 'error');
+                return;
+            }
+
+            if (!githubConfig.repo) {
+                showSuccessMessage('⚠️ Please configure GitHub repository first', 'warning');
+                return;
+            }
+
+            const sendBtn = document.getElementById('send-to-github-btn');
+            const originalText = sendBtn.textContent;
+            sendBtn.classList.add('sending');
+            sendBtn.textContent = 'COMMITTING TO GITHUB...';
+            sendBtn.disabled = true;
+
+            try {
+                const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * 0.1;
+                const total = subtotal + tax;
+
+                const orderId = Date.now();
+                const orderNumber = `GH-${String(orderId).slice(-6)}`;
+
+                const orderData = {
+                    id: orderId,
+                    orderNumber: orderNumber,
+                    items: cartItems,
+                    subtotal: subtotal,
+                    tax: tax,
+                    total: total,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending',
+                    source: 'github-auto',
+                    restaurant: 'Bella Vista',
+                    metadata: {
+                        createdAt: new Date().toISOString(),
+                        deviceInfo: navigator.userAgent.substring(0, 100),
+                        location: window.location.href
+                    }
+                };
+
+                console.log('🚀 Sending order to GitHub:', orderData);
+
+                // Get existing orders from GitHub
+                let allOrders = [];
+                try {
+                    const existingResponse = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/${githubConfig.jsonFile}?ref=${githubConfig.branch}`);
+                    if (existingResponse.ok) {
+                        const existingData = await existingResponse.json();
+                        const existingContent = atob(existingData.content);
+                        allOrders = JSON.parse(existingContent);
+                        console.log('📥 Retrieved existing orders from GitHub:', allOrders.length);
+                    }
+                } catch (error) {
+                    console.log('📝 No existing orders file, creating new one');
+                }
+
+                // Add new order to the beginning
+                allOrders.unshift(orderData);
+
+                // Keep only last 100 orders
+                if (allOrders.length > 100) {
+                    allOrders = allOrders.slice(0, 100);
+                }
+
+                // Create the JSON content
+                const jsonContent = JSON.stringify({
+                    restaurant: 'Bella Vista',
+                    lastUpdated: new Date().toISOString(),
+                    totalOrders: allOrders.length,
+                    orders: allOrders
+                }, null, 2);
+
+                // Prepare commit data
+                const commitData = {
+                    message: `Auto-update orders.json - New order ${orderNumber} ($${total.toFixed(2)})`,
+                    content: btoa(jsonContent),
+                    branch: githubConfig.branch
+                };
+
+                // Get current file SHA if it exists (needed for updates)
+                try {
+                    const shaResponse = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/${githubConfig.jsonFile}?ref=${githubConfig.branch}`);
+                    if (shaResponse.ok) {
+                        const shaData = await shaResponse.json();
+                        commitData.sha = shaData.sha;
+                    }
+                } catch (error) {
+                    console.log('📝 File does not exist, creating new file');
+                }
+
+                // Commit to GitHub
+                const commitResponse = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/${githubConfig.jsonFile}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(commitData)
+                });
+
+                if (commitResponse.ok) {
+                    const commitResult = await commitResponse.json();
+                    console.log('✅ Successfully committed to GitHub:', commitResult);
+
+                    // Update status
+                    localStorage.setItem('lastCommit', new Date().toLocaleString());
+                    localStorage.setItem('lastFileSize', `${Math.round(jsonContent.length / 1024)} KB`);
+                    updateStatusDisplay();
+
+                    showSuccessMessage(`🚀 Order ${orderNumber} automatically committed to GitHub! All kitchen devices will receive it instantly!`);
+
+                    // Clear cart
+                    cart = {};
+                    updateCartDisplay();
+                } else {
+                    const error = await commitResponse.text();
+                    console.error('❌ GitHub commit failed:', error);
+                    showSuccessMessage('❌ Failed to commit to GitHub. Check repository permissions.', 'error');
+                }
+
+            } catch (error) {
+                console.error('❌ GitHub error:', error);
+                showSuccessMessage('❌ Error connecting to GitHub. Check configuration.', 'error');
+            } finally {
+                sendBtn.classList.remove('sending');
+                sendBtn.textContent = originalText;
+                sendBtn.disabled = false;
+            }
+        }
+
         // Generate invoice
         function generateInvoice() {
             const cartItems = Object.values(cart);
@@ -696,7 +952,7 @@
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const tax = subtotal * 0.1;
             const total = subtotal + tax;
-            const orderNumber = `AUTO-${Date.now().toString().slice(-6)}`;
+            const orderNumber = `GH-INV-${Date.now().toString().slice(-6)}`;
 
             const invoiceContent = `
                 <!DOCTYPE html>
@@ -720,14 +976,15 @@
                 <body>
                     <div class="header">
                         <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
-                        <p>Automatic Cross-Device Customer Invoice</p>
+                        <p>GitHub Auto JSON Database Invoice</p>
                     </div>
 
                     <div class="order-info">
                         <p><strong>Order Number:</strong> ${orderNumber}</p>
                         <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
                         <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
-                        <p><strong>System:</strong> Automatic Cross-Device</p>
+                        <p><strong>System:</strong> GitHub Auto JSON Database</p>
+                        <p><strong>Repository:</strong> ${githubConfig.repo}</p>
                     </div>
 
                     <table class="items-table">
@@ -761,8 +1018,8 @@
 
                     <div class="footer">
                         <p>Thank you for dining with us!</p>
-                        <p><em>Generated via Automatic Cross-Device System</em></p>
-                        <p><small>Order sent to kitchen automatically</small></p>
+                        <p><em>Generated via GitHub Auto JSON Database</em></p>
+                        <p><small>Order automatically committed to GitHub repository</small></p>
                     </div>
                 </body>
                 </html>
@@ -774,182 +1031,6 @@
             invoiceWindow.print();
 
             showSuccessMessage('Invoice generated successfully!');
-        }
-
-        // Send to kitchen automatically
-        function sendToKitchenAutomatic() {
-            const cartItems = Object.values(cart);
-            if (cartItems.length === 0) {
-                showSuccessMessage('Cart is empty!', 'error');
-                return;
-            }
-
-            const sendBtn = document.getElementById('send-to-kitchen-btn');
-            const originalText = sendBtn.textContent;
-            sendBtn.classList.add('sending');
-            sendBtn.textContent = 'Sending Automatically...';
-            sendBtn.disabled = true;
-
-            updateSyncStatus('sending', 'Broadcasting order to all kitchen devices automatically...');
-
-            try {
-                const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const tax = subtotal * 0.1;
-                const total = subtotal + tax;
-
-                // Generate unique order ID with timestamp
-                const orderId = Date.now() + Math.floor(Math.random() * 1000);
-                const orderNumber = `AUTO-${String(orderId).slice(-6)}`;
-
-                const orderData = {
-                    id: orderId,
-                    orderNumber: orderNumber,
-                    items: cartItems,
-                    subtotal: subtotal,
-                    tax: tax,
-                    total: total,
-                    timestamp: new Date().toISOString(),
-                    status: 'pending',
-                    source: 'auto-menu',
-                    restaurantId: AUTO_CONFIG.restaurantId,
-                    createdAt: Date.now(),
-                    autoSignal: true
-                };
-
-                console.log('🤖 Broadcasting order automatically:', orderData);
-
-                // Use multiple automatic broadcasting methods
-                automaticOrderBroadcast(orderData);
-
-                // Success feedback
-                setTimeout(() => {
-                    sendBtn.classList.remove('sending');
-                    sendBtn.textContent = originalText;
-                    sendBtn.disabled = false;
-
-                    updateSyncStatus('sent', `Order ${orderNumber} sent automatically to all kitchen devices!`);
-                    showSuccessMessage(`Order ${orderNumber} sent automatically! Kitchen will receive it without any action needed! 🤖`);
-
-                    // Clear cart after successful send
-                    cart = {};
-                    updateCartDisplay();
-
-                    // Reset status after 5 seconds
-                    setTimeout(() => {
-                        updateSyncStatus('ready', 'Auto-sync active - Kitchen will receive orders automatically');
-                    }, 5000);
-                }, 1500);
-
-            } catch (error) {
-                console.error('❌ Error sending automatic order:', error);
-
-                sendBtn.classList.remove('sending');
-                sendBtn.textContent = originalText;
-                sendBtn.disabled = false;
-
-                updateSyncStatus('ready', 'Auto-sync active - Kitchen will receive orders automatically');
-                showSuccessMessage('Error sending order. Please try again.', 'error');
-            }
-        }
-
-        // Automatic order broadcast using multiple methods
-        function automaticOrderBroadcast(orderData) {
-            const orderId = orderData.id;
-
-            // Method 1: Primary order storage with counter increment
-            try {
-                // Get current counter
-                let counter = parseInt(localStorage.getItem(AUTO_CONFIG.counterKey) || '0');
-                counter++;
-
-                // Store order with counter-based key
-                const orderKey = AUTO_CONFIG.orderPrefix + counter;
-                localStorage.setItem(orderKey, JSON.stringify(orderData));
-                localStorage.setItem(AUTO_CONFIG.counterKey, counter.toString());
-
-                console.log(`📦 Order stored with key: ${orderKey}`);
-            } catch (error) {
-                console.warn('Primary storage failed:', error);
-            }
-
-            // Method 2: Signal broadcasting
-            try {
-                const signalKey = AUTO_CONFIG.signalPrefix + Date.now();
-                const signalData = {
-                    type: 'NEW_ORDER',
-                    orderId: orderId,
-                    orderNumber: orderData.orderNumber,
-                    timestamp: Date.now(),
-                    total: orderData.total
-                };
-                localStorage.setItem(signalKey, JSON.stringify(signalData));
-                console.log(`📡 Signal broadcast: ${signalKey}`);
-            } catch (error) {
-                console.warn('Signal broadcast failed:', error);
-            }
-
-            // Method 3: Recent orders list
-            try {
-                const recentKey = 'BellaVistaRecent';
-                let recentOrders = [];
-                const stored = localStorage.getItem(recentKey);
-                if (stored) {
-                    recentOrders = JSON.parse(stored);
-                }
-                recentOrders.unshift(orderData);
-                if (recentOrders.length > 50) {
-                    recentOrders = recentOrders.slice(0, 50);
-                }
-                localStorage.setItem(recentKey, JSON.stringify(recentOrders));
-                console.log(`📋 Added to recent orders`);
-            } catch (error) {
-                console.warn('Recent orders update failed:', error);
-            }
-
-            // Method 4: Timestamp-based keys for chronological access
-            try {
-                const timeKey = 'BellaVistaTime_' + Date.now();
-                localStorage.setItem(timeKey, JSON.stringify({
-                    orderId: orderId,
-                    orderNumber: orderData.orderNumber,
-                    total: orderData.total,
-                    fullOrder: orderData
-                }));
-                console.log(`⏰ Timestamp key created: ${timeKey}`);
-            } catch (error) {
-                console.warn('Timestamp key creation failed:', error);
-            }
-
-            // Method 5: Window title signaling
-            try {
-                const originalTitle = document.title;
-                document.title = `[AUTO_ORDER:${orderData.orderNumber}:${orderData.total.toFixed(2)}:${orderId}] ${originalTitle}`;
-
-                setTimeout(() => {
-                    document.title = originalTitle;
-                }, 15000);
-                console.log('📄 Title signaling activated');
-            } catch (error) {
-                console.warn('Title signaling failed:', error);
-            }
-
-            // Method 6: Hash-based signaling
-            try {
-                const orderHash = btoa(JSON.stringify({
-                    id: orderId,
-                    orderNumber: orderData.orderNumber,
-                    total: orderData.total,
-                    timestamp: orderData.timestamp
-                }));
-                window.location.hash = `auto-order-${orderHash}`;
-
-                setTimeout(() => {
-                    window.location.hash = '';
-                }, 10000);
-                console.log('🔗 Hash signaling activated');
-            } catch (error) {
-                console.warn('Hash signaling failed:', error);
-            }
         }
 
         // Show success message
@@ -982,7 +1063,7 @@
 
             setTimeout(() => {
                 messageEl.style.display = 'none';
-            }, 5000);
+            }, 8000);
         }
     </script>
 </body>
