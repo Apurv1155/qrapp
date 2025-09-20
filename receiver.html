@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Kitchen - GitHub API Monitor</title>
+    <title>Bella Vista Kitchen - Safe Order Receiver</title>
     <style>
         * {
             margin: 0;
@@ -44,9 +44,9 @@
             font-size: 1.2rem;
         }
 
-        .github-status {
-            background: linear-gradient(45deg, #f6f8fa, #e1e8ed);
-            border: 2px solid #0366d6;
+        .safe-status {
+            background: linear-gradient(45deg, #e8f5e8, #f0f8ff);
+            border: 2px solid #28a745;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
@@ -54,58 +54,15 @@
         }
 
         .status-title {
-            color: #0366d6;
+            color: #28a745;
             font-weight: bold;
             font-size: 1.1rem;
             margin-bottom: 10px;
         }
 
         .status-subtitle {
-            color: #666;
+            color: #155724;
             font-size: 0.9rem;
-        }
-
-        .api-monitoring {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .monitor-card {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            border-left: 4px solid #0366d6;
-        }
-
-        .monitor-title {
-            font-weight: bold;
-            color: #0366d6;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-        }
-
-        .monitor-status {
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        .monitor-active {
-            border-left-color: #28a745;
-        }
-
-        .monitor-active .monitor-title {
-            color: #28a745;
-        }
-
-        .monitor-error {
-            border-left-color: #dc3545;
-        }
-
-        .monitor-error .monitor-title {
-            color: #dc3545;
         }
 
         .stats-grid {
@@ -182,12 +139,12 @@
             transform: translateY(-1px);
         }
 
-        .control-btn.github {
-            background: #0366d6;
+        .control-btn.safe {
+            background: #28a745;
         }
 
-        .control-btn.github:hover {
-            background: #0256cc;
+        .control-btn.safe:hover {
+            background: #218838;
         }
 
         .control-btn.danger {
@@ -242,32 +199,32 @@
 
         .order-card.new-order {
             animation: newOrderGlow 4s;
-            border-color: #0366d6;
-            background: linear-gradient(45deg, #f6f8fa, #f8f9fa);
+            border-color: #28a745;
+            background: linear-gradient(45deg, #e8f5e8, #f8f9fa);
         }
 
-        .order-card.github-order {
-            border-left: 5px solid #0366d6;
+        .order-card.safe-order {
+            border-left: 5px solid #28a745;
         }
 
         @keyframes newOrderGlow {
             0% { 
-                border-color: #0366d6;
-                background: #f6f8fa;
+                border-color: #28a745;
+                background: #e8f5e8;
                 transform: scale(1.02);
-                box-shadow: 0 0 20px rgba(3, 102, 214, 0.3);
+                box-shadow: 0 0 20px rgba(40, 167, 69, 0.3);
             }
             25% {
-                border-color: #28a745;
-                background: #d4edda;
+                border-color: #007bff;
+                background: #e7f3ff;
             }
             50% {
                 border-color: #17a2b8;
                 background: #cce7ff;
             }
             75% {
-                border-color: #0366d6;
-                background: #f6f8fa;
+                border-color: #28a745;
+                background: #e8f5e8;
             }
             100% { 
                 border-color: #ddd;
@@ -296,8 +253,8 @@
             color: #666;
         }
 
-        .github-badge {
-            background: #0366d6;
+        .safe-badge {
+            background: #28a745;
             color: white;
             padding: 3px 10px;
             border-radius: 12px;
@@ -305,13 +262,6 @@
             font-weight: 500;
             margin-top: 4px;
             display: inline-block;
-        }
-
-        .gist-id {
-            font-family: monospace;
-            font-size: 0.7rem;
-            color: #666;
-            margin-top: 2px;
         }
 
         .order-items {
@@ -413,6 +363,28 @@
             opacity: 0.5;
         }
 
+        .url-instructions {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 30px;
+        }
+
+        .url-instructions h3 {
+            color: #1976d2;
+            margin-bottom: 15px;
+        }
+
+        .url-instructions ol {
+            color: #424242;
+            padding-left: 20px;
+        }
+
+        .url-instructions li {
+            margin-bottom: 8px;
+        }
+
         .success-message {
             background: #d4edda;
             color: #155724;
@@ -422,26 +394,6 @@
             margin-bottom: 20px;
             display: none;
             font-weight: 500;
-        }
-
-        .debug-info {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-family: monospace;
-            font-size: 0.8rem;
-            display: none;
-        }
-
-        .rotating {
-            animation: rotate 1s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
@@ -468,10 +420,6 @@
             .order-actions {
                 justify-content: center;
             }
-
-            .api-monitoring {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -480,20 +428,26 @@
         <!-- Header -->
         <header class="header">
             <h1 class="kitchen-title">🍳 Bella Vista Kitchen</h1>
-            <p class="kitchen-subtitle">GitHub API Cross-Device Order Monitor</p>
+            <p class="kitchen-subtitle">Safe Order Receiver - No External Dependencies</p>
         </header>
 
-        <!-- GitHub Status -->
-        <div class="github-status">
-            <div class="status-title" id="github-title">🚀 GitHub API Monitoring Active</div>
-            <div class="status-subtitle" id="github-subtitle">Scanning GitHub Gists for new orders from any device worldwide</div>
+        <!-- Safe Status -->
+        <div class="safe-status">
+            <div class="status-title">🔒 100% Safe Order Reception</div>
+            <div class="status-subtitle">Orders received via secure URLs - no external services used</div>
         </div>
 
-        <!-- API Monitoring Grid -->
-        <div class="api-monitoring" id="api-monitoring"></div>
-
-        <!-- Debug Info -->
-        <div id="debug-info" class="debug-info"></div>
+        <!-- URL Instructions -->
+        <div class="url-instructions">
+            <h3>📱 How to receive orders:</h3>
+            <ol>
+                <li><strong>Customer</strong> places order and clicks "Send Safely"</li>
+                <li><strong>Customer</strong> copies the generated Kitchen URL</li>
+                <li><strong>Customer</strong> sends URL to kitchen (WhatsApp, SMS, Email, etc.)</li>
+                <li><strong>Kitchen</strong> opens the URL → Order appears instantly!</li>
+                <li>Process the order normally using the buttons below</li>
+            </ol>
+        </div>
 
         <!-- Statistics -->
         <div class="stats-grid">
@@ -510,19 +464,18 @@
                 <div class="stat-label">Completed Today</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number" id="github-orders">0</div>
-                <div class="stat-label">GitHub API Orders</div>
+                <div class="stat-number" id="safe-orders">0</div>
+                <div class="stat-label">Safe Orders</div>
             </div>
         </div>
 
         <!-- Orders Section -->
         <div class="orders-section">
             <div class="section-header">
-                <h2 class="section-title">Live Orders</h2>
+                <h2 class="section-title">Kitchen Orders</h2>
                 <div class="control-buttons">
-                    <button class="control-btn github" onclick="testGitHubOrder()">🧪 Test GitHub Order</button>
-                    <button class="control-btn" onclick="toggleDebug()">🐛 Debug Info</button>
-                    <button class="control-btn" onclick="forceRefresh()">🔄 Refresh</button>
+                    <button class="control-btn safe" onclick="testSafeOrder()">🧪 Test Safe Order</button>
+                    <button class="control-btn" onclick="refreshOrders()">🔄 Refresh</button>
                     <button class="control-btn danger" onclick="clearAllOrders()">🗑️ Clear All</button>
                 </div>
             </div>
@@ -542,221 +495,58 @@
             <!-- Orders Grid -->
             <div id="orders-grid" class="orders-grid">
                 <div class="empty-state">
-                    <div class="empty-icon">🚀</div>
-                    <h3>GitHub API Monitoring Active</h3>
-                    <p>Continuously monitoring GitHub API for new orders from any device worldwide.</p>
-                    <p><small>Orders will appear automatically when customers send them via GitHub API.</small></p>
+                    <div class="empty-icon">🔒</div>
+                    <h3>Safe Order Receiver Ready</h3>
+                    <p>Waiting for orders via secure URLs from customer devices.</p>
+                    <p><small>When customers send Kitchen URLs, orders will appear here automatically.</small></p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // GitHub API Cross-Device Kitchen Order Monitoring System
+        // Safe Cross-Device Kitchen Order Reception System
 
         let orders = [];
         let currentFilter = 'all';
         let isInitialized = false;
-        let monitoringIntervals = {};
-        let githubStats = {
-            totalScans: 0,
-            ordersDetected: 0,
-            lastScanTime: null,
-            systemStartTime: new Date(),
-            activeMethods: 0,
-            errors: [],
-            lastGistId: null
-        };
 
-        // GitHub API configuration
-        const GITHUB_CONFIG = {
-            apiUrl: 'https://api.github.com',
-            searchInterval: 10000, // 10 seconds
-            maxGistsToCheck: 50,
-            retryAttempts: 3
-        };
-
-        // Initialize the GitHub API kitchen system
+        // Initialize the safe kitchen system
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🍳 GitHub API Kitchen Monitoring System Starting...');
+            console.log('🍳 Safe Kitchen Order Reception System Starting...');
 
             loadStoredOrders();
-            setupGitHubAPIMonitoring();
-            setupEventListeners();
+            checkForOrderInURL();
             updateStats();
             renderOrders();
-            updateAPIMonitoringDisplay();
 
             isInitialized = true;
-            console.log('✅ GitHub API Kitchen Monitoring System Ready');
+            console.log('✅ Safe Kitchen Reception System Ready');
         });
 
-        // Setup GitHub API monitoring
-        function setupGitHubAPIMonitoring() {
-            // Method 1: GitHub Gists API scanning
-            setupGitHubGistScanning();
+        // Check for order in URL hash
+        function checkForOrderInURL() {
+            const hash = window.location.hash;
+            if (hash && hash.includes('order=')) {
+                try {
+                    const orderParam = hash.split('order=')[1];
+                    const orderData = JSON.parse(atob(orderParam));
 
-            // Method 2: Fallback local storage monitoring
-            setupFallbackStorageMonitoring();
-
-            console.log('🚀 GitHub API monitoring methods initialized');
-            updateGitHubStatus();
-        }
-
-        // Setup GitHub Gists API scanning
-        function setupGitHubGistScanning() {
-            try {
-                monitoringIntervals.gistScanning = setInterval(async () => {
-                    await scanForGitHubGists();
-                }, GITHUB_CONFIG.searchInterval);
-
-                // Initial scan
-                scanForGitHubGists();
-
-                console.log('✅ GitHub Gists API scanning active');
-            } catch (error) {
-                console.error('❌ GitHub Gists scanning setup failed:', error);
-                githubStats.errors.push(`Gist Scanning: ${error.message}`);
-            }
-        }
-
-        // Setup fallback storage monitoring
-        function setupFallbackStorageMonitoring() {
-            try {
-                monitoringIntervals.fallbackStorage = setInterval(() => {
-                    checkFallbackStorage();
-                }, 2000);
-
-                // Storage event listener
-                window.addEventListener('storage', function(e) {
-                    if (e.key && e.key.includes('githubFallback')) {
-                        console.log('📦 Fallback storage event detected');
-                        loadStoredOrders();
-                        updateStats();
-                        renderOrders();
+                    // Add order if not already present
+                    if (!orders.find(o => o.id === orderData.id)) {
+                        processReceivedOrder(orderData);
                     }
-                });
-
-                console.log('✅ Fallback storage monitoring active');
-            } catch (error) {
-                console.error('❌ Fallback storage monitoring setup failed:', error);
-                githubStats.errors.push(`Fallback Storage: ${error.message}`);
+                } catch (error) {
+                    console.error('Error parsing order from URL:', error);
+                }
             }
         }
 
-        // Scan for GitHub Gists
-        async function scanForGitHubGists() {
-            githubStats.totalScans++;
-            githubStats.lastScanTime = new Date();
-
-            try {
-                console.log('🔍 Scanning GitHub API for restaurant orders...');
-
-                // Search for public gists containing restaurant orders
-                const response = await fetch(
-                    `${GITHUB_CONFIG.apiUrl}/gists/public?per_page=${GITHUB_CONFIG.maxGistsToCheck}`,
-                    {
-                        headers: {
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
-                }
-
-                const gists = await response.json();
-                console.log(`📊 Found ${gists.length} recent public gists`);
-
-                // Check each gist for restaurant orders
-                for (const gist of gists.slice(0, 10)) { // Check only first 10 for performance
-                    await checkGistForOrder(gist);
-                }
-
-                updateAPIMonitoringStatus('gistScanning', 'active', `Scanned ${gists.length} gists`);
-
-            } catch (error) {
-                console.error('❌ Error scanning GitHub Gists:', error);
-                githubStats.errors.push(`Gist Scan: ${error.message}`);
-                updateAPIMonitoringStatus('gistScanning', 'error', error.message);
-            }
-        }
-
-        // Check individual gist for order
-        async function checkGistForOrder(gist) {
-            try {
-                // Check if gist might contain restaurant order
-                if (gist.description && gist.description.toLowerCase().includes('bella vista')) {
-                    console.log(`🔍 Checking potential order gist: ${gist.id}`);
-
-                    // Get gist details
-                    const detailResponse = await fetch(gist.url, {
-                        headers: {
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    });
-
-                    if (detailResponse.ok) {
-                        const gistDetails = await detailResponse.json();
-
-                        // Look for order files
-                        for (const [filename, fileData] of Object.entries(gistDetails.files)) {
-                            if (filename.startsWith('order-') && filename.endsWith('.json')) {
-                                try {
-                                    const orderData = JSON.parse(fileData.content);
-
-                                    // Validate order data
-                                    if (orderData.id && orderData.orderNumber && orderData.items) {
-                                        // Check if we already have this order
-                                        if (!orders.find(o => o.id === orderData.id)) {
-                                            // Add gist information to order
-                                            orderData.gistId = gist.id;
-                                            orderData.gistUrl = gist.html_url;
-
-                                            processDetectedOrder(orderData, 'GitHub API Gist');
-                                        }
-                                    }
-                                } catch (parseError) {
-                                    console.warn('Error parsing gist order data:', parseError);
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (error) {
-                console.warn(`Error checking gist ${gist.id}:`, error);
-            }
-        }
-
-        // Check fallback storage
-        function checkFallbackStorage() {
-            try {
-                const fallbackData = localStorage.getItem('githubFallbackOrders');
-                if (fallbackData) {
-                    const data = JSON.parse(fallbackData);
-                    if (data.orders && Array.isArray(data.orders)) {
-                        data.orders.forEach(orderData => {
-                            if (!orders.find(o => o.id === orderData.id)) {
-                                processDetectedOrder(orderData, 'Fallback Storage');
-                            }
-                        });
-                    }
-                }
-
-                updateAPIMonitoringStatus('fallbackStorage', 'active', 'Monitoring fallback storage');
-            } catch (error) {
-                console.warn('Fallback storage check error:', error);
-                updateAPIMonitoringStatus('fallbackStorage', 'error', error.message);
-            }
-        }
-
-        // Process detected order
-        function processDetectedOrder(orderData, method) {
-            console.log(`🔔 NEW ORDER DETECTED via ${method}:`, orderData);
+        // Process received order
+        function processReceivedOrder(orderData) {
+            console.log('🔔 NEW SAFE ORDER RECEIVED:', orderData);
 
             orders.unshift(orderData);
-            githubStats.ordersDetected++;
 
             // Save to local storage
             saveOrdersToStorage();
@@ -764,9 +554,8 @@
             // Update display
             updateStats();
             renderOrders();
-            updateAPIMonitoringDisplay();
 
-            showSuccessMessage(`🔔 New order received via ${method}: ${orderData.orderNumber} ($${orderData.total.toFixed(2)})`);
+            showSuccessMessage(`🔔 New safe order received: ${orderData.orderNumber} ($${orderData.total.toFixed(2)})`);
 
             // Add animation
             setTimeout(() => {
@@ -777,91 +566,14 @@
             }, 100);
         }
 
-        // Update GitHub status
-        function updateGitHubStatus() {
-            const activeMethods = Object.keys(monitoringIntervals).length;
-            githubStats.activeMethods = activeMethods;
-
-            const titleEl = document.getElementById('github-title');
-            const subtitleEl = document.getElementById('github-subtitle');
-
-            if (activeMethods > 0) {
-                titleEl.textContent = `🚀 GitHub API Monitoring Active (${activeMethods} methods)`;
-                subtitleEl.textContent = 'Continuously scanning GitHub API for new orders from any device worldwide';
-            } else {
-                titleEl.textContent = '⚠️ GitHub API Monitoring Issues';
-                subtitleEl.textContent = 'Some monitoring methods failed to initialize';
-            }
-        }
-
-        // Update API monitoring display
-        function updateAPIMonitoringDisplay() {
-            const grid = document.getElementById('api-monitoring');
-
-            const methods = {
-                'gistScanning': {
-                    name: 'GitHub Gists API',
-                    status: monitoringIntervals.gistScanning ? 'active' : 'inactive',
-                    details: `Scans every ${GITHUB_CONFIG.searchInterval/1000}s`
-                },
-                'fallbackStorage': {
-                    name: 'Fallback Storage',
-                    status: monitoringIntervals.fallbackStorage ? 'active' : 'inactive',
-                    details: 'Local storage monitoring'
-                },
-                'apiStatus': {
-                    name: 'API Connection',
-                    status: 'active',
-                    details: 'GitHub API accessible'
-                }
-            };
-
-            grid.innerHTML = Object.entries(methods).map(([key, method]) => `
-                <div class="monitor-card ${method.status === 'active' ? 'monitor-active' : 'monitor-error'}">
-                    <div class="monitor-title">${method.name}</div>
-                    <div class="monitor-status">
-                        ${method.status === 'active' ? 'Active' : 'Inactive'} - ${method.details}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Update API monitoring status
-        function updateAPIMonitoringStatus(method, status, details) {
-            console.log(`📊 ${method}: ${status} - ${details}`);
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // This can be expanded for additional event handling
-        }
-
         // Load stored orders
         function loadStoredOrders() {
             try {
-                // Try multiple storage sources
-                const sources = ['githubOrders', 'githubFallbackOrders', 'universalOrders', 'autoSyncOrders'];
-
-                for (const source of sources) {
-                    const stored = localStorage.getItem(source);
-                    if (stored) {
-                        const data = JSON.parse(stored);
-                        if (data.orders && Array.isArray(data.orders)) {
-                            // Merge orders without duplicates
-                            data.orders.forEach(orderData => {
-                                if (!orders.find(o => o.id === orderData.id)) {
-                                    orders.push(orderData);
-                                }
-                            });
-                        } else if (data.id && data.orderNumber) {
-                            // Single order
-                            if (!orders.find(o => o.id === data.id)) {
-                                orders.push(data);
-                            }
-                        }
-                    }
+                const stored = localStorage.getItem('safeKitchenOrders');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    orders = data.orders || [];
                 }
-
                 console.log(`📦 Loaded ${orders.length} orders from storage`);
             } catch (error) {
                 console.error('❌ Error loading stored orders:', error);
@@ -875,9 +587,9 @@
                 const saveData = {
                     orders: orders,
                     lastUpdated: new Date().toISOString(),
-                    source: 'github-api-kitchen'
+                    source: 'safe-kitchen'
                 };
-                localStorage.setItem('githubOrders', JSON.stringify(saveData));
+                localStorage.setItem('safeKitchenOrders', JSON.stringify(saveData));
             } catch (error) {
                 console.error('❌ Error saving orders:', error);
             }
@@ -885,8 +597,8 @@
 
         // Update statistics
         function updateStats() {
-            const githubOrders = orders.filter(order => 
-                order.source === 'github-api-menu' || order.gistId
+            const safeOrders = orders.filter(order => 
+                order.source === 'safe-url-menu'
             ).length;
 
             document.getElementById('total-orders').textContent = orders.length;
@@ -894,7 +606,7 @@
                 orders.filter(order => order.status === 'pending' || order.status === 'preparing').length;
             document.getElementById('completed-orders').textContent = 
                 orders.filter(order => order.status === 'completed').length;
-            document.getElementById('github-orders').textContent = githubOrders;
+            document.getElementById('safe-orders').textContent = safeOrders;
         }
 
         // Render orders
@@ -913,26 +625,25 @@
             if (filteredOrders.length === 0) {
                 ordersGrid.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">🚀</div>
+                        <div class="empty-icon">🔒</div>
                         <h3>No ${currentFilter === 'all' ? '' : currentFilter} orders</h3>
-                        <p>GitHub API monitoring is active - orders will appear when detected from any device worldwide.</p>
-                        <p><small>Try the "Test GitHub Order" button to verify the system is working.</small></p>
+                        <p>Safe order receiver is ready for secure URL-based orders.</p>
+                        <p><small>Try the "Test Safe Order" button to verify the system is working.</small></p>
                     </div>
                 `;
                 return;
             }
 
             ordersGrid.innerHTML = filteredOrders.map(order => {
-                const isGitHubOrder = order.source === 'github-api-menu' || order.gistId;
+                const isSafeOrder = order.source === 'safe-url-menu';
 
                 return `
-                    <div class="order-card ${isGitHubOrder ? 'github-order' : ''}" data-status="${order.status}">
+                    <div class="order-card ${isSafeOrder ? 'safe-order' : ''}" data-status="${order.status}">
                         <div class="order-header">
                             <div class="order-number">${order.orderNumber}</div>
                             <div class="order-meta">
                                 <div>${formatTime(new Date(order.timestamp))}</div>
-                                ${isGitHubOrder ? '<div class="github-badge">GitHub API</div>' : ''}
-                                ${order.gistId ? `<div class="gist-id">Gist: ${order.gistId.substring(0, 8)}...</div>` : ''}
+                                ${isSafeOrder ? '<div class="safe-badge">Safe URL</div>' : ''}
                             </div>
                         </div>
 
@@ -1024,69 +735,35 @@
             renderOrders();
         }
 
-        // Test GitHub order
-        function testGitHubOrder() {
+        // Test safe order
+        function testSafeOrder() {
             const testOrder = {
                 id: Date.now(),
-                orderNumber: `GH-TEST-${String(Date.now()).slice(-4)}`,
+                orderNumber: `SF-TEST-${String(Date.now()).slice(-4)}`,
                 items: [
-                    { id: 1, name: "GitHub Burger", price: 20, quantity: 1, description: "Special burger for GitHub API testing" },
-                    { id: 2, name: "API Fries", price: 10, quantity: 1, description: "Crispy fries for API verification" }
+                    { id: 1, name: "Safe Burger", price: 18, quantity: 1, description: "Test burger for safe URL system" },
+                    { id: 2, name: "Secure Fries", price: 9, quantity: 1, description: "Test fries for verification" }
                 ],
-                subtotal: 30,
-                tax: 3,
-                total: 33,
+                subtotal: 27,
+                tax: 2.7,
+                total: 29.7,
                 timestamp: new Date().toISOString(),
                 status: 'pending',
-                source: 'github-api-menu',
-                gistId: 'test-' + Math.random().toString(36).substr(2, 8),
+                source: 'safe-url-menu',
                 createdAt: Date.now()
             };
 
-            processDetectedOrder(testOrder, 'Test GitHub API');
+            processReceivedOrder(testOrder);
         }
 
-        // Toggle debug info
-        function toggleDebug() {
-            const debugEl = document.getElementById('debug-info');
-            const isVisible = debugEl.style.display !== 'none';
-
-            if (isVisible) {
-                debugEl.style.display = 'none';
-            } else {
-                updateDebugInfo();
-                debugEl.style.display = 'block';
-            }
-        }
-
-        // Update debug info
-        function updateDebugInfo() {
-            const debugEl = document.getElementById('debug-info');
-            const uptime = Math.floor((new Date() - githubStats.systemStartTime) / 1000);
-
-            debugEl.innerHTML = `
-                <strong>GitHub API Monitoring Debug Info:</strong><br>
-                System Uptime: ${Math.floor(uptime / 60)}m ${uptime % 60}s<br>
-                Total API Scans: ${githubStats.totalScans}<br>
-                Orders Detected: ${githubStats.ordersDetected}<br>
-                Active Methods: ${githubStats.activeMethods}<br>
-                Last Scan: ${githubStats.lastScanTime ? githubStats.lastScanTime.toLocaleTimeString() : 'Never'}<br>
-                API Endpoint: ${GITHUB_CONFIG.apiUrl}<br>
-                Scan Interval: ${GITHUB_CONFIG.searchInterval/1000}s<br>
-                Last Gist ID: ${githubStats.lastGistId || 'None'}<br>
-                ${githubStats.errors.length > 0 ? `Errors: ${githubStats.errors.join('; ')}` : 'No Errors'}
-            `;
-        }
-
-        // Force refresh
-        function forceRefresh() {
+        // Refresh orders
+        function refreshOrders() {
             console.log('🔄 Manual refresh requested');
             loadStoredOrders();
+            checkForOrderInURL();
             updateStats();
             renderOrders();
-            updateAPIMonitoringDisplay();
-            updateGitHubStatus();
-            showSuccessMessage('GitHub API kitchen dashboard refreshed!');
+            showSuccessMessage('Safe kitchen dashboard refreshed!');
         }
 
         // Clear all orders
@@ -1131,11 +808,9 @@
             });
         }
 
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', function() {
-            Object.values(monitoringIntervals).forEach(interval => {
-                if (interval) clearInterval(interval);
-            });
+        // Listen for hash changes (if someone updates the URL)
+        window.addEventListener('hashchange', function() {
+            checkForOrderInURL();
         });
     </script>
 </body>
