@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bella Vista Restaurant - Auto System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .restaurant-name { font-size: 3rem; color: #D2691E; margin-bottom: 10px; }
+        .restaurant-tagline { color: #666; font-size: 1.2rem; }
+        .auto-status { background: linear-gradient(45deg, #e8f5e8, #f0f8ff); border: 2px solid #28a745; padding: 20px; border-radius: 10px; margin-bottom: 20px; text-align: center; }
+        .status-title { color: #28a745; font-weight: bold; font-size: 1.2rem; margin-bottom: 10px; }
+        .status-subtitle { color: #155724; font-size: 0.9rem; }
+        .speed-info { background: linear-gradient(45deg, #e7f3ff, #f8f9fa); border: 2px solid #007bff; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .speed-title { color: #007bff; font-weight: bold; margin-bottom: 15px; font-size: 1.1rem; }
+        .speed-features { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .speed-features li { margin: 5px 0; padding: 5px 0; color: #495057; font-size: 0.9rem; }
+        .speed-features li:before { content: "⚡ "; color: #007bff; font-weight: bold; margin-right: 5px; }
+        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
+        .menu-section { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .menu-section h2 { color: #D2691E; font-size: 2rem; margin-bottom: 20px; }
+        .category-filters { display: flex; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        .category-btn { padding: 10px 20px; border: none; border-radius: 25px; background: #f8f9fa; color: #666; cursor: pointer; transition: all 0.3s; font-weight: 500; }
+        .category-btn.active, .category-btn:hover { background: #D2691E; color: white; transform: translateY(-2px); }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .menu-item { border: 1px solid #ddd; border-radius: 10px; padding: 20px; background: #f8f9fa; transition: all 0.3s; }
+        .menu-item:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .item-name { font-size: 1.3rem; font-weight: bold; color: #333; margin-bottom: 8px; }
+        .item-description { color: #666; margin-bottom: 15px; line-height: 1.4; }
+        .item-footer { display: flex; justify-content: space-between; align-items: center; }
+        .item-price { font-size: 1.4rem; font-weight: bold; color: #D2691E; }
+        .add-to-cart-btn { background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.3s; }
+        .add-to-cart-btn:hover { background: #218838; transform: translateY(-1px); }
+        .cart-sidebar { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); height: fit-content; position: sticky; top: 20px; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cart-header h3 { color: #D2691E; font-size: 1.5rem; }
+        .cart-count { background: #D2691E; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .cart-items { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-weight: 500; margin-bottom: 5px; }
+        .cart-item-price { color: #666; font-size: 0.9rem; }
+        .quantity-controls { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+        .qty-btn { background: #D2691E; color: white; border: none; width: 25px; height: 25px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .qty-display { min-width: 30px; text-align: center; font-weight: 500; }
+        .remove-item { background: #dc3545; color: white; border: none; padding: 3px 8px; border-radius: 3px; cursor: pointer; font-size: 0.8rem; }
+        .cart-totals { border-top: 2px solid #ddd; padding-top: 15px; margin-bottom: 20px; }
+        .total-row { display: flex; justify-content: space-between; margin: 5px 0; }
+        .total-row.grand-total { font-weight: bold; font-size: 1.2rem; color: #D2691E; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; }
+        .cart-actions { display: flex; flex-direction: column; gap: 10px; }
+        .action-btn { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.3s; text-align: center; }
+        .generate-invoice-btn { background: #17a2b8; color: white; }
+        .generate-invoice-btn:hover { background: #138496; }
+        .send-order-btn { background: #007bff; color: white; font-size: 1.1rem; }
+        .send-order-btn:hover { background: #0056b3; }
+        .send-order-btn.sending { background: #6c757d; cursor: not-allowed; }
+        .empty-cart { text-align: center; color: #666; padding: 20px 0; }
+        .success-message { background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; display: none; font-weight: 500; border: 1px solid #c3e6cb; }
+        .order-status { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .order-status h3 { color: #007bff; margin-bottom: 15px; }
+        .status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .status-item { background: #f8f9fa; padding: 12px; border-radius: 6px; border-left: 4px solid #28a745; text-align: center; }
+        .status-label { font-size: 0.8rem; color: #666; margin-bottom: 5px; }
+        .status-value { font-size: 1.1rem; font-weight: bold; color: #28a745; }
+        @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; } .restaurant-name { font-size: 2rem; } .menu-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
+            <p class="restaurant-tagline">Auto System - No Setup Required</p>
+        </header>
+
+        <!-- Auto Status -->
+        <div class="auto-status">
+            <div class="status-title">🚀 FULLY AUTOMATED - NO CONFIGURATION NEEDED</div>
+            <div class="status-subtitle">System ready to send orders directly to kitchen • Authentication built-in • Just order and send!</div>
+        </div>
+
+        <!-- Speed Info -->
+        <div class="speed-info">
+            <div class="speed-title">⚡ High-Speed Optimized System</div>
+            <ul class="speed-features">
+                <li>Instant order processing</li>
+                <li>Smart data management</li>
+                <li>Auto-clearing after send</li>
+                <li>Fast GitHub API calls</li>
+                <li>Optimized JSON handling</li>
+                <li>Real-time status updates</li>
+            </ul>
+        </div>
+
+        <!-- Order Status -->
+        <div class="order-status">
+            <h3>📊 System Status</h3>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-label">Orders Sent</div>
+                    <div class="status-value" id="orders-sent">0</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Last Order</div>
+                    <div class="status-value" id="last-order">None</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">System Status</div>
+                    <div class="status-value">Ready</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-label">Speed</div>
+                    <div class="status-value">Optimized</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div id="success-message" class="success-message"></div>
+
+        <!-- Main Content -->
+        <div class="content-grid">
+            <!-- Menu Section -->
+            <section class="menu-section">
+                <h2>Our Menu</h2>
+
+                <!-- Category Filters -->
+                <div class="category-filters">
+                    <button class="category-btn active" data-category="all">All Items</button>
+                    <button class="category-btn" data-category="Starters">Starters</button>
+                    <button class="category-btn" data-category="Main Course">Main Course</button>
+                    <button class="category-btn" data-category="Desserts">Desserts</button>
+                    <button class="category-btn" data-category="Beverages">Beverages</button>
+                </div>
+
+                <!-- Menu Items Grid -->
+                <div id="menu-items" class="menu-grid"></div>
+            </section>
+
+            <!-- Cart Sidebar -->
+            <aside class="cart-sidebar">
+                <div class="cart-header">
+                    <h3>Your Order</h3>
+                    <span id="cart-count" class="cart-count">0</span>
+                </div>
+
+                <div id="cart-items" class="cart-items"></div>
+
+                <div class="cart-totals">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (10%):</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
+                </div>
+
+                <div class="cart-actions">
+                    <button id="generate-invoice-btn" class="action-btn generate-invoice-btn">Generate Invoice</button>
+                    <button id="send-order-btn" class="action-btn send-order-btn">🚀 SEND ORDER TO KITCHEN</button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        // High-Speed Restaurant System with Hardcoded Authentication
+
+        // HARDCODED CONFIGURATION - NO USER SETUP REQUIRED
+        const CONFIG = {
+            repo: 'apurv1155/qrapp',
+            token: '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', // Hardcoded token
+            ordersFile: 'orders.json',
+            apiBase: 'https://api.github.com'
+        };
+
+        // Menu data
+        const menuItems = [
+            { id: 1, name: "Garlic Bread", category: "Starters", price: 8, description: "Fresh baked bread with garlic butter" },
+            { id: 2, name: "Caesar Salad", category: "Starters", price: 12, description: "Crisp romaine lettuce with caesar dressing" },
+            { id: 3, name: "Margherita Pizza", category: "Main Course", price: 18, description: "Classic pizza with tomato, mozzarella and basil" },
+            { id: 4, name: "Chicken Alfredo", category: "Main Course", price: 22, description: "Creamy pasta with grilled chicken" },
+            { id: 5, name: "Grilled Salmon", category: "Main Course", price: 26, description: "Fresh Atlantic salmon with herbs" },
+            { id: 6, name: "Beef Steak", category: "Main Course", price: 28, description: "Premium ribeye steak cooked to perfection" },
+            { id: 7, name: "Chocolate Cake", category: "Desserts", price: 10, description: "Rich chocolate cake with vanilla ice cream" },
+            { id: 8, name: "Ice Cream", category: "Desserts", price: 6, description: "Vanilla, chocolate or strawberry" },
+            { id: 9, name: "Tiramisu", category: "Desserts", price: 9, description: "Classic Italian dessert" },
+            { id: 10, name: "Coffee", category: "Beverages", price: 5, description: "Fresh brewed coffee" },
+            { id: 11, name: "Fresh Juice", category: "Beverages", price: 7, description: "Orange, apple or mixed fruit juice" },
+            { id: 12, name: "Soft Drinks", category: "Beverages", price: 4, description: "Coke, Sprite, Fanta" }
+        ];
+
+        // Application state
+        let cart = {};
+        let currentFilter = 'all';
+        let orderCount = parseInt(localStorage.getItem('orderCount') || '0');
+        let lastOrderTime = localStorage.getItem('lastOrderTime') || 'None';
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 High-Speed Restaurant System Starting...');
+
+            renderMenuItems();
+            setupEventListeners();
+            updateCartDisplay();
+            updateSystemStatus();
+
+            console.log('✅ System ready - No configuration needed!');
+        });
+
+        // Update system status display
+        function updateSystemStatus() {
+            document.getElementById('orders-sent').textContent = orderCount;
+            document.getElementById('last-order').textContent = lastOrderTime;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category filter buttons
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentFilter = this.dataset.category;
+                    renderMenuItems();
+                });
+            });
+
+            // Action buttons
+            document.getElementById('generate-invoice-btn').addEventListener('click', generateInvoice);
+            document.getElementById('send-order-btn').addEventListener('click', sendOrderToKitchen);
+        }
+
+        // Render menu items
+        function renderMenuItems() {
+            const container = document.getElementById('menu-items');
+            const filteredItems = currentFilter === 'all' 
+                ? menuItems 
+                : menuItems.filter(item => item.category === currentFilter);
+
+            container.innerHTML = filteredItems.map(item => `
+                <div class="menu-item">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-footer">
+                        <div class="item-price">$${item.price}</div>
+                        <button class="add-to-cart-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add item to cart
+        function addToCart(itemId) {
+            const item = menuItems.find(i => i.id === itemId);
+            if (!item) return;
+
+            if (cart[itemId]) {
+                cart[itemId].quantity += 1;
+            } else {
+                cart[itemId] = { ...item, quantity: 1 };
+            }
+
+            updateCartDisplay();
+            showSuccessMessage(`${item.name} added to cart!`);
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItems = Object.values(cart);
+            const container = document.getElementById('cart-items');
+
+            if (cartItems.length === 0) {
+                container.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                document.getElementById('cart-count').textContent = '0';
+                updateTotals(0, 0, 0);
+                return;
+            }
+
+            container.innerHTML = cartItems.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-price">$${item.price} each</div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">−</button>
+                            <span class="qty-display">${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${item.id})">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update cart count
+            const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+
+            // Calculate totals
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+
+            updateTotals(subtotal, tax, total);
+        }
+
+        // Update item quantity
+        function updateQuantity(itemId, change) {
+            if (cart[itemId]) {
+                cart[itemId].quantity += change;
+                if (cart[itemId].quantity <= 0) {
+                    delete cart[itemId];
+                }
+                updateCartDisplay();
+            }
+        }
+
+        // Remove item from cart
+        function removeFromCart(itemId) {
+            delete cart[itemId];
+            updateCartDisplay();
+        }
+
+        // Update totals display
+        function updateTotals(subtotal, tax, total) {
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Send order to kitchen - HIGH SPEED VERSION
+        async function sendOrderToKitchen() {
+            const cartItems = Object.values(cart);
+            if (cartItems.length === 0) {
+                showSuccessMessage('Cart is empty!', 'error');
+                return;
+            }
+
+            const sendBtn = document.getElementById('send-order-btn');
+            const originalText = sendBtn.textContent;
+            sendBtn.classList.add('sending');
+            sendBtn.textContent = 'SENDING TO KITCHEN...';
+            sendBtn.disabled = true;
+
+            try {
+                const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * 0.1;
+                const total = subtotal + tax;
+
+                // Generate unique order ID and number
+                const orderId = Date.now() + Math.random(); // More unique ID
+                const orderNumber = `SPEED-${String(Date.now()).slice(-6)}`;
+
+                const orderData = {
+                    id: orderId,
+                    orderNumber: orderNumber,
+                    items: cartItems,
+                    subtotal: subtotal,
+                    tax: tax,
+                    total: total,
+                    timestamp: new Date().toISOString(),
+                    status: 'pending',
+                    source: 'speed-system',
+                    restaurant: 'Bella Vista',
+                    metadata: {
+                        createdAt: new Date().toISOString(),
+                        deviceInfo: navigator.userAgent.substring(0, 50),
+                        sessionId: Date.now().toString()
+                    }
+                };
+
+                console.log('🚀 Sending high-speed order to kitchen:', orderData);
+
+                // OPTIMIZED: Get existing orders with shorter timeout
+                let allOrders = [];
+                let fileSha = null;
+
+                try {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
+                    const existingResponse = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.ordersFile}`, {
+                        headers: {
+                            'Authorization': `Bearer ${CONFIG.token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                        },
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    if (existingResponse.ok) {
+                        const existingData = await existingResponse.json();
+                        fileSha = existingData.sha;
+                        const existingContent = atob(existingData.content);
+                        const existingJson = JSON.parse(existingContent);
+                        allOrders = existingJson.orders || [];
+                        console.log('📥 Retrieved existing orders:', allOrders.length);
+                    }
+                } catch (error) {
+                    console.log('📝 No existing orders or timeout, creating new file');
+                }
+
+                // OPTIMIZED: Add new order to beginning and limit to 30 recent orders for speed
+                allOrders.unshift(orderData);
+                if (allOrders.length > 30) {
+                    allOrders = allOrders.slice(0, 30);
+                }
+
+                // OPTIMIZED: Create compact JSON structure
+                const jsonContent = JSON.stringify({
+                    restaurant: 'Bella Vista',
+                    lastUpdated: new Date().toISOString(),
+                    totalOrders: allOrders.length,
+                    system: 'high-speed-auto',
+                    orders: allOrders
+                }, null, 1); // Compact formatting for speed
+
+                // OPTIMIZED: Fast commit with shorter timeout
+                const commitData = {
+                    message: `⚡ Speed order ${orderNumber} ($${total.toFixed(2)})`,
+                    content: btoa(jsonContent),
+                    branch: 'main'
+                };
+
+                if (fileSha) {
+                    commitData.sha = fileSha;
+                }
+
+                const controller2 = new AbortController();
+                const timeoutId2 = setTimeout(() => controller2.abort(), 8000); // 8 second timeout
+
+                const commitResponse = await fetch(`${CONFIG.apiBase}/repos/${CONFIG.repo}/contents/${CONFIG.ordersFile}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(commitData),
+                    signal: controller2.signal
+                });
+
+                clearTimeout(timeoutId2);
+
+                if (commitResponse.ok) {
+                    const commitResult = await commitResponse.json();
+                    console.log('✅ High-speed commit successful:', commitResult);
+
+                    // Update statistics
+                    orderCount++;
+                    lastOrderTime = new Date().toLocaleTimeString();
+                    localStorage.setItem('orderCount', orderCount.toString());
+                    localStorage.setItem('lastOrderTime', lastOrderTime);
+                    updateSystemStatus();
+
+                    showSuccessMessage(`⚡ Order ${orderNumber} sent to kitchen at HIGH SPEED! ($${total.toFixed(2)})`);
+
+                    // IMPORTANT: Clear cart after successful send to prevent duplicate data
+                    cart = {};
+                    updateCartDisplay();
+
+                } else {
+                    const errorData = await commitResponse.json();
+                    console.error('❌ High-speed commit failed:', errorData);
+                    showSuccessMessage(`❌ Send failed: ${errorData.message || 'Unknown error'}`, 'error');
+                }
+
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    showSuccessMessage('⚠️ Network timeout - please try again', 'warning');
+                } else {
+                    console.error('❌ High-speed send error:', error);
+                    showSuccessMessage('❌ Network error - check connection and try again', 'error');
+                }
+            } finally {
+                sendBtn.classList.remove('sending');
+                sendBtn.textContent = originalText;
+                sendBtn.disabled = false;
+            }
+        }
+
+        // Generate invoice
+        function generateInvoice() {
+            const cartItems = Object.values(cart);
+            if (cartItems.length === 0) {
+                showSuccessMessage('Cart is empty!', 'error');
+                return;
+            }
+
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+            const orderNumber = `INV-${Date.now().toString().slice(-6)}`;
+
+            const invoiceContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Invoice - ${orderNumber}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+                        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #D2691E; padding-bottom: 20px; }
+                        .restaurant-name { color: #D2691E; font-size: 2rem; margin-bottom: 5px; }
+                        .order-info { margin-bottom: 30px; background: #f8f9fa; padding: 20px; border-radius: 8px; }
+                        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                        .items-table th, .items-table td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+                        .items-table th { background-color: #D2691E; color: white; }
+                        .total-section { text-align: right; margin-top: 20px; font-size: 1.1rem; }
+                        .total-row { margin: 8px 0; padding: 5px 0; }
+                        .grand-total { font-weight: bold; font-size: 1.3rem; color: #D2691E; border-top: 2px solid #D2691E; padding-top: 10px; }
+                        .footer { text-align: center; margin-top: 40px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
+                        <p>High-Speed Auto System Invoice</p>
+                    </div>
+
+                    <div class="order-info">
+                        <p><strong>Invoice Number:</strong> ${orderNumber}</p>
+                        <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                        <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
+                        <p><strong>System:</strong> High-Speed Automated</p>
+                    </div>
+
+                    <table class="items-table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Description</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${cartItems.map(item => `
+                                <tr>
+                                    <td><strong>${item.name}</strong></td>
+                                    <td>${item.description}</td>
+                                    <td>${item.quantity}</td>
+                                    <td>$${item.price.toFixed(2)}</td>
+                                    <td>$${(item.quantity * item.price).toFixed(2)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="total-section">
+                        <div class="total-row">Subtotal: $${subtotal.toFixed(2)}</div>
+                        <div class="total-row">Tax (10%): $${tax.toFixed(2)}</div>
+                        <div class="total-row grand-total">Total: $${total.toFixed(2)}</div>
+                    </div>
+
+                    <div class="footer">
+                        <p>Thank you for dining with us!</p>
+                        <p><em>Generated by High-Speed Auto System</em></p>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const invoiceWindow = window.open('', '_blank');
+            invoiceWindow.document.write(invoiceContent);
+            invoiceWindow.document.close();
+
+            showSuccessMessage('Invoice generated successfully!');
+        }
+
+        // Show success message
+        function showSuccessMessage(message, type = 'success') {
+            const messageEl = document.getElementById('success-message');
+            messageEl.textContent = message;
+            messageEl.style.display = 'block';
+
+            // Reset styles
+            messageEl.style.backgroundColor = '';
+            messageEl.style.color = '';
+            messageEl.style.borderColor = '';
+
+            switch (type) {
+                case 'error':
+                    messageEl.style.backgroundColor = '#f8d7da';
+                    messageEl.style.color = '#721c24';
+                    messageEl.style.borderColor = '#f5c6cb';
+                    break;
+                case 'warning':
+                    messageEl.style.backgroundColor = '#fff3cd';
+                    messageEl.style.color = '#856404';
+                    messageEl.style.borderColor = '#ffeaa7';
+                    break;
+                default:
+                    messageEl.style.backgroundColor = '#d4edda';
+                    messageEl.style.color = '#155724';
+                    messageEl.style.borderColor = '#c3e6cb';
+            }
+
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 6000);
+        }
+    </script>
+</body>
+</html>
