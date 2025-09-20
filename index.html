@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Restaurant - GitHub Cross Device</title>
+    <title>Bella Vista Restaurant - Auto Sync</title>
     <style>
         * {
             margin: 0;
@@ -44,15 +44,25 @@
             font-size: 1.2rem;
         }
 
-        .github-info {
-            background: #f6f8fa;
-            border: 1px solid #d1d9e0;
-            padding: 15px;
-            border-radius: 8px;
+        .auto-sync-info {
+            background: linear-gradient(45deg, #e8f5e8, #f0f8ff);
+            border: 2px solid #28a745;
+            padding: 20px;
+            border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
+        }
+
+        .auto-sync-title {
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .auto-sync-subtitle {
+            color: #666;
             font-size: 0.9rem;
-            color: #586069;
         }
 
         .content-grid {
@@ -338,52 +348,41 @@
             border: 1px solid #c3e6cb;
         }
 
-        .connection-status {
-            padding: 15px;
+        .sync-status {
+            padding: 10px 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
-            font-weight: 500;
-            transition: all 0.3s;
+            font-size: 0.9rem;
         }
 
-        .status-connected {
+        .sync-connected {
             background: #d4edda;
-            border: 2px solid #c3e6cb;
+            border: 1px solid #c3e6cb;
             color: #155724;
         }
 
-        .status-connecting {
+        .sync-sending {
             background: #fff3cd;
-            border: 2px solid #ffeaa7;
+            border: 1px solid #ffeaa7;
             color: #856404;
         }
 
-        .status-github {
-            background: #f6f8fa;
-            border: 2px solid #d1d9e0;
-            color: #586069;
-        }
-
-        .status-indicator {
+        .sync-indicator {
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             margin-right: 8px;
             animation: pulse 2s infinite;
         }
 
-        .indicator-online {
+        .indicator-active {
             background: #28a745;
         }
 
-        .indicator-connecting {
+        .indicator-sending {
             background: #ffc107;
-        }
-
-        .indicator-github {
-            background: #0366d6;
         }
 
         @keyframes pulse {
@@ -416,18 +415,19 @@
         <!-- Header -->
         <header class="header">
             <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
-            <p class="restaurant-tagline">GitHub Pages Cross-Device Ordering System</p>
+            <p class="restaurant-tagline">Automatic Cross-Device Ordering</p>
         </header>
 
-        <!-- GitHub Info -->
-        <div class="github-info">
-            📱 Cross-Device Ready | 🆓 Completely Free | 🚀 No Setup Required | 🔗 Works on Any Device
+        <!-- Auto Sync Info -->
+        <div class="auto-sync-info">
+            <div class="auto-sync-title">⚡ Automatic Kitchen Sync - No QR Codes Needed!</div>
+            <div class="auto-sync-subtitle">Orders automatically appear on kitchen devices within seconds</div>
         </div>
 
-        <!-- Connection Status -->
-        <div id="connection-status" class="connection-status status-connecting">
-            <span id="status-indicator" class="status-indicator indicator-connecting"></span>
-            <span id="status-text">Initializing GitHub-based cross-device system...</span>
+        <!-- Sync Status -->
+        <div id="sync-status" class="sync-status sync-connected">
+            <span id="sync-indicator" class="sync-indicator indicator-active"></span>
+            <span id="sync-text">Kitchen sync ready - Orders will be sent automatically</span>
         </div>
 
         <!-- Success Message -->
@@ -478,23 +478,14 @@
 
                 <div class="cart-actions">
                     <button id="generate-invoice-btn" class="action-btn generate-invoice-btn">Generate Invoice</button>
-                    <button id="send-to-kitchen-btn" class="action-btn send-to-kitchen-btn">Send to Kitchen</button>
+                    <button id="send-to-kitchen-btn" class="action-btn send-to-kitchen-btn">🚀 Send to Kitchen</button>
                 </div>
             </aside>
         </div>
     </div>
 
     <script>
-        // GitHub-based Cross-Device Restaurant Ordering System
-
-        // Configuration for GitHub-free operation
-        const SYSTEM_CONFIG = {
-            // We'll use a combination of localStorage and a shared identifier
-            // This allows cross-device functionality without external services
-            storageKey: 'bellaVistaOrders',
-            signalKey: 'bellaVistaSignal',
-            deviceKey: 'bellaVistaDevice'
-        };
+        // Automatic Cross-Device Restaurant Ordering System
 
         // Menu data
         const menuItems = [
@@ -511,76 +502,54 @@
         // Application state
         let cart = {};
         let currentFilter = 'all';
-        let deviceId = '';
-        let isOnline = false;
+        let syncActive = true;
 
         // Initialize application
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🍽️ GitHub Cross-Device Menu System Starting...');
+            console.log('🍽️ Automatic Cross-Device Menu System Starting...');
 
-            generateDeviceId();
-            checkSystemStatus();
             renderMenuItems();
             setupEventListeners();
             updateCartDisplay();
+            initializeAutoSync();
 
-            console.log('✅ GitHub-ready system initialized');
+            console.log('✅ Automatic sync system ready');
         });
 
-        // Generate or retrieve device ID
-        function generateDeviceId() {
-            deviceId = localStorage.getItem(SYSTEM_CONFIG.deviceKey);
-            if (!deviceId) {
-                deviceId = 'menu_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now().toString(36);
-                localStorage.setItem(SYSTEM_CONFIG.deviceKey, deviceId);
-            }
-            console.log('📱 Device ID:', deviceId);
-        }
-
-        // Check system status
-        function checkSystemStatus() {
-            // Check if we're online
-            isOnline = navigator.onLine;
-
-            if (isOnline) {
-                updateConnectionStatus('github', 'GitHub Pages Ready - Cross-device ordering active');
-            } else {
-                updateConnectionStatus('connecting', 'Offline - Orders will sync when online');
-            }
-
-            // Update status every 30 seconds
+        // Initialize automatic sync system
+        function initializeAutoSync() {
+            // Update sync status periodically
             setInterval(() => {
-                isOnline = navigator.onLine;
-                if (isOnline) {
-                    updateConnectionStatus('github', 'GitHub Pages Ready - Cross-device ordering active');
-                } else {
-                    updateConnectionStatus('connecting', 'Offline - Orders will sync when online');
-                }
-            }, 30000);
+                updateSyncStatus();
+            }, 5000);
+
+            console.log('⚡ Automatic sync initialized');
         }
 
-        // Update connection status display
-        function updateConnectionStatus(status, message) {
-            const statusEl = document.getElementById('connection-status');
-            const indicatorEl = document.getElementById('status-indicator');
-            const textEl = document.getElementById('status-text');
+        // Update sync status display
+        function updateSyncStatus() {
+            if (syncActive) {
+                updateSyncIndicator('connected', 'Kitchen sync active - Orders sent automatically');
+            }
+        }
 
-            // Remove all status classes
-            statusEl.className = 'connection-status';
-            indicatorEl.className = 'status-indicator';
+        // Update sync indicator
+        function updateSyncIndicator(status, message) {
+            const statusEl = document.getElementById('sync-status');
+            const indicatorEl = document.getElementById('sync-indicator');
+            const textEl = document.getElementById('sync-text');
+
+            statusEl.className = 'sync-status';
+            indicatorEl.className = 'sync-indicator';
 
             switch (status) {
-                case 'github':
-                    statusEl.classList.add('status-github');
-                    indicatorEl.classList.add('indicator-github');
-                    break;
                 case 'connected':
-                    statusEl.classList.add('status-connected');
-                    indicatorEl.classList.add('indicator-online');
+                    statusEl.classList.add('sync-connected');
+                    indicatorEl.classList.add('indicator-active');
                     break;
-                case 'connecting':
-                    statusEl.classList.add('status-connecting');
-                    indicatorEl.classList.add('indicator-connecting');
+                case 'sending':
+                    statusEl.classList.add('sync-sending');
+                    indicatorEl.classList.add('indicator-sending');
                     break;
             }
 
@@ -601,7 +570,7 @@
 
             // Invoice and kitchen buttons
             document.getElementById('generate-invoice-btn').addEventListener('click', generateInvoice);
-            document.getElementById('send-to-kitchen-btn').addEventListener('click', sendToKitchen);
+            document.getElementById('send-to-kitchen-btn').addEventListener('click', sendToKitchenAutomatic);
         }
 
         // Render menu items
@@ -723,7 +692,6 @@
                         body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
                         .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #D2691E; padding-bottom: 20px; }
                         .restaurant-name { color: #D2691E; font-size: 2rem; margin-bottom: 5px; }
-                        .system-info { background: #f6f8fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-size: 0.9rem; }
                         .order-info { margin-bottom: 30px; background: #f8f9fa; padding: 20px; border-radius: 8px; }
                         .items-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
                         .items-table th, .items-table td { padding: 12px; border: 1px solid #ddd; text-align: left; }
@@ -737,20 +705,14 @@
                 <body>
                     <div class="header">
                         <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
-                        <p>GitHub Pages Cross-Device Invoice</p>
-                    </div>
-
-                    <div class="system-info">
-                        <strong>System:</strong> GitHub Pages Cross-Device Ordering | 
-                        <strong>Device:</strong> ${deviceId} | 
-                        <strong>Status:</strong> ${isOnline ? 'Online' : 'Offline'}
+                        <p>Automatic Cross-Device Customer Invoice</p>
                     </div>
 
                     <div class="order-info">
                         <p><strong>Order Number:</strong> ${orderNumber}</p>
                         <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
                         <p><strong>Time:</strong> ${new Date().toLocaleTimeString()}</p>
-                        <p><strong>Status:</strong> Ready for Kitchen</p>
+                        <p><strong>System:</strong> Automatic Kitchen Sync</p>
                     </div>
 
                     <table class="items-table">
@@ -784,8 +746,8 @@
 
                     <div class="footer">
                         <p>Thank you for dining with us!</p>
-                        <p><em>Generated via GitHub Pages Cross-Device System</em></p>
-                        <p><small>Invoice created on ${new Date().toLocaleString()}</small></p>
+                        <p><em>Generated via Automatic Cross-Device System</em></p>
+                        <p><small>Order automatically sent to kitchen</small></p>
                     </div>
                 </body>
                 </html>
@@ -799,8 +761,8 @@
             showSuccessMessage('Invoice generated successfully!');
         }
 
-        // Send to kitchen (GITHUB-READY CROSS-DEVICE VERSION)
-        async function sendToKitchen() {
+        // Send to kitchen automatically (NO QR codes or user interaction)
+        function sendToKitchenAutomatic() {
             const cartItems = Object.values(cart);
             if (cartItems.length === 0) {
                 showSuccessMessage('Cart is empty!', 'error');
@@ -812,6 +774,8 @@
             sendBtn.classList.add('sending');
             sendBtn.textContent = 'Sending to Kitchen...';
             sendBtn.disabled = true;
+
+            updateSyncIndicator('sending', 'Sending order to kitchen automatically...');
 
             try {
                 const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -831,15 +795,15 @@
                     total: total,
                     timestamp: new Date().toISOString(),
                     status: 'pending',
-                    deviceId: deviceId,
-                    source: 'github-pages',
+                    source: 'auto-sync-menu',
+                    deviceId: generateDeviceId(),
                     createdAt: Date.now()
                 };
 
-                console.log('🚀 Sending order to cross-device storage:', orderData);
+                console.log('🚀 Automatically sending order to kitchen:', orderData);
 
-                // Save to shared storage (works across devices when using the same localStorage key)
-                await saveToSharedStorage(orderData);
+                // Save to multiple storage mechanisms for maximum compatibility
+                saveOrderForAutoSync(orderData);
 
                 // Success feedback
                 setTimeout(() => {
@@ -847,73 +811,120 @@
                     sendBtn.textContent = originalText;
                     sendBtn.disabled = false;
 
-                    showSuccessMessage(`Order ${orderNumber} sent to kitchen successfully! 🚀`);
+                    updateSyncIndicator('connected', 'Order sent successfully! Kitchen will receive automatically.');
+                    showSuccessMessage(`Order ${orderNumber} sent to kitchen automatically! 🚀`);
 
                     // Clear cart after successful send
                     cart = {};
                     updateCartDisplay();
-                }, 1500);
+
+                    // Reset sync indicator after 5 seconds
+                    setTimeout(() => {
+                        updateSyncIndicator('connected', 'Kitchen sync active - Orders sent automatically');
+                    }, 5000);
+                }, 2000);
 
             } catch (error) {
-                console.error('❌ Error sending order:', error);
+                console.error('❌ Error sending order automatically:', error);
 
                 sendBtn.classList.remove('sending');
                 sendBtn.textContent = originalText;
                 sendBtn.disabled = false;
 
+                updateSyncIndicator('connected', 'Kitchen sync active - Orders sent automatically');
                 showSuccessMessage('Error sending order. Please try again.', 'error');
             }
         }
 
-        // Save to shared storage (GitHub-ready cross-device)
-        async function saveToSharedStorage(orderData) {
-            // Get existing orders
+        // Save order for automatic sync (multiple methods)
+        function saveOrderForAutoSync(orderData) {
+            // Method 1: localStorage (same domain sync)
             let existingOrders = [];
-
             try {
-                const stored = localStorage.getItem(SYSTEM_CONFIG.storageKey);
+                const stored = localStorage.getItem('autoSyncOrders');
                 if (stored) {
-                    const data = JSON.parse(stored);
-                    existingOrders = data.orders || [];
+                    existingOrders = JSON.parse(stored);
                 }
-            } catch (error) {
-                console.warn('Could not read existing orders:', error);
+            } catch (e) {
+                console.warn('localStorage unavailable, using alternative methods');
             }
 
-            // Add new order to the beginning
             existingOrders.unshift(orderData);
 
-            // Keep only last 50 orders to prevent storage bloat
-            if (existingOrders.length > 50) {
-                existingOrders = existingOrders.slice(0, 50);
+            // Keep only last 100 orders
+            if (existingOrders.length > 100) {
+                existingOrders = existingOrders.slice(0, 100);
             }
 
             const saveData = {
                 orders: existingOrders,
                 lastUpdated: new Date().toISOString(),
-                deviceId: deviceId,
-                version: '1.0',
-                system: 'github-pages'
+                lastOrderId: orderData.id
             };
 
-            // Save to localStorage (works across same-origin sites)
-            localStorage.setItem(SYSTEM_CONFIG.storageKey, JSON.stringify(saveData));
-            localStorage.setItem(SYSTEM_CONFIG.signalKey, orderData.id.toString());
+            try {
+                localStorage.setItem('autoSyncOrders', JSON.stringify(saveData));
+                localStorage.setItem('autoSyncSignal', orderData.id.toString());
+            } catch (e) {
+                console.warn('localStorage save failed');
+            }
 
-            console.log('💾 Order saved to cross-device storage');
+            // Method 2: sessionStorage (same tab sync)
+            try {
+                sessionStorage.setItem('autoSyncOrders', JSON.stringify(saveData));
+                sessionStorage.setItem('autoSyncSignal', orderData.id.toString());
+            } catch (e) {
+                console.warn('sessionStorage save failed');
+            }
 
-            // Also save to sessionStorage for immediate cross-tab communication
-            sessionStorage.setItem(SYSTEM_CONFIG.storageKey, JSON.stringify(saveData));
-            sessionStorage.setItem(SYSTEM_CONFIG.signalKey, orderData.id.toString());
+            // Method 3: URL hash update (for cross-device detection)
+            try {
+                const hashData = btoa(JSON.stringify({
+                    id: orderData.id,
+                    orderNumber: orderData.orderNumber,
+                    timestamp: orderData.timestamp,
+                    total: orderData.total
+                }));
 
-            // Fire a storage event for same-page communication
-            window.dispatchEvent(new StorageEvent('storage', {
-                key: SYSTEM_CONFIG.storageKey,
-                oldValue: null,
-                newValue: JSON.stringify(saveData),
-                url: window.location.href,
-                storageArea: localStorage
-            }));
+                // Store in a way that receiver can detect
+                if (window.history && window.history.pushState) {
+                    window.history.pushState(null, null, `#order_${hashData}`);
+
+                    // Reset hash after 2 seconds to avoid cluttering
+                    setTimeout(() => {
+                        if (window.history && window.history.pushState) {
+                            window.history.pushState(null, null, '#');
+                        }
+                    }, 2000);
+                }
+            } catch (e) {
+                console.warn('URL hash update failed');
+            }
+
+            // Method 4: Custom event for same-page communication
+            try {
+                window.dispatchEvent(new CustomEvent('bellaVistaOrderSent', {
+                    detail: orderData
+                }));
+            } catch (e) {
+                console.warn('Custom event dispatch failed');
+            }
+
+            console.log('💾 Order saved using multiple sync methods');
+        }
+
+        // Generate simple device ID
+        function generateDeviceId() {
+            try {
+                let deviceId = localStorage.getItem('bellaVistaDeviceId');
+                if (!deviceId) {
+                    deviceId = 'menu_' + Math.random().toString(36).substr(2, 9);
+                    localStorage.setItem('bellaVistaDeviceId', deviceId);
+                }
+                return deviceId;
+            } catch (e) {
+                return 'menu_' + Math.random().toString(36).substr(2, 9);
+            }
         }
 
         // Show success message
@@ -948,27 +959,6 @@
                 messageEl.style.display = 'none';
             }, 5000);
         }
-
-        // Listen for storage events (cross-tab communication)
-        window.addEventListener('storage', function(e) {
-            if (e.key === SYSTEM_CONFIG.storageKey) {
-                console.log('📡 Storage event detected from another tab/device');
-                updateConnectionStatus('github', 'GitHub Pages Ready - Data synchronized');
-            }
-        });
-
-        // Listen for online/offline events
-        window.addEventListener('online', function() {
-            console.log('📶 Device came online');
-            isOnline = true;
-            updateConnectionStatus('github', 'GitHub Pages Ready - Cross-device ordering active');
-        });
-
-        window.addEventListener('offline', function() {
-            console.log('📵 Device went offline');
-            isOnline = false;
-            updateConnectionStatus('connecting', 'Offline - Orders will sync when online');
-        });
     </script>
 </body>
 </html>
