@@ -1,9 +1,34 @@
 {
   "restaurant": "Bella Vista",
-  "lastUpdated": "2025-09-20T11:23:44.747Z",
-  "totalOrders": 9,
+  "lastUpdated": "2025-09-20T11:24:06.674Z",
+  "totalOrders": 10,
   "method": "direct-send-to-receiver",
   "orders": [
+    {
+      "id": 1758367446188,
+      "orderNumber": "DIRECT-446188",
+      "items": [
+        {
+          "id": 1,
+          "name": "Garlic Bread",
+          "category": "Starters",
+          "price": 8,
+          "description": "Fresh baked bread with garlic butter",
+          "quantity": 1
+        }
+      ],
+      "subtotal": 8,
+      "tax": 0.8,
+      "total": 8.8,
+      "timestamp": "2025-09-20T11:24:06.189Z",
+      "status": "pending",
+      "source": "github-direct",
+      "restaurant": "Bella Vista",
+      "metadata": {
+        "createdAt": "2025-09-20T11:24:06.189Z",
+        "method": "Direct Send to receiver.html"
+      }
+    },
     {
       "id": 1758367423665,
       "orderNumber": "DIRECT-423665",
