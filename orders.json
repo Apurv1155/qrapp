@@ -1,9 +1,34 @@
 {
   "restaurant": "Bella Vista",
-  "lastUpdated": "2025-09-20T11:24:06.674Z",
-  "totalOrders": 10,
+  "lastUpdated": "2025-09-20T11:24:29.879Z",
+  "totalOrders": 11,
   "method": "direct-send-to-receiver",
   "orders": [
+    {
+      "id": 1758367469254,
+      "orderNumber": "DIRECT-469254",
+      "items": [
+        {
+          "id": 8,
+          "name": "Fresh Juice",
+          "category": "Beverages",
+          "price": 7,
+          "description": "Orange, apple or mixed fruit juice",
+          "quantity": 2
+        }
+      ],
+      "subtotal": 14,
+      "tax": 1.4000000000000001,
+      "total": 15.4,
+      "timestamp": "2025-09-20T11:24:29.263Z",
+      "status": "pending",
+      "source": "github-direct",
+      "restaurant": "Bella Vista",
+      "metadata": {
+        "createdAt": "2025-09-20T11:24:29.269Z",
+        "method": "Direct Send to receiver.html"
+      }
+    },
     {
       "id": 1758367446188,
       "orderNumber": "DIRECT-446188",
