@@ -3,273 +3,792 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Restaurant</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Bella Vista Restaurant - Pure Client Solution</title>
+    <meta name="robots" content="noindex, nofollow">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background: #f0f4f8;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            color: #333; 
+            line-height: 1.4;
         }
-        .message {
-            display: none;
-            transition: all 0.3s ease;
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 30px; 
+            margin-bottom: 30px; 
+            text-align: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
         }
-        .message.success {
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-            color: #155724;
+        .restaurant-name { 
+            font-size: 2.8rem; 
+            color: #D2691E; 
+            margin-bottom: 10px; 
+            font-weight: bold; 
         }
-        .message.error {
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-            color: #721c24;
+        .restaurant-tagline { 
+            color: #666; 
+            font-size: 1.2rem; 
+            margin-bottom: 10px; 
         }
-        .btn-primary {
-            transition: transform 0.2s, box-shadow 0.2s;
+        .version-info { 
+            color: #888; 
+            font-size: 0.9rem; 
+            font-style: italic; 
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        .pure-client-info { 
+            background: linear-gradient(145deg, #e3f2fd, #bbdefb); 
+            border: 2px solid #2196f3; 
+            padding: 25px; 
+            border-radius: 15px; 
+            margin-bottom: 30px; 
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.2); 
         }
-        .btn-primary:active {
-            transform: translateY(0);
-            box-shadow: none;
+        .info-title { 
+            font-size: 1.3rem; 
+            font-weight: bold; 
+            color: #0d47a1; 
+            margin-bottom: 15px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
         }
-        .menu-item:hover .item-card {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        .info-description { 
+            color: #0d47a1; 
+            margin-bottom: 20px; 
+            line-height: 1.6; 
         }
-        .menu-item:hover .item-name {
-            color: #3b82f6;
+        .method-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin: 20px 0; 
+        }
+        .method-item { 
+            background: rgba(255, 255, 255, 0.4); 
+            padding: 15px; 
+            border-radius: 10px; 
+            text-align: center; 
+            border: 1px solid rgba(33, 150, 243, 0.3); 
+        }
+        .method-icon { 
+            font-size: 2rem; 
+            margin-bottom: 10px; 
+        }
+        .method-name { 
+            font-weight: bold; 
+            margin-bottom: 5px; 
+        }
+        .method-desc { 
+            font-size: 0.9rem; 
+            color: #1565c0; 
+        }
+        .content-grid { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            gap: 30px; 
+        }
+        .menu-section { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        }
+        .menu-section h2 { 
+            color: #D2691E; 
+            font-size: 2rem; 
+            margin-bottom: 25px; 
+            font-weight: bold; 
+        }
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            gap: 20px; 
+        }
+        .menu-item { 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            padding: 20px; 
+            background: #f8f9fa; 
+            transition: all 0.3s ease; 
+        }
+        .menu-item:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
+            border-color: #D2691E; 
+        }
+        .item-name { 
+            font-size: 1.25rem; 
+            font-weight: bold; 
+            color: #333; 
+            margin-bottom: 10px; 
+        }
+        .item-description { 
+            color: #666; 
+            margin-bottom: 15px; 
+            line-height: 1.5; 
+            font-size: 0.95rem; 
+        }
+        .item-footer { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .item-price { 
+            font-size: 1.4rem; 
+            font-weight: bold; 
+            color: #D2691E; 
+        }
+        .add-btn { 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            padding: 10px 18px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: all 0.3s; 
+        }
+        .add-btn:hover { 
+            background: #218838; 
+            transform: translateY(-1px); 
+        }
+        .cart-sidebar { 
+            background: white; 
+            border-radius: 15px; 
+            padding: 30px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            height: fit-content; 
+            position: sticky; 
+            top: 20px; 
+        }
+        .cart-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 25px; 
+        }
+        .cart-header h3 { 
+            color: #D2691E; 
+            font-size: 1.5rem; 
+            font-weight: bold; 
+        }
+        .cart-count { 
+            background: #D2691E; 
+            color: white; 
+            border-radius: 50%; 
+            width: 32px; 
+            height: 32px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold; 
+            font-size: 1rem; 
+        }
+        .cart-items { 
+            max-height: 300px; 
+            overflow-y: auto; 
+            margin-bottom: 25px; 
+        }
+        .cart-item { 
+            padding: 15px 0; 
+            border-bottom: 1px solid #eee; 
+        }
+        .cart-item:last-child { 
+            border-bottom: none; 
+        }
+        .cart-item-name { 
+            font-weight: 600; 
+            margin-bottom: 8px; 
+            font-size: 1.05rem; 
+        }
+        .cart-item-price { 
+            color: #666; 
+            font-size: 0.9rem; 
+            margin-bottom: 10px; 
+        }
+        .quantity-controls { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin-bottom: 10px; 
+        }
+        .qty-btn { 
+            background: #D2691E; 
+            color: white; 
+            border: none; 
+            width: 28px; 
+            height: 28px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            font-size: 1rem; 
+            font-weight: bold; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .qty-btn:hover { 
+            background: #b8571b; 
+        }
+        .qty-display { 
+            min-width: 30px; 
+            text-align: center; 
+            font-weight: 600; 
+            font-size: 1.1rem; 
+        }
+        .remove-btn { 
+            background: #dc3545; 
+            color: white; 
+            border: none; 
+            padding: 5px 10px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 0.85rem; 
+            font-weight: 500; 
+        }
+        .remove-btn:hover { 
+            background: #c82333; 
+        }
+        .cart-totals { 
+            border-top: 2px solid #ddd; 
+            padding-top: 20px; 
+            margin-bottom: 25px; 
+        }
+        .total-row { 
+            display: flex; 
+            justify-content: space-between; 
+            margin: 8px 0; 
+            font-size: 1rem; 
+        }
+        .total-row.grand-total { 
+            font-weight: bold; 
+            font-size: 1.3rem; 
+            color: #D2691E; 
+            border-top: 1px solid #ddd; 
+            padding-top: 12px; 
+            margin-top: 15px; 
+        }
+        .order-methods { 
+            display: grid; 
+            gap: 12px; 
+            margin-bottom: 20px; 
+        }
+        .method-btn { 
+            padding: 15px 20px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            text-align: center; 
+            transition: all 0.3s; 
+            font-size: 0.95rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
+        .email-btn { 
+            background: linear-gradient(45deg, #ff6b6b, #ff8e8e); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3); 
+        }
+        .email-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4); 
+        }
+        .whatsapp-btn { 
+            background: linear-gradient(45deg, #25d366, #128c7e); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); 
+        }
+        .whatsapp-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); 
+        }
+        .sms-btn { 
+            background: linear-gradient(45deg, #007bff, #0056b3); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); 
+        }
+        .sms-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4); 
+        }
+        .copy-btn { 
+            background: linear-gradient(45deg, #6f42c1, #5a3b9d); 
+            color: white; 
+            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3); 
+        }
+        .copy-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4); 
+        }
+        .clear-cart-btn { 
+            background: #ffc107; 
+            color: #212529; 
+            padding: 12px 20px; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            transition: all 0.3s; 
+            margin-top: 10px; 
+            width: 100%; 
+        }
+        .clear-cart-btn:hover { 
+            background: #ffb300; 
+            transform: translateY(-1px); 
+        }
+        .empty-cart { 
+            text-align: center; 
+            color: #666; 
+            padding: 30px 0; 
+            font-size: 1rem; 
+        }
+        .message { 
+            padding: 15px; 
+            border-radius: 6px; 
+            margin-bottom: 20px; 
+            display: none; 
+            font-weight: 500; 
+            font-size: 0.95rem; 
+        }
+        .message.success { 
+            background: #d4edda; 
+            color: #155724; 
+            border: 1px solid #c3e6cb; 
+        }
+        .message.error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            border: 1px solid #f5c6cb; 
+        }
+        .message.info { 
+            background: #d1ecf1; 
+            color: #0c5460; 
+            border: 1px solid #bee5eb; 
+        }
+        .restaurant-contact { 
+            background: #f8f9fa; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-top: 20px; 
+            border-left: 4px solid #D2691E; 
+        }
+        .contact-title { 
+            font-weight: bold; 
+            color: #D2691E; 
+            margin-bottom: 10px; 
+        }
+        .contact-info { 
+            font-size: 0.9rem; 
+            line-height: 1.5; 
+        }
+        @media (max-width: 768px) { 
+            .content-grid { 
+                grid-template-columns: 1fr; 
+            } 
+            .restaurant-name { 
+                font-size: 2.2rem; 
+            } 
+            .menu-grid { 
+                grid-template-columns: 1fr; 
+            } 
+            .cart-sidebar { 
+                position: static; 
+            }
+            .method-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen p-4">
-
-    <!-- Main Container -->
-    <div class="container mx-auto p-6 bg-white rounded-xl shadow-lg mt-8 max-w-7xl">
-        <header class="text-center mb-12">
-            <h1 class="text-5xl font-extrabold text-blue-600 tracking-tight">Bella Vista Restaurant</h1>
-            <p class="mt-2 text-xl text-gray-600">Your order, just a click away.</p>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
+            <p class="restaurant-tagline">Pure Client Solution - No APIs, Tokens, or Databases</p>
+            <p class="version-info">Direct order methods from anywhere</p>
         </header>
 
-        <!-- Message Box -->
-        <div id="message" class="message rounded-lg p-4 text-center mb-6 font-semibold"></div>
+        <div class="pure-client-info">
+            <div class="info-title">
+                🚀 Pure Client-Side Order System
+            </div>
+            <div class="info-description">
+                Send orders directly from the browser without any APIs, tokens, databases, or external services. Choose your preferred method:
+            </div>
 
-        <div class="grid lg:grid-cols-3 gap-8">
-            <!-- Menu Section -->
-            <section class="lg:col-span-2 p-6 bg-gray-50 rounded-lg shadow-inner">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Menu</h2>
-                <div id="menu-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                    <!-- Menu items will be dynamically generated here -->
+            <div class="method-grid">
+                <div class="method-item">
+                    <div class="method-icon">📧</div>
+                    <div class="method-name">Email</div>
+                    <div class="method-desc">Opens email client</div>
                 </div>
+                <div class="method-item">
+                    <div class="method-icon">📱</div>
+                    <div class="method-name">WhatsApp</div>
+                    <div class="method-desc">Direct to WhatsApp</div>
+                </div>
+                <div class="method-item">
+                    <div class="method-icon">💬</div>
+                    <div class="method-name">SMS</div>
+                    <div class="method-desc">Text message</div>
+                </div>
+                <div class="method-item">
+                    <div class="method-icon">📋</div>
+                    <div class="method-name">Copy</div>
+                    <div class="method-desc">Copy to clipboard</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="content-grid">
+            <section class="menu-section">
+                <h2>Our Delicious Menu</h2>
+                <div id="menu-items" class="menu-grid"></div>
             </section>
 
-            <!-- Order Section -->
-            <aside class="lg:col-span-1 p-6 bg-white rounded-lg shadow-md flex flex-col h-full">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Your Cart</h2>
-                <div id="cart" class="flex-grow overflow-y-auto mb-6 pr-2">
-                    <!-- Cart items will be dynamically generated here -->
+            <aside class="cart-sidebar">
+                <div class="cart-header">
+                    <h3>Your Order</h3>
+                    <span id="cart-count" class="cart-count">0</span>
                 </div>
-                <div id="cart-summary" class="border-t pt-4 text-lg font-semibold text-gray-700">
-                    <p>Total: <span id="total-price" class="text-blue-600">₹0.00</span></p>
+
+                <div id="cart-items" class="cart-items"></div>
+
+                <div class="cart-totals">
+                    <div class="total-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Tax (10%):</span>
+                        <span id="tax">$0.00</span>
+                    </div>
+                    <div class="total-row grand-total">
+                        <span>Total:</span>
+                        <span id="total">$0.00</span>
+                    </div>
                 </div>
-                <button id="send-order-btn" class="btn-primary w-full mt-6 bg-blue-500 text-white py-3 rounded-lg font-bold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400">
-                    🚀 SEND ORDER TO KITCHEN
-                </button>
+
+                <div class="order-methods">
+                    <button class="method-btn email-btn" onclick="sendViaEmail()">
+                        📧 Send via Email
+                    </button>
+                    <button class="method-btn whatsapp-btn" onclick="sendViaWhatsApp()">
+                        📱 Send via WhatsApp
+                    </button>
+                    <button class="method-btn sms-btn" onclick="sendViaSMS()">
+                        💬 Send via SMS
+                    </button>
+                    <button class="method-btn copy-btn" onclick="copyToClipboard()">
+                        📋 Copy Order Text
+                    </button>
+                </div>
+
+                <button class="clear-cart-btn" onclick="clearCart()">🗑️ Clear Cart</button>
+
+                <div class="restaurant-contact">
+                    <div class="contact-title">📞 Restaurant Contact</div>
+                    <div class="contact-info">
+                        <strong>Email:</strong> orders@bellavista.com<br>
+                        <strong>Phone:</strong> +91 9173213576<br>
+                        <strong>WhatsApp:</strong> +91 9173213576
+                    </div>
+                </div>
             </aside>
         </div>
     </div>
 
     <script>
-        // GitHub API configuration. Replace with your actual repo and file name.
-        const CONFIG = {
-            repo: 'apurv1155/qrapp',
-            file: 'orders.json',
-            // WARNING: Do not share this token. It is for demonstration purposes only.
-            token: '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'
+        // 🚀 PURE CLIENT-SIDE SYSTEM - NO APIS, TOKENS, OR DATABASES
+
+        const RESTAURANT_INFO = {
+            name: 'Bella Vista Restaurant',
+            email: 'walaapurv@gmail.com',
+            phone: '+91 9173213576',  // For SMS (no spaces/dashes for tel: links)
+            phoneDisplay: '+1 (555) 123-4567',
+            whatsapp: '+91 9173213576',  // For WhatsApp (no spaces/dashes)
+            whatsappDisplay: '+91 9173213576'
         };
 
+        // Professional menu items
         const MENU = [
-            { name: 'Margherita Pizza', price: 250, id: 'pizza-margherita' },
-            { name: 'Pasta Arrabiata', price: 300, id: 'pasta-arrabiata' },
-            { name: 'Caesar Salad', price: 180, id: 'caesar-salad' },
-            { name: 'Mushroom Risotto', price: 350, id: 'mushroom-risotto' },
-            { name: 'Tiramisu', price: 150, id: 'tiramisu' },
-            { name: 'Coke', price: 50, id: 'coke' },
-            { name: 'Cheeseburger', price: 280, id: 'cheeseburger' },
-            { name: 'French Fries', price: 100, id: 'french-fries' },
+            { id: 1, name: "Garlic Bread", price: 8.99, description: "Fresh baked artisan bread with roasted garlic butter and Italian herbs" },
+            { id: 2, name: "Caesar Salad", price: 12.99, description: "Crisp romaine lettuce with house-made caesar dressing, croutons, and parmesan" },
+            { id: 3, name: "Buffalo Wings", price: 14.99, description: "Spicy buffalo chicken wings served with cool ranch dipping sauce and celery" },
+            { id: 4, name: "Mozzarella Sticks", price: 10.99, description: "Golden fried mozzarella cheese sticks with marinara sauce" },
+            { id: 5, name: "Loaded Nachos", price: 13.99, description: "Tortilla chips loaded with cheese, jalapeños, sour cream, and salsa" },
+            { id: 6, name: "Margherita Pizza", price: 18.99, description: "Classic wood-fired pizza with fresh tomato sauce, mozzarella, and basil" },
+            { id: 7, name: "Chicken Alfredo", price: 22.99, description: "Creamy fettuccine pasta with grilled chicken breast and parmesan cheese" },
+            { id: 8, name: "Grilled Salmon", price: 26.99, description: "Fresh Atlantic salmon with lemon herb butter and seasonal vegetables" },
+            { id: 9, name: "Ribeye Steak", price: 29.99, description: "Premium 12oz ribeye steak cooked to perfection with garlic mashed potatoes" },
+            { id: 10, name: "Fish Tacos", price: 19.99, description: "Grilled fish with fresh pico de gallo, avocado, and lime crema" },
+            { id: 11, name: "BBQ Ribs", price: 24.99, description: "Tender pork ribs with house BBQ sauce, coleslaw, and fries" },
+            { id: 12, name: "Chicken Parmesan", price: 21.99, description: "Breaded chicken breast with marinara, melted cheese, and spaghetti" },
+            { id: 13, name: "Mushroom Risotto", price: 20.99, description: "Creamy arborio rice with wild mushrooms and truffle oil" },
+            { id: 14, name: "Chocolate Lava Cake", price: 9.99, description: "Rich chocolate cake with molten center, served with vanilla ice cream" },
+            { id: 15, name: "Cheesecake", price: 8.99, description: "New York style cheesecake with seasonal berry compote" },
+            { id: 16, name: "Fresh Brewed Coffee", price: 4.99, description: "Premium Colombian coffee - regular, decaf, or espresso" },
+            { id: 17, name: "Fresh Juice", price: 6.99, description: "Orange, apple, cranberry, or tropical fruit blend" },
+            { id: 18, name: "Iced Tea", price: 3.99, description: "Freshly brewed iced tea - sweet, unsweetened, or flavored" }
         ];
 
         let cart = {};
-        let orderNumber = 1;
 
-        const menuItemsEl = document.getElementById('menu-items');
-        const cartEl = document.getElementById('cart');
-        const totalPriceEl = document.getElementById('total-price');
-        const sendBtn = document.getElementById('send-order-btn');
+        // Initialize system
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🍽️ Pure client-side restaurant system loading...');
+            console.log('🚀 No APIs, tokens, databases, or external services required');
+            console.log('📧 Direct order methods: Email, WhatsApp, SMS, Clipboard');
 
-        // Render menu items on page load
+            renderMenu();
+            updateCart();
+
+            showMessage('✅ Pure client system ready! Choose your preferred order method below.', 'success');
+        });
+
         function renderMenu() {
-            menuItemsEl.innerHTML = MENU.map(item => `
-                <div class="menu-item cursor-pointer p-4 bg-white rounded-xl shadow-md transform transition-transform" onclick="addToCart('${item.id}', '${item.name}', ${item.price})">
-                    <div class="item-card text-center">
-                        <h3 class="item-name text-lg font-semibold text-gray-800 transition-colors">${item.name}</h3>
-                        <p class="item-price text-gray-600">₹${item.price}</p>
+            const container = document.getElementById('menu-items');
+            if (!container) return;
+
+            container.innerHTML = MENU.map(item => `
+                <div class="menu-item">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-description">${item.description}</div>
+                    <div class="item-footer">
+                        <div class="item-price">$${item.price.toFixed(2)}</div>
+                        <button class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // Add item to cart
-        function addToCart(id, name, price) {
-            if (cart[id]) {
-                cart[id].quantity++;
+        function addToCart(itemId) {
+            const item = MENU.find(i => i.id === itemId);
+            if (!item) return;
+
+            if (cart[itemId]) {
+                cart[itemId].quantity += 1;
             } else {
-                cart[id] = { name, price, quantity: 1 };
+                cart[itemId] = { ...item, quantity: 1 };
             }
+
             updateCart();
-            showMessage(`Added ${name} to cart`, 'success');
+            showMessage(`${item.name} added to cart!`, 'success');
         }
 
-        // Update the cart display
         function updateCart() {
-            let total = 0;
-            cartEl.innerHTML = '';
-            for (const id in cart) {
-                const item = cart[id];
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                cartEl.innerHTML += `
-                    <div class="flex justify-between items-center bg-gray-100 p-3 rounded-lg mb-2 shadow-sm">
-                        <span class="font-medium text-gray-700">${item.name} x ${item.quantity}</span>
-                        <span class="text-blue-600 font-semibold">₹${itemTotal}</span>
-                        <button onclick="removeFromCart('${id}')" class="text-red-500 hover:text-red-700 focus:outline-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-                `;
-            }
-            totalPriceEl.textContent = `₹${total}`;
-            sendBtn.disabled = Object.keys(cart).length === 0;
-        }
+            const items = Object.values(cart);
+            const container = document.getElementById('cart-items');
 
-        // Remove item from cart
-        function removeFromCart(id) {
-            delete cart[id];
-            updateCart();
-            showMessage('Item removed from cart', 'success');
-        }
+            if (!container) return;
 
-        // Show a temporary message
-        function showMessage(text, type) {
-            const msg = document.getElementById('message');
-            msg.textContent = text;
-            msg.className = `message ${type} rounded-lg p-4 text-center mb-6 font-semibold shadow-md animate-fade-in-down`;
-            msg.style.display = 'block';
-            setTimeout(() => { msg.style.display = 'none'; }, 4000);
-        }
-
-        // Send order to GitHub
-        sendBtn.addEventListener('click', sendOrderToGitHub);
-
-        async function sendOrderToGitHub() {
-            if (Object.keys(cart).length === 0) {
-                showMessage('Cart is empty!', 'error');
+            if (items.length === 0) {
+                container.innerHTML = '<div class="empty-cart">Your cart is empty<br><small>Add items from our menu!</small></div>';
+                document.getElementById('cart-count').textContent = '0';
+                updateTotals(0, 0, 0);
                 return;
             }
 
-            sendBtn.disabled = true;
-            sendBtn.textContent = 'Sending...';
+            container.innerHTML = items.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-price">$${item.price.toFixed(2)} each</div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">−</button>
+                        <span class="qty-display">${item.quantity}</span>
+                        <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                    </div>
+                    <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                </div>
+            `).join('');
 
-            const order = {
-                orderNumber: orderNumber++,
-                items: cart,
-                timestamp: new Date().toISOString()
-            };
+            const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
 
-            try {
-                // Step 1: Get the current file content to check for existence and get the SHA
-                const getResponse = await fetch(`https://api.github.com/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
-                    headers: {
-                        'Authorization': `Bearer ${CONFIG.token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
+            const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
 
-                let existingContent = [];
-                let sha = null;
+            updateTotals(subtotal, tax, total);
+        }
 
-                if (getResponse.status === 200) {
-                    const data = await getResponse.json();
-                    sha = data.sha;
-                    const decodedContent = atob(data.content.replace(/\s/g, ''));
-                    try {
-                        existingContent = JSON.parse(decodedContent);
-                    } catch (e) {
-                        console.error('Error parsing JSON:', e);
-                        showMessage('❌ Failed to parse existing orders file', 'error');
-                        sendBtn.disabled = false;
-                        return;
-                    }
-                } else if (getResponse.status !== 404) {
-                    // If it's not a 404, it's a real error.
-                    const error = await getResponse.json();
-                    showMessage(`❌ Failed to read existing orders: ${error.message}`, 'error');
-                    sendBtn.disabled = false;
-                    return;
+        function changeQuantity(itemId, change) {
+            if (cart[itemId]) {
+                cart[itemId].quantity += change;
+                if (cart[itemId].quantity <= 0) {
+                    delete cart[itemId];
                 }
-                
-                // Step 2: Append the new order and encode the content
-                existingContent.push(order);
-                const newContent = JSON.stringify(existingContent, null, 2);
-                const encodedContent = btoa(newContent);
-
-                const commitData = {
-                    message: `New order #${order.orderNumber}`,
-                    content: encodedContent
-                };
-
-                // Add SHA to the commit data only if the file already existed
-                if (sha) {
-                    commitData.sha = sha;
-                }
-
-                // Step 3: Send the PUT request to create or update the file
-                const putResponse = await fetch(`https://api.github.com/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${CONFIG.token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(commitData)
-                });
-
-                if (putResponse.ok) {
-                    showMessage(`✅ Order ${order.orderNumber} sent to kitchen successfully!`, 'success');
-                    cart = {};
-                    updateCart();
-                } else {
-                    const error = await putResponse.json();
-                    showMessage(`❌ Failed to send order: ${error.message}`, 'error');
-                }
-
-            } catch (error) {
-                console.error('Network or other error:', error);
-                showMessage('❌ Network error or failed to send - please try again', 'error');
-            } finally {
-                sendBtn.disabled = false;
-                sendBtn.textContent = '🚀 SEND ORDER TO KITCHEN';
+                updateCart();
             }
         }
 
-        // Initialize the app
-        renderMenu();
-        updateCart();
+        function removeFromCart(itemId) {
+            if (cart[itemId]) {
+                const item = cart[itemId];
+                delete cart[itemId];
+                updateCart();
+                showMessage(`${item.name} removed`, 'success');
+            }
+        }
+
+        function updateTotals(subtotal, tax, total) {
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function clearCart() {
+            if (Object.keys(cart).length > 0 && confirm('Clear cart?')) {
+                cart = {};
+                updateCart();
+                showMessage('Cart cleared', 'success');
+            }
+        }
+
+        // Generate order text for all methods
+        function generateOrderText() {
+            const items = Object.values(cart);
+            if (items.length === 0) {
+                showMessage('Cart is empty!', 'error');
+                return null;
+            }
+
+            const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+            const orderNumber = `BV-${Date.now().toString().slice(-6)}`;
+            const orderTime = new Date().toLocaleString();
+
+            let orderText = `🍽️ ${RESTAURANT_INFO.name} - New Order\n\n`;
+            orderText += `📋 Order #${orderNumber}\n`;
+            orderText += `🕐 ${orderTime}\n\n`;
+            orderText += `🛒 ITEMS ORDERED:\n`;
+            orderText += `${items.map(item => 
+                `• ${item.name} x${item.quantity} @ $${item.price.toFixed(2)} = $${(item.quantity * item.price).toFixed(2)}`
+            ).join('\n')}\n\n`;
+            orderText += `💰 ORDER SUMMARY:\n`;
+            orderText += `Subtotal: $${subtotal.toFixed(2)}\n`;
+            orderText += `Tax (10%): $${tax.toFixed(2)}\n`;
+            orderText += `TOTAL: $${total.toFixed(2)}\n\n`;
+            orderText += `📱 Customer contact: [Your phone/email here]\n`;
+            orderText += `📍 Delivery address: [Your address here]\n\n`;
+            orderText += `Thank you for your order!`;
+
+            return orderText;
+        }
+
+        // Send via Email (mailto: link)
+        function sendViaEmail() {
+            const orderText = generateOrderText();
+            if (!orderText) return;
+
+            const subject = `New Order - ${RESTAURANT_INFO.name}`;
+            const body = orderText.replace(/\n/g, '%0A');
+            const mailtoLink = `mailto:${RESTAURANT_INFO.email}?subject=${encodeURIComponent(subject)}&body=${body}`;
+
+            window.open(mailtoLink, '_blank');
+            showMessage('📧 Email client opened with your order!', 'info');
+        }
+
+        // Send via WhatsApp
+        function sendViaWhatsApp() {
+            const orderText = generateOrderText();
+            if (!orderText) return;
+
+            const whatsappText = orderText.replace(/\n/g, '%0A');
+            const whatsappLink = `https://wa.me/${RESTAURANT_INFO.whatsapp}?text=${whatsappText}`;
+
+            window.open(whatsappLink, '_blank');
+            showMessage('📱 WhatsApp opened with your order!', 'info');
+        }
+
+        // Send via SMS
+        function sendViaSMS() {
+            const orderText = generateOrderText();
+            if (!orderText) return;
+
+            // SMS links have character limits, so create shorter version
+            const items = Object.values(cart);
+            const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.1; // Include tax
+            const orderNumber = `BV-${Date.now().toString().slice(-6)}`;
+
+            const shortText = `${RESTAURANT_INFO.name} Order #${orderNumber}: ${items.map(item => 
+                `${item.name} x${item.quantity}`
+            ).join(', ')}. Total: $${total.toFixed(2)}. [Add your contact & address]`;
+
+            const smsLink = `sms:${RESTAURANT_INFO.phone}?body=${encodeURIComponent(shortText)}`;
+
+            window.open(smsLink, '_blank');
+            showMessage('💬 SMS app opened with your order!', 'info');
+        }
+
+        // Copy to Clipboard
+        async function copyToClipboard() {
+            const orderText = generateOrderText();
+            if (!orderText) return;
+
+            const cleanText = orderText.replace(/\n/g, '\n');
+
+            try {
+                await navigator.clipboard.writeText(cleanText);
+                showMessage('📋 Order text copied to clipboard! Paste it anywhere.', 'success');
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = cleanText;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    document.execCommand('copy');
+                    showMessage('📋 Order text copied to clipboard! Paste it anywhere.', 'success');
+                } catch (err) {
+                    showMessage('❌ Could not copy to clipboard. Please select and copy manually.', 'error');
+                }
+
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            if (!msg) return;
+
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.style.display = 'block';
+
+            setTimeout(() => { 
+                msg.style.display = 'none'; 
+            }, 6000);
+        }
+
+        // Global functions
+        window.addToCart = addToCart;
+        window.changeQuantity = changeQuantity;
+        window.removeFromCart = removeFromCart;
+        window.sendViaEmail = sendViaEmail;
+        window.sendViaWhatsApp = sendViaWhatsApp;
+        window.sendViaSMS = sendViaSMS;
+        window.copyToClipboard = copyToClipboard;
+        window.clearCart = clearCart;
+
+        console.log('✅ Pure client-side restaurant system loaded');
+        console.log('📧 Email orders to:', RESTAURANT_INFO.email);
+        console.log('📱 WhatsApp orders to:', RESTAURANT_INFO.whatsappDisplay);
+        console.log('💬 SMS orders to:', RESTAURANT_INFO.phoneDisplay);
+        console.log('🚀 All methods work without any external services!');
     </script>
 </body>
 </html>
