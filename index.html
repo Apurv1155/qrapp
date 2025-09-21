@@ -4,278 +4,242 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bella Vista Restaurant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #333; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { background: white; border-radius: 10px; padding: 30px; margin-bottom: 30px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .restaurant-name { font-size: 2.5rem; color: #D2691E; margin-bottom: 10px; }
-        .restaurant-tagline { color: #666; font-size: 1.1rem; }
-        .status { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; text-align: center; font-weight: bold; }
-        .content-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; }
-        .menu-section { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .menu-section h2 { color: #D2691E; font-size: 1.8rem; margin-bottom: 20px; }
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .menu-item { border: 1px solid #ddd; border-radius: 8px; padding: 20px; background: #f8f9fa; transition: transform 0.2s; }
-        .menu-item:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .item-name { font-size: 1.2rem; font-weight: bold; color: #333; margin-bottom: 8px; }
-        .item-description { color: #666; margin-bottom: 12px; line-height: 1.4; font-size: 0.9rem; }
-        .item-footer { display: flex; justify-content: space-between; align-items: center; }
-        .item-price { font-size: 1.3rem; font-weight: bold; color: #D2691E; }
-        .add-btn { background: #28a745; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 500; }
-        .add-btn:hover { background: #218838; }
-        .cart-sidebar { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: fit-content; }
-        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .cart-header h3 { color: #D2691E; font-size: 1.4rem; }
-        .cart-count { background: #D2691E; color: white; border-radius: 50%; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9rem; }
-        .cart-items { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
-        .cart-item { padding: 12px 0; border-bottom: 1px solid #eee; }
-        .cart-item:last-child { border-bottom: none; }
-        .cart-item-name { font-weight: 500; margin-bottom: 5px; }
-        .cart-item-price { color: #666; font-size: 0.9rem; margin-bottom: 8px; }
-        .quantity-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-        .qty-btn { background: #D2691E; color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; font-size: 0.9rem; }
-        .qty-display { min-width: 20px; text-align: center; font-weight: 500; }
-        .remove-btn { background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 0.8rem; }
-        .cart-totals { border-top: 2px solid #ddd; padding-top: 15px; margin-bottom: 20px; }
-        .total-row { display: flex; justify-content: space-between; margin: 5px 0; }
-        .total-row.grand-total { font-weight: bold; font-size: 1.1rem; color: #D2691E; border-top: 1px solid #ddd; padding-top: 8px; margin-top: 8px; }
-        .cart-actions { display: flex; flex-direction: column; gap: 10px; }
-        .action-btn { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: 500; text-align: center; transition: all 0.2s; }
-        .send-btn { background: #ff6b6b; color: white; font-size: 1.1rem; }
-        .send-btn:hover { background: #ff5252; }
-        .send-btn:disabled { background: #6c757d; cursor: not-allowed; }
-        .clear-btn { background: #ffc107; color: #212529; }
-        .clear-btn:hover { background: #ffb300; }
-        .empty-cart { text-align: center; color: #666; padding: 20px 0; }
-        .message { padding: 12px; border-radius: 4px; margin-bottom: 20px; display: none; font-weight: 500; }
-        .message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        @media (max-width: 768px) { .content-grid { grid-template-columns: 1fr; } .restaurant-name { font-size: 2rem; } .menu-grid { grid-template-columns: 1fr; } }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+        }
+        .message {
+            display: none;
+            transition: all 0.3s ease;
+        }
+        .message.success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .message.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .btn-primary {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        .menu-item:hover .item-card {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        .menu-item:hover .item-name {
+            color: #3b82f6;
+        }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
-            <p class="restaurant-tagline">Simple & Reliable Ordering System</p>
+<body class="bg-gray-100 min-h-screen p-4">
+
+    <!-- Main Container -->
+    <div class="container mx-auto p-6 bg-white rounded-xl shadow-lg mt-8 max-w-7xl">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold text-blue-600 tracking-tight">Bella Vista Restaurant</h1>
+            <p class="mt-2 text-xl text-gray-600">Your order, just a click away.</p>
         </header>
 
-        <div class="status">✅ System Ready - Token Configured - Orders Will Send to Kitchen</div>
+        <!-- Message Box -->
+        <div id="message" class="message rounded-lg p-4 text-center mb-6 font-semibold"></div>
 
-        <div id="message" class="message"></div>
-
-        <div class="content-grid">
-            <section class="menu-section">
-                <h2>Our Menu</h2>
-                <div id="menu-items" class="menu-grid"></div>
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Menu Section -->
+            <section class="lg:col-span-2 p-6 bg-gray-50 rounded-lg shadow-inner">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Menu</h2>
+                <div id="menu-items" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Menu items will be dynamically generated here -->
+                </div>
             </section>
 
-            <aside class="cart-sidebar">
-                <div class="cart-header">
-                    <h3>Your Order</h3>
-                    <span id="cart-count" class="cart-count">0</span>
+            <!-- Order Section -->
+            <aside class="lg:col-span-1 p-6 bg-white rounded-lg shadow-md flex flex-col h-full">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Your Cart</h2>
+                <div id="cart" class="flex-grow overflow-y-auto mb-6 pr-2">
+                    <!-- Cart items will be dynamically generated here -->
                 </div>
-
-                <div id="cart-items" class="cart-items"></div>
-
-                <div class="cart-totals">
-                    <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">$0.00</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Tax (10%):</span>
-                        <span id="tax">$0.00</span>
-                    </div>
-                    <div class="total-row grand-total">
-                        <span>Total:</span>
-                        <span id="total">$0.00</span>
-                    </div>
+                <div id="cart-summary" class="border-t pt-4 text-lg font-semibold text-gray-700">
+                    <p>Total: <span id="total-price" class="text-blue-600">₹0.00</span></p>
                 </div>
-
-                <div class="cart-actions">
-                    <button id="send-btn" class="action-btn send-btn">🚀 SEND ORDER TO KITCHEN</button>
-                    <button id="clear-btn" class="action-btn clear-btn">🗑️ Clear Cart</button>
-                </div>
+                <button id="send-order-btn" class="btn-primary w-full mt-6 bg-blue-500 text-white py-3 rounded-lg font-bold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:bg-gray-400">
+                    🚀 SEND ORDER TO KITCHEN
+                </button>
             </aside>
         </div>
     </div>
 
     <script>
+        // GitHub API configuration. Replace with your actual repo and file name.
         const CONFIG = {
-            token: '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',
             repo: 'apurv1155/qrapp',
-            file: 'orders.json'
+            file: 'orders.json',
+            // WARNING: Do not share this token. It is for demonstration purposes only.
+            token: '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'
         };
 
         const MENU = [
-            { id: 1, name: "Garlic Bread", price: 8, description: "Fresh baked bread with garlic butter" },
-            { id: 2, name: "Caesar Salad", price: 12, description: "Crisp romaine lettuce with caesar dressing" },
-            { id: 3, name: "Buffalo Wings", price: 14, description: "Spicy chicken wings with ranch dip" },
-            { id: 4, name: "Margherita Pizza", price: 18, description: "Classic pizza with tomato, mozzarella and basil" },
-            { id: 5, name: "Chicken Alfredo", price: 22, description: "Creamy pasta with grilled chicken" },
-            { id: 6, name: "Grilled Salmon", price: 26, description: "Fresh Atlantic salmon with herbs" },
-            { id: 7, name: "Beef Steak", price: 28, description: "Premium ribeye steak cooked to perfection" },
-            { id: 8, name: "Chocolate Cake", price: 10, description: "Rich chocolate cake with vanilla ice cream" },
-            { id: 9, name: "Coffee", price: 5, description: "Fresh brewed coffee" },
-            { id: 10, name: "Soft Drinks", price: 4, description: "Coke, Sprite, Fanta" }
+            { name: 'Margherita Pizza', price: 250, id: 'pizza-margherita' },
+            { name: 'Pasta Arrabiata', price: 300, id: 'pasta-arrabiata' },
+            { name: 'Caesar Salad', price: 180, id: 'caesar-salad' },
+            { name: 'Mushroom Risotto', price: 350, id: 'mushroom-risotto' },
+            { name: 'Tiramisu', price: 150, id: 'tiramisu' },
+            { name: 'Coke', price: 50, id: 'coke' },
+            { name: 'Cheeseburger', price: 280, id: 'cheeseburger' },
+            { name: 'French Fries', price: 100, id: 'french-fries' },
         ];
 
         let cart = {};
+        let orderNumber = 1;
 
-        document.addEventListener('DOMContentLoaded', function() {
-            renderMenu();
-            updateCart();
-            setupEvents();
-        });
+        const menuItemsEl = document.getElementById('menu-items');
+        const cartEl = document.getElementById('cart');
+        const totalPriceEl = document.getElementById('total-price');
+        const sendBtn = document.getElementById('send-order-btn');
 
-        function setupEvents() {
-            document.getElementById('send-btn').addEventListener('click', sendOrder);
-            document.getElementById('clear-btn').addEventListener('click', clearCart);
-        }
-
+        // Render menu items on page load
         function renderMenu() {
-            const container = document.getElementById('menu-items');
-            container.innerHTML = MENU.map(item => `
-                <div class="menu-item">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-description">${item.description}</div>
-                    <div class="item-footer">
-                        <div class="item-price">$${item.price}</div>
-                        <button class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+            menuItemsEl.innerHTML = MENU.map(item => `
+                <div class="menu-item cursor-pointer p-4 bg-white rounded-xl shadow-md transform transition-transform" onclick="addToCart('${item.id}', '${item.name}', ${item.price})">
+                    <div class="item-card text-center">
+                        <h3 class="item-name text-lg font-semibold text-gray-800 transition-colors">${item.name}</h3>
+                        <p class="item-price text-gray-600">₹${item.price}</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        function addToCart(itemId) {
-            const item = MENU.find(i => i.id === itemId);
-            if (!item) return;
-            cart[itemId] = cart[itemId] ? { ...item, quantity: cart[itemId].quantity + 1 } : { ...item, quantity: 1 };
+        // Add item to cart
+        function addToCart(id, name, price) {
+            if (cart[id]) {
+                cart[id].quantity++;
+            } else {
+                cart[id] = { name, price, quantity: 1 };
+            }
             updateCart();
-            showMessage(`${item.name} added to cart!`, 'success');
+            showMessage(`Added ${name} to cart`, 'success');
         }
 
+        // Update the cart display
         function updateCart() {
-            const items = Object.values(cart);
-            const container = document.getElementById('cart-items');
-            const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const tax = subtotal * 0.1;
-            const total = subtotal + tax;
-
-            if (items.length === 0) {
-                container.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
-                document.getElementById('cart-count').textContent = '0';
-                updateTotals(0, 0, 0);
-                document.getElementById('send-btn').disabled = true;
-                return;
-            }
-
-            container.innerHTML = items.map(item => `
-                <div class="cart-item">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">$${item.price} each</div>
-                    <div class="quantity-controls">
-                        <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
-                        <span class="qty-display">${item.quantity}</span>
-                        <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+            let total = 0;
+            cartEl.innerHTML = '';
+            for (const id in cart) {
+                const item = cart[id];
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                cartEl.innerHTML += `
+                    <div class="flex justify-between items-center bg-gray-100 p-3 rounded-lg mb-2 shadow-sm">
+                        <span class="font-medium text-gray-700">${item.name} x ${item.quantity}</span>
+                        <span class="text-blue-600 font-semibold">₹${itemTotal}</span>
+                        <button onclick="removeFromCart('${id}')" class="text-red-500 hover:text-red-700 focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm6 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
                     </div>
-                    <button class="remove-btn" onclick="removeItem(${item.id})">Remove</button>
-                </div>
-            `).join('');
-
-            const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cart-count').textContent = totalItems;
-            updateTotals(subtotal, tax, total);
-            document.getElementById('send-btn').disabled = false;
-        }
-
-        function changeQty(itemId, change) {
-            if (cart[itemId]) {
-                cart[itemId].quantity += change;
-                if (cart[itemId].quantity <= 0) delete cart[itemId];
-                updateCart();
+                `;
             }
+            totalPriceEl.textContent = `₹${total}`;
+            sendBtn.disabled = Object.keys(cart).length === 0;
         }
 
-        function removeItem(itemId) {
-            if (cart[itemId]) {
-                delete cart[itemId];
-                updateCart();
-                showMessage('Item removed', 'success');
-            }
+        // Remove item from cart
+        function removeFromCart(id) {
+            delete cart[id];
+            updateCart();
+            showMessage('Item removed from cart', 'success');
         }
 
-        function updateTotals(subtotal, tax, total) {
-            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
-            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        // Show a temporary message
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type} rounded-lg p-4 text-center mb-6 font-semibold shadow-md animate-fade-in-down`;
+            msg.style.display = 'block';
+            setTimeout(() => { msg.style.display = 'none'; }, 4000);
         }
 
-        function clearCart() {
-            if (Object.keys(cart).length > 0 && confirm('Clear cart?')) {
-                cart = {};
-                updateCart();
-                showMessage('Cart cleared', 'success');
-            }
-        }
+        // Send order to GitHub
+        sendBtn.addEventListener('click', sendOrderToGitHub);
 
-        async function sendOrder() {
-            const items = Object.values(cart);
-            if (items.length === 0) {
+        async function sendOrderToGitHub() {
+            if (Object.keys(cart).length === 0) {
                 showMessage('Cart is empty!', 'error');
                 return;
             }
 
-            const sendBtn = document.getElementById('send-btn');
             sendBtn.disabled = true;
-            sendBtn.textContent = 'SENDING...';
+            sendBtn.textContent = 'Sending...';
+
+            const order = {
+                orderNumber: orderNumber++,
+                items: cart,
+                timestamp: new Date().toISOString()
+            };
 
             try {
-                const order = {
-                    id: Date.now(),
-                    orderNumber: `ORDER-${Date.now().toString().slice(-6)}`,
-                    items: items,
-                    subtotal: items.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-                    tax: items.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 0.1,
-                    total: items.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.1,
-                    timestamp: new Date().toISOString(),
-                    status: 'pending',
-                    source: 'customer'
-                };
-
-                let orders = [];
-                let sha = null;
-
+                // Step 1: Get the current file content to check for existence and get the SHA
                 const getResponse = await fetch(`https://api.github.com/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
-                    headers: { 'Authorization': `Bearer ${CONFIG.token}`, 'Accept': 'application/vnd.github.v3+json' }
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
                 });
 
-                if (getResponse.ok) {
+                let existingContent = [];
+                let sha = null;
+
+                if (getResponse.status === 200) {
                     const data = await getResponse.json();
                     sha = data.sha;
-                    orders = JSON.parse(atob(data.content)).orders || [];
+                    const decodedContent = atob(data.content.replace(/\s/g, ''));
+                    try {
+                        existingContent = JSON.parse(decodedContent);
+                    } catch (e) {
+                        console.error('Error parsing JSON:', e);
+                        showMessage('❌ Failed to parse existing orders file', 'error');
+                        sendBtn.disabled = false;
+                        return;
+                    }
+                } else if (getResponse.status !== 404) {
+                    // If it's not a 404, it's a real error.
+                    const error = await getResponse.json();
+                    showMessage(`❌ Failed to read existing orders: ${error.message}`, 'error');
+                    sendBtn.disabled = false;
+                    return;
                 }
-
-                orders.unshift(order);
-                if (orders.length > 20) orders = orders.slice(0, 20);
-
-                const fileContent = {
-                    restaurant: 'Bella Vista',
-                    lastUpdated: new Date().toISOString(),
-                    totalOrders: orders.length,
-                    orders: orders
-                };
+                
+                // Step 2: Append the new order and encode the content
+                existingContent.push(order);
+                const newContent = JSON.stringify(existingContent, null, 2);
+                const encodedContent = btoa(newContent);
 
                 const commitData = {
-                    message: `New order: ${order.orderNumber}`,
-                    content: btoa(JSON.stringify(fileContent, null, 2)),
-                    branch: 'main'
+                    message: `New order #${order.orderNumber}`,
+                    content: encodedContent
                 };
-                if (sha) commitData.sha = sha;
 
-                const response = await fetch(`https://api.github.com/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
+                // Add SHA to the commit data only if the file already existed
+                if (sha) {
+                    commitData.sha = sha;
+                }
+
+                // Step 3: Send the PUT request to create or update the file
+                const putResponse = await fetch(`https://api.github.com/repos/${CONFIG.repo}/contents/${CONFIG.file}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${CONFIG.token}`,
@@ -285,16 +249,17 @@
                     body: JSON.stringify(commitData)
                 });
 
-                if (response.ok) {
+                if (putResponse.ok) {
                     showMessage(`✅ Order ${order.orderNumber} sent to kitchen successfully!`, 'success');
                     cart = {};
                     updateCart();
                 } else {
-                    const error = await response.json();
+                    const error = await putResponse.json();
                     showMessage(`❌ Failed to send order: ${error.message}`, 'error');
                 }
 
             } catch (error) {
+                console.error('Network or other error:', error);
                 showMessage('❌ Network error or failed to send - please try again', 'error');
             } finally {
                 sendBtn.disabled = false;
@@ -302,13 +267,9 @@
             }
         }
 
-        function showMessage(text, type) {
-            const msg = document.getElementById('message');
-            msg.textContent = text;
-            msg.className = `message ${type}`;
-            msg.style.display = 'block';
-            setTimeout(() => { msg.style.display = 'none'; }, 4000);
-        }
+        // Initialize the app
+        renderMenu();
+        updateCart();
     </script>
 </body>
 </html>
