@@ -3,799 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Menu - Global Orders</title>
+    <title>The Golden Spoon - Menu</title>
+    <!-- Tailwind CSS for a sleek, responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-            min-height: 100vh; 
-            color: #333; 
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fefcfb; /* Light background */
+            color: #2c3e50; /* Dark text */
+            overflow-x: hidden;
+            letter-spacing: 0.025em;
+            scroll-behavior: smooth;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { 
-            background: white; 
-            border-radius: 15px; 
-            padding: 30px; 
-            margin-bottom: 30px; 
-            text-align: center; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        
+        .heading-font {
+            font-family: 'Playfair Display', serif;
         }
-        .restaurant-name { 
-            font-size: 3rem; 
-            color: #667eea; 
-            margin-bottom: 15px; 
-            font-weight: bold; 
+
+        /* Custom scrollbar styling for a more aesthetic look */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .restaurant-tagline { 
-            color: #666; 
-            font-size: 1.3rem; 
-            margin-bottom: 15px; 
+
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0;
         }
-        .global-info { 
-            background: linear-gradient(145deg, #f3e5f5, #e1bee7); 
-            border: 2px solid #9c27b0; 
-            padding: 25px; 
-            border-radius: 15px; 
-            margin-bottom: 30px; 
-            box-shadow: 0 8px 25px rgba(156, 39, 176, 0.2); 
+
+        ::-webkit-scrollbar-thumb {
+            background: #bdbdbd;
+            border-radius: 4px;
         }
-        .info-title { 
-            font-size: 1.4rem; 
-            font-weight: bold; 
-            color: #7b1fa2; 
-            margin-bottom: 15px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9e9e9e;
         }
-        .info-description { 
-            color: #8e24aa; 
-            margin-bottom: 20px; 
-            font-size: 1.1rem; 
-            line-height: 1.6; 
+
+        /* Splash screen styling */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fefcfb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            transition: opacity 0.7s ease-out;
         }
-        .global-features { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 15px; 
-            margin: 20px 0; 
+
+        .splash-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
         }
-        .global-feature { 
-            background: rgba(255, 255, 255, 0.8); 
-            padding: 15px; 
-            border-radius: 10px; 
-            text-align: center; 
-            border: 1px solid rgba(156, 39, 176, 0.3); 
-        }
-        .feature-icon { 
-            font-size: 2.5rem; 
-            margin-bottom: 8px; 
-        }
-        .feature-name { 
-            font-weight: bold; 
-            margin-bottom: 5px; 
-            color: #7b1fa2; 
-        }
-        .feature-desc { 
-            font-size: 0.85rem; 
-            color: #8e24aa; 
-        }
-        .table-input-section { 
-            background: rgba(255, 255, 255, 0.9); 
-            padding: 20px; 
-            border-radius: 12px; 
-            border: 2px solid #9c27b0; 
-            text-align: center; 
-        }
-        .table-label { 
-            font-size: 1.2rem; 
-            font-weight: bold; 
-            color: #7b1fa2; 
-            margin-bottom: 15px; 
-            display: block; 
-        }
-        .table-input { 
-            width: 200px; 
-            padding: 12px 20px; 
-            border: 2px solid #e91e63; 
-            border-radius: 8px; 
-            font-size: 1.5rem; 
-            text-align: center; 
-            font-weight: bold; 
-            background: #fce4ec; 
-        }
-        .table-input:focus { 
-            outline: none; 
-            border-color: #9c27b0; 
-            box-shadow: 0 0 0 3px rgba(156, 39, 176, 0.2); 
-        }
-        .content-grid { 
-            display: grid; 
-            grid-template-columns: 2fr 1fr; 
-            gap: 30px; 
-        }
-        .menu-section { 
-            background: white; 
-            border-radius: 15px; 
-            padding: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-        }
-        .menu-section h2 { 
-            color: #667eea; 
-            font-size: 2.2rem; 
-            margin-bottom: 25px; 
-            font-weight: bold; 
-        }
-        .menu-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 20px; 
-        }
-        .menu-item { 
-            border: 1px solid #ddd; 
-            border-radius: 10px; 
-            padding: 20px; 
-            background: #fafafa; 
-            transition: all 0.3s ease; 
-        }
-        .menu-item:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
-            border-color: #667eea; 
-        }
-        .item-name { 
-            font-size: 1.25rem; 
-            font-weight: bold; 
-            color: #333; 
-            margin-bottom: 10px; 
-        }
-        .item-description { 
-            color: #666; 
-            margin-bottom: 15px; 
-            line-height: 1.5; 
-            font-size: 0.95rem; 
-        }
-        .item-footer { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        .item-price { 
-            font-size: 1.4rem; 
-            font-weight: bold; 
-            color: #667eea; 
-        }
-        .add-btn { 
-            background: #4caf50; 
-            color: white; 
-            border: none; 
-            padding: 10px 18px; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            transition: all 0.3s; 
-        }
-        .add-btn:hover { 
-            background: #45a049; 
-            transform: translateY(-1px); 
-        }
-        .cart-sidebar { 
-            background: white; 
-            border-radius: 15px; 
-            padding: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            height: fit-content; 
-            position: sticky; 
-            top: 20px; 
-        }
-        .cart-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 25px; 
-        }
-        .cart-header h3 { 
-            color: #667eea; 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-        }
-        .cart-count { 
-            background: #667eea; 
-            color: white; 
-            border-radius: 50%; 
-            width: 32px; 
-            height: 32px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: bold; 
-            font-size: 1rem; 
-        }
-        .cart-items { 
-            max-height: 300px; 
-            overflow-y: auto; 
-            margin-bottom: 25px; 
-        }
-        .cart-item { 
-            padding: 15px 0; 
-            border-bottom: 1px solid #eee; 
-        }
-        .cart-item:last-child { 
-            border-bottom: none; 
-        }
-        .cart-item-name { 
-            font-weight: 600; 
-            margin-bottom: 8px; 
-            font-size: 1.05rem; 
-        }
-        .cart-item-price { 
-            color: #666; 
-            font-size: 0.9rem; 
-            margin-bottom: 10px; 
-        }
-        .quantity-controls { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            margin-bottom: 10px; 
-        }
-        .qty-btn { 
-            background: #667eea; 
-            color: white; 
-            border: none; 
-            width: 28px; 
-            height: 28px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            font-size: 1rem; 
-            font-weight: bold; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-        }
-        .qty-btn:hover { 
-            background: #5a6fd8; 
-        }
-        .qty-display { 
-            min-width: 30px; 
-            text-align: center; 
-            font-weight: 600; 
-            font-size: 1.1rem; 
-        }
-        .remove-btn { 
-            background: #dc3545; 
-            color: white; 
-            border: none; 
-            padding: 5px 10px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 0.85rem; 
-            font-weight: 500; 
-        }
-        .remove-btn:hover { 
-            background: #c82333; 
-        }
-        .cart-totals { 
-            border-top: 2px solid #ddd; 
-            padding-top: 20px; 
-            margin-bottom: 25px; 
-        }
-        .total-row { 
-            display: flex; 
-            justify-content: space-between; 
-            margin: 8px 0; 
-            font-size: 1rem; 
-        }
-        .total-row.grand-total { 
-            font-weight: bold; 
-            font-size: 1.3rem; 
-            color: #667eea; 
-            border-top: 1px solid #ddd; 
-            padding-top: 12px; 
-            margin-top: 15px; 
-        }
-        .send-btn { 
-            background: linear-gradient(45deg, #667eea, #764ba2); 
-            color: white; 
-            border: none; 
-            padding: 18px 25px; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-weight: 700; 
-            text-align: center; 
-            transition: all 0.3s; 
-            font-size: 1.1rem; 
-            width: 100%; 
-            margin-bottom: 15px; 
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); 
-        }
-        .send-btn:hover { 
-            background: linear-gradient(45deg, #5a6fd8, #6a42a0); 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4); 
-        }
-        .send-btn:disabled { 
-            background: #6c757d; 
-            cursor: not-allowed; 
-            transform: none; 
-            box-shadow: none; 
-        }
-        .clear-cart-btn { 
-            background: #ffc107; 
-            color: #212529; 
-            padding: 12px 20px; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            transition: all 0.3s; 
-            width: 100%; 
-        }
-        .clear-cart-btn:hover { 
-            background: #ffb300; 
-            transform: translateY(-1px); 
-        }
-        .empty-cart { 
-            text-align: center; 
-            color: #666; 
-            padding: 30px 0; 
-            font-size: 1rem; 
-        }
-        .message { 
-            padding: 15px 20px; 
-            border-radius: 8px; 
-            margin-bottom: 20px; 
-            display: none; 
-            font-weight: 500; 
-            font-size: 0.95rem; 
-        }
-        .message.success { 
-            background: #d4edda; 
-            color: #155724; 
-            border: 1px solid #c3e6cb; 
-        }
-        .message.error { 
-            background: #f8d7da; 
-            color: #721c24; 
-            border: 1px solid #f5c6cb; 
-        }
-        .spinner { 
-            display: inline-block; 
-            width: 20px; 
-            height: 20px; 
-            border: 3px solid #f3f3f3; 
-            border-top: 3px solid #667eea; 
-            border-radius: 50%; 
-            animation: spin 1s linear infinite; 
-            margin-right: 10px; 
-        }
-        @keyframes spin { 
-            0% { transform: rotate(0deg); } 
-            100% { transform: rotate(360deg); } 
-        }
-        .global-status { 
-            background: #e3f2fd; 
-            border: 1px solid #2196f3; 
-            padding: 15px; 
-            border-radius: 8px; 
-            margin-bottom: 20px; 
-            text-align: center; 
-        }
-        .global-status.sending { 
-            background: #fff3e0; 
-            border-color: #ff9800; 
-        }
-        .global-status.error { 
-            background: #ffebee; 
-            border-color: #f44336; 
-        }
-        @media (max-width: 768px) { 
-            .content-grid { 
-                grid-template-columns: 1fr; 
-            } 
-            .restaurant-name { 
-                font-size: 2.5rem; 
-            } 
-            .menu-grid { 
-                grid-template-columns: 1fr; 
-            } 
-            .cart-sidebar { 
-                position: static; 
-            }
-            .table-input {
-                width: 150px;
-            }
-            .global-features {
-                grid-template-columns: repeat(2, 1fr);
-            }
+        
+        /* Custom card glow on hover */
+        .card-glow:hover {
+            box-shadow: 0 0 25px rgba(251, 191, 36, 0.4), 0 0 10px rgba(251, 191, 36, 0.2);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1 class="restaurant-name">🌍 Global Restaurant</h1>
-            <p class="restaurant-tagline">Order from Anywhere in the World</p>
-            <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Orders sent to global cloud - Restaurant receives from anywhere</p>
+<body class="bg-[#fefcfb] text-[#2c3e50]">
+
+    <!-- Splash Screen with Company Logo -->
+    <div id="splash-screen" class="splash-screen">
+        <img src="https://placehold.co/150x150/FACC15/000000?text=NextGen" alt="Splash Screen Logo" class="animate-pulse w-40 h-40">
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" class="min-h-screen p-4 sm:p-8 lg:p-12 hidden opacity-0 transition-opacity duration-500 ease-in">
+        
+        <!-- Navigation bar with category links -->
+        <nav class="fixed top-0 left-0 right-0 z-50 bg-white/50 backdrop-blur-md px-4 py-3 shadow-lg">
+            <div class="flex justify-center space-x-4 sm:space-x-8">
+                <a href="#featured" class="text-sm sm:text-base font-semibold text-gray-600 hover:text-amber-600 transition-colors duration-200 uppercase">Featured</a>
+                <a href="#appetizers" class="text-sm sm:text-base font-semibold text-gray-600 hover:text-amber-600 transition-colors duration-200 uppercase">Appetizers</a>
+                <a href="#main-courses" class="text-sm sm:text-base font-semibold text-gray-600 hover:text-amber-600 transition-colors duration-200 uppercase">Main Courses</a>
+                <a href="#desserts" class="text-sm sm:text-base font-semibold text-gray-600 hover:text-amber-600 transition-colors duration-200 uppercase">Desserts</a>
+            </div>
+        </nav>
+
+        <!-- Main header with logo and restaurant name -->
+        <header class="text-center py-12 mt-16 mb-10">
+            <img src="https://placehold.co/150x150/FACC15/000000?text=Spoon" alt="The Golden Spoon Logo" class="w-36 h-36 mx-auto mb-4 rounded-full shadow-lg transform transition-transform hover:scale-110">
+            <h1 class="heading-font text-5xl sm:text-6xl lg:text-7xl font-bold text-amber-600 drop-shadow-xl">
+                The Golden Spoon
+            </h1>
+            <p class="mt-4 text-xl sm:text-2xl italic text-gray-600">
+                A taste of perfection.
+            </p>
         </header>
 
-        <div class="global-info">
-            <div class="info-title">
-                🌍 Order from Anywhere to Restaurant
-            </div>
-            <div class="info-description">
-                <strong>Revolutionary global system:</strong> You can order from ANY device, ANYWHERE in the world, and your order reaches the restaurant instantly! Works from Tokyo to New York, from iPhone to Windows PC - truly universal ordering!
-            </div>
-
-            <div class="global-features">
-                <div class="global-feature">
-                    <div class="feature-icon">🌏</div>
-                    <div class="feature-name">Global Access</div>
-                    <div class="feature-desc">Order from any country</div>
+        <!-- Menu container with dynamic content -->
+        <main id="menu-container" class="max-w-7xl mx-auto space-y-20">
+            <!-- Featured Item Section -->
+            <section id="featured" class="rounded-3xl overflow-hidden shadow-2xl transform transition-transform duration-500 hover:scale-[1.01] card-glow">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1628178652055-6110f2747192?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chef's Special" class="w-full h-96 object-cover object-center">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6 text-white p-4 rounded-lg bg-black/50 backdrop-blur-sm">
+                        <h2 class="heading-font text-3xl font-bold mb-2">Chef's Special of the Day</h2>
+                        <p class="text-lg">Tender seared scallops with a delicate citrus glaze, served on a bed of creamy saffron risotto.</p>
+                        <span class="text-2xl font-bold text-amber-400 mt-2 block">₹1,750.00</span>
+                    </div>
                 </div>
-                <div class="global-feature">
-                    <div class="feature-icon">📱</div>
-                    <div class="feature-name">Any Device</div>
-                    <div class="feature-desc">Phone, tablet, computer</div>
-                </div>
-                <div class="global-feature">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-name">Instant Delivery</div>
-                    <div class="feature-desc">Orders arrive in seconds</div>
-                </div>
-                <div class="global-feature">
-                    <div class="feature-icon">☁️</div>
-                    <div class="feature-name">Cloud Based</div>
-                    <div class="feature-desc">Reliable global storage</div>
-                </div>
-            </div>
-
-            <div class="table-input-section">
-                <label class="table-label">📍 Your Table Number</label>
-                <input type="number" class="table-input" id="table-number" placeholder="5" min="1" max="50" required>
-            </div>
-        </div>
-
-        <div id="global-status" class="global-status">
-            🌍 Global ordering system ready - Order from anywhere!
-        </div>
-
-        <div id="message" class="message"></div>
-
-        <div class="content-grid">
-            <section class="menu-section">
-                <h2>World-Class Menu</h2>
-                <div id="menu-items" class="menu-grid"></div>
             </section>
 
-            <aside class="cart-sidebar">
-                <div class="cart-header">
-                    <h3>Your Order</h3>
-                    <span id="cart-count" class="cart-count">0</span>
-                </div>
+            <!-- Menu content will be dynamically generated here -->
+        </main>
 
-                <div id="cart-items" class="cart-items"></div>
-
-                <div class="cart-totals">
-                    <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">₹0</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Tax (5%):</span>
-                        <span id="tax">₹0</span>
-                    </div>
-                    <div class="total-row grand-total">
-                        <span>Total:</span>
-                        <span id="total">₹0</span>
-                    </div>
-                </div>
-
-                <button id="send-btn" class="send-btn" onclick="sendGlobalOrder()">🌍 SEND GLOBALLY</button>
-                <button class="clear-cart-btn" onclick="clearCart()">🗑️ Clear Cart</button>
-            </aside>
-        </div>
+        <!-- Footer with custom copyright -->
+        <footer class="text-center mt-16 text-gray-600 text-sm">
+            <p>&copy; 2024 nextgenbywala. All Rights Reserved.</p>
+        </footer>
     </div>
 
     <script>
-        // 🍽️ GLOBAL RESTAURANT MENU
-        const MENU = [
-            { id: 1, name: "Chicken Tikka", price: 280, description: "Tender chicken marinated in yogurt and spices, grilled to perfection" },
-            { id: 2, name: "Paneer Butter Masala", price: 240, description: "Soft paneer cubes in rich tomato and butter gravy with aromatic spices" },
-            { id: 3, name: "Butter Chicken", price: 320, description: "Classic creamy tomato curry with tender chicken pieces and Indian spices" },
-            { id: 4, name: "Dal Makhani", price: 180, description: "Creamy black lentils slow-cooked with butter, cream, and traditional spices" },
-            { id: 5, name: "Biryani (Chicken)", price: 350, description: "Fragrant basmati rice cooked with spiced chicken and aromatic herbs" },
-            { id: 6, name: "Butter Naan", price: 60, description: "Fresh baked Indian bread brushed with butter and garlic" },
-            { id: 7, name: "Garlic Naan", price: 70, description: "Soft naan bread topped with fresh garlic and coriander" },
-            { id: 8, name: "Tandoori Roti", price: 45, description: "Whole wheat flatbread cooked in traditional tandoor oven" },
-            { id: 9, name: "Mango Lassi", price: 120, description: "Refreshing yogurt drink blended with sweet mango pulp" },
-            { id: 10, name: "Masala Chai", price: 40, description: "Traditional Indian spiced tea with milk and aromatic spices" },
-            { id: 11, name: "Gulab Jamun", price: 80, description: "Soft milk dumplings soaked in rose-flavored sugar syrup" },
-            { id: 12, name: "Raita", price: 60, description: "Cool yogurt side dish with cucumber, mint, and spices" }
+        // Array of menu items, organized by category
+        const menuData = [
+            {
+                category: "Appetizers",
+                items: [
+                    {
+                        name: "Truffle Arancini",
+                        description: "Crispy fried risotto balls with mozzarella and a hint of black truffle.",
+                        price: 850,
+                        image: "https://images.unsplash.com/photo-1549488344-93c17a0d4ddc?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    },
+                    {
+                        name: "Burrata with Prosciutto",
+                        description: "Creamy burrata cheese on a bed of rocket, draped with thinly sliced prosciutto.",
+                        price: 950,
+                        image: "https://images.unsplash.com/photo-1559902662-875883017a42?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    },
+                    {
+                        name: "Spiced Corn Fritters",
+                        description: "Crispy corn and vegetable fritters served with a refreshing mint and yogurt dip.",
+                        price: 700,
+                        image: "https://images.unsplash.com/photo-1625938478440-2e0617b075e7?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    }
+                ]
+            },
+            {
+                category: "Main Courses",
+                items: [
+                    {
+                        name: "Pan-Seared Duck Breast",
+                        description: "Succulent duck breast with a cherry reduction sauce and potato gratin.",
+                        price: 2100,
+                        image: "https://images.unsplash.com/photo-1579782803134-8c83a0026e63?q=80&w=2752&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    },
+                    {
+                        name: "Wild Mushroom Risotto",
+                        description: "A rich and creamy risotto with an assortment of wild mushrooms and parmesan.",
+                        price: 1500,
+                        image: "https://images.unsplash.com/photo-1596765793444-4af30129a071?q=80&w=2728&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    },
+                    {
+                        name: "Grilled Chilean Sea Bass",
+                        description: "Flaky sea bass filet, served on a bed of asparagus and drizzled with a beurre blanc sauce.",
+                        price: 2400,
+                        image: "https://images.unsplash.com/photo-1563729579133-7d9a8c085350?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    },
+                    {
+                        name: "Herb-Crusted Rack of Lamb",
+                        description: "Tender lamb chops crusted with fresh herbs, roasted and served with a garlic mash.",
+                        price: 2800,
+                        image: "https://images.unsplash.com/photo-1628286940864-15f5c3a372e9?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    }
+                ]
+            },
+            {
+                category: "Desserts",
+                items: [
+                    {
+                        name: "Molten Lava Cake",
+                        description: "Warm chocolate cake with a gooey center, served with a scoop of vanilla bean ice cream.",
+                        price: 650,
+                        image: "https://images.unsplash.com/photo-1588669463283-a9c6691c7844?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    },
+                    {
+                        name: "Crème Brûlée",
+                        description: "Classic vanilla bean custard with a crisp caramelized sugar crust.",
+                        price: 575,
+                        image: "https://images.unsplash.com/photo-1616782298715-467a9437b01d?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    },
+                     {
+                        name: "Tiramisu",
+                        description: "Espresso-soaked ladyfingers layered with a light, airy mascarpone cream.",
+                        price: 720,
+                        image: "https://images.unsplash.com/photo-1549591465-1d6f2461014e?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    }
+                ]
+            }
         ];
 
-        let cart = {};
+        const menuContainer = document.getElementById('menu-container');
+        const splashScreen = document.getElementById('splash-screen');
+        const mainContent = document.getElementById('main-content');
 
-        // Detect user location and device info
-        function getGlobalInfo() {
-            const userAgent = navigator.userAgent;
-            let deviceType = "Unknown Device";
-            let os = "Unknown OS";
-
-            if (/Android/i.test(userAgent)) {
-                os = "Android";
-                deviceType = /Mobile/i.test(userAgent) ? "Android Phone" : "Android Tablet";
-            } else if (/iPhone/i.test(userAgent)) {
-                os = "iOS";
-                deviceType = "iPhone";
-            } else if (/iPad/i.test(userAgent)) {
-                os = "iOS";
-                deviceType = "iPad";
-            } else if (/Windows/i.test(userAgent)) {
-                os = "Windows";
-                deviceType = /Mobile/i.test(userAgent) ? "Windows Phone" : "Windows Computer";
-            } else if (/Mac/i.test(userAgent) && !/Mobile/i.test(userAgent)) {
-                os = "macOS";
-                deviceType = "Mac Computer";
-            } else if (/Linux/i.test(userAgent)) {
-                os = "Linux";
-                deviceType = "Linux Computer";
-            }
-
-            // Get timezone info
-            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-            const country = timezone.split('/')[0] === 'Asia' ? 'Asia' : 
-                           timezone.split('/')[0] === 'Europe' ? 'Europe' :
-                           timezone.split('/')[0] === 'America' ? 'America' : 'Unknown';
-
-            return { deviceType, os, timezone, country, userAgent };
+        // This function creates a URL-friendly slug from a string
+        function createSlug(text) {
+            return text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
         }
 
-        // Initialize system
-        document.addEventListener('DOMContentLoaded', function() {
-            const globalInfo = getGlobalInfo();
-            console.log('🌍 Global ordering system loading...');
-            console.log('📍 Location:', globalInfo.timezone);
-            console.log('📱 Device:', globalInfo.deviceType, '| OS:', globalInfo.os);
-            console.log('🍽️ Orders sent to global cloud for restaurant');
+        // Function to create and append menu sections
+        function createMenu() {
+            menuData.forEach(section => {
+                const sectionId = createSlug(section.category);
+                const sectionDiv = document.createElement('section');
+                sectionDiv.id = sectionId;
+                sectionDiv.classList.add('space-y-10');
 
-            renderMenu();
-            updateCart();
+                const heading = document.createElement('h2');
+                heading.classList.add('heading-font', 'text-4xl', 'font-bold', 'text-center', 'text-amber-700', 'mb-6');
+                heading.textContent = section.category;
+                sectionDiv.appendChild(heading);
 
-            showMessage(`✅ Ready! Order from ${globalInfo.country} → Restaurant`, 'success');
-        });
+                const itemsGrid = document.createElement('div');
+                itemsGrid.classList.add('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-8');
 
-        function renderMenu() {
-            const container = document.getElementById('menu-items');
-            if (!container) return;
+                section.items.forEach(item => {
+                    const itemCard = document.createElement('div');
+                    itemCard.classList.add(
+                        'bg-gray-100', 'rounded-2xl', 'overflow-hidden', 'shadow-xl',
+                        'transform', 'transition-all', 'duration-500',
+                        'hover:scale-[1.03]', 'hover:bg-gray-200', 'card-glow'
+                    );
 
-            container.innerHTML = MENU.map(item => `
-                <div class="menu-item">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-description">${item.description}</div>
-                    <div class="item-footer">
-                        <div class="item-price">₹${item.price}</div>
-                        <button class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function addToCart(itemId) {
-            const item = MENU.find(i => i.id === itemId);
-            if (!item) return;
-
-            if (cart[itemId]) {
-                cart[itemId].quantity += 1;
-            } else {
-                cart[itemId] = { ...item, quantity: 1 };
-            }
-
-            updateCart();
-            showMessage(`${item.name} added to cart!`, 'success');
-        }
-
-        function updateCart() {
-            const items = Object.values(cart);
-            const container = document.getElementById('cart-items');
-
-            if (!container) return;
-
-            if (items.length === 0) {
-                container.innerHTML = '<div class="empty-cart">Your cart is empty<br><small>Add items from our menu!</small></div>';
-                document.getElementById('cart-count').textContent = '0';
-                document.getElementById('send-btn').disabled = true;
-                updateTotals(0, 0, 0);
-                return;
-            }
-
-            container.innerHTML = items.map(item => `
-                <div class="cart-item">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">₹${item.price} each</div>
-                    <div class="quantity-controls">
-                        <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">−</button>
-                        <span class="qty-display">${item.quantity}</span>
-                        <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
-                    </div>
-                    <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
-                </div>
-            `).join('');
-
-            const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cart-count').textContent = totalItems;
-            document.getElementById('send-btn').disabled = false;
-
-            const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const tax = subtotal * 0.05;
-            const total = subtotal + tax;
-
-            updateTotals(subtotal, tax, total);
-        }
-
-        function changeQuantity(itemId, change) {
-            if (cart[itemId]) {
-                cart[itemId].quantity += change;
-                if (cart[itemId].quantity <= 0) {
-                    delete cart[itemId];
-                }
-                updateCart();
-            }
-        }
-
-        function removeFromCart(itemId) {
-            if (cart[itemId]) {
-                const item = cart[itemId];
-                delete cart[itemId];
-                updateCart();
-                showMessage(`${item.name} removed`, 'success');
-            }
-        }
-
-        function updateTotals(subtotal, tax, total) {
-            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(0)}`;
-            document.getElementById('tax').textContent = `₹${tax.toFixed(0)}`;
-            document.getElementById('total').textContent = `₹${total.toFixed(0)}`;
-        }
-
-        function clearCart() {
-            if (Object.keys(cart).length > 0 && confirm('Clear cart?')) {
-                cart = {};
-                updateCart();
-                showMessage('Cart cleared', 'success');
-            }
-        }
-
-        // 🌍 SEND ORDER TO GLOBAL CLOUD
-        async function sendGlobalOrder() {
-            const items = Object.values(cart);
-            if (items.length === 0) {
-                showMessage('Cart is empty!', 'error');
-                return;
-            }
-
-            // Validate table number
-            const tableNumber = document.getElementById('table-number').value.trim();
-            if (!tableNumber || isNaN(tableNumber) || tableNumber < 1) {
-                showMessage('Please enter a valid table number!', 'error');
-                return;
-            }
-
-            const sendBtn = document.getElementById('send-btn');
-            const globalStatus = document.getElementById('global-status');
-            const globalInfo = getGlobalInfo();
-
-            sendBtn.disabled = true;
-            sendBtn.innerHTML = '<div class="spinner"></div>Sending globally...';
-            globalStatus.className = 'global-status sending';
-            globalStatus.textContent = `🌍 Sending from ${globalInfo.country} to restaurant...`;
-
-            try {
-                // Prepare global order data
-                const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const tax = subtotal * 0.05;
-                const total = subtotal + tax;
-                const orderNumber = `G-${Date.now().toString().slice(-6)}`;
-                const orderTime = new Date().toLocaleTimeString('en-IN', { 
-                    hour: '2-digit', 
-                    minute: '2-digit'
+                    itemCard.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-52 object-cover object-center">
+                        <div class="p-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <h3 class="heading-font text-2xl font-semibold text-[#2c3e50]">${item.name}</h3>
+                                <span class="text-amber-700 font-bold text-xl">₹${item.price.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-4">${item.description}</p>
+                        </div>
+                    `;
+                    itemsGrid.appendChild(itemCard);
                 });
-
-                const globalOrderData = {
-                    orderNumber: orderNumber,
-                    tableNumber: tableNumber,
-                    items: items,
-                    subtotal: subtotal.toFixed(0),
-                    tax: tax.toFixed(0),
-                    total: total.toFixed(0),
-                    orderTime: orderTime,
-                    timestamp: new Date().toISOString(),
-                    status: "new",
-                    globalId: `global_${Date.now()}`,
-                    // Global tracking info
-                    customerLocation: globalInfo.timezone,
-                    customerCountry: globalInfo.country,
-                    customerDevice: globalInfo.deviceType,
-                    customerOS: globalInfo.os,
-                    orderSource: "Global Web Order"
-                };
-
-                console.log('🌍 Sending global order:', globalOrderData);
-
-                // Save to global cloud storage (multiple methods for reliability)
-                await sendToGlobalCloud(globalOrderData);
-
-                // Success
-                globalStatus.className = 'global-status';
-                globalStatus.textContent = `✅ Order ${orderNumber} sent globally! From ${globalInfo.country} → Restaurant`;
-                showMessage(`✅ Global order sent! ${orderNumber} from Table ${tableNumber} - ₹${total.toFixed(0)}`, 'success');
-
-                // Clear cart
-                cart = {};
-                updateCart();
-                document.getElementById('table-number').value = '';
-
-            } catch (error) {
-                console.error('❌ Global send error:', error);
-                globalStatus.className = 'global-status error';
-                globalStatus.textContent = '❌ Failed to send globally';
-                showMessage(`❌ Failed to send order: ${error.message}`, 'error');
-            } finally {
-                sendBtn.disabled = false;
-                sendBtn.innerHTML = '🌍 SEND GLOBALLY';
-            }
-        }
-
-        // 🌍 GLOBAL CLOUD STORAGE (Multi-method approach)
-        async function sendToGlobalCloud(orderData) {
-            return new Promise((resolve, reject) => {
-                setTimeout(async () => {
-                    try {
-                        // Method 1: Browser localStorage (immediate local storage)
-                        const existingOrders = JSON.parse(localStorage.getItem('globalRestaurantOrders') || '[]');
-                        existingOrders.unshift(orderData);
-                        if (existingOrders.length > 200) existingOrders.splice(200);
-                        localStorage.setItem('globalRestaurantOrders', JSON.stringify(existingOrders));
-
-                        // Method 2: Session storage backup
-                        sessionStorage.setItem('lastGlobalOrder', JSON.stringify(orderData));
-
-                        // Method 3: IndexedDB for persistence (future enhancement)
-                        // Method 4: GitHub API integration (future enhancement)
-                        // Method 5: Firebase integration (future enhancement)
-
-                        console.log('✅ Order saved to global cloud storage');
-                        console.log('📍 Location tracking included');
-                        console.log('🌍 Global accessibility confirmed');
-
-                        resolve(orderData);
-
-                    } catch (error) {
-                        console.error('❌ Global cloud error:', error);
-                        reject(error);
-                    }
-                }, 1500); // Simulate global network delay
+                
+                sectionDiv.appendChild(itemsGrid);
+                menuContainer.appendChild(sectionDiv);
             });
         }
-
-        function showMessage(text, type) {
-            const msg = document.getElementById('message');
-            if (!msg) return;
-
-            msg.textContent = text;
-            msg.className = `message ${type}`;
-            msg.style.display = 'block';
-
-            setTimeout(() => { 
-                msg.style.display = 'none'; 
-            }, 8000);
-        }
-
-        // Global initialization
-        console.log('✅ Global restaurant ordering system loaded');
-        console.log('🌍 Ready to receive orders from anywhere in the world');
-        console.log('📱 Universal device and location support');
+        
+        // Hide the splash screen and show the main content after 3 seconds
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                splashScreen.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+                setTimeout(() => {
+                    mainContent.classList.remove('opacity-0');
+                }, 10);
+            }, 3000);
+            createMenu();
+        });
     </script>
+
 </body>
 </html>
