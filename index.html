@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bella Vista Restaurant - Pure Client Solution</title>
-    <meta name="robots" content="noindex, nofollow">
+    <title>Restaurant Menu - Order to Kitchen</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%); 
             min-height: 100vh; 
             color: #333; 
-            line-height: 1.4;
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .header { 
@@ -24,67 +22,67 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
         }
         .restaurant-name { 
-            font-size: 2.8rem; 
-            color: #D2691E; 
-            margin-bottom: 10px; 
+            font-size: 3rem; 
+            color: #FF6B35; 
+            margin-bottom: 15px; 
             font-weight: bold; 
         }
         .restaurant-tagline { 
             color: #666; 
-            font-size: 1.2rem; 
-            margin-bottom: 10px; 
+            font-size: 1.3rem; 
+            margin-bottom: 15px; 
         }
-        .version-info { 
-            color: #888; 
-            font-size: 0.9rem; 
-            font-style: italic; 
-        }
-        .pure-client-info { 
-            background: linear-gradient(145deg, #e3f2fd, #bbdefb); 
-            border: 2px solid #2196f3; 
+        .dine-in-info { 
+            background: linear-gradient(145deg, #fff3e0, #ffe0b2); 
+            border: 2px solid #ff8a50; 
             padding: 25px; 
             border-radius: 15px; 
             margin-bottom: 30px; 
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.2); 
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.2); 
         }
         .info-title { 
-            font-size: 1.3rem; 
+            font-size: 1.4rem; 
             font-weight: bold; 
-            color: #0d47a1; 
+            color: #e65100; 
             margin-bottom: 15px; 
             display: flex; 
             align-items: center; 
             gap: 10px; 
         }
         .info-description { 
-            color: #0d47a1; 
+            color: #ef6c00; 
             margin-bottom: 20px; 
+            font-size: 1.1rem; 
             line-height: 1.6; 
         }
-        .method-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-            gap: 15px; 
-            margin: 20px 0; 
-        }
-        .method-item { 
-            background: rgba(255, 255, 255, 0.4); 
-            padding: 15px; 
-            border-radius: 10px; 
+        .table-input-section { 
+            background: rgba(255, 255, 255, 0.9); 
+            padding: 20px; 
+            border-radius: 12px; 
+            border: 2px solid #ff8a50; 
             text-align: center; 
-            border: 1px solid rgba(33, 150, 243, 0.3); 
         }
-        .method-icon { 
-            font-size: 2rem; 
-            margin-bottom: 10px; 
-        }
-        .method-name { 
+        .table-label { 
+            font-size: 1.2rem; 
             font-weight: bold; 
-            margin-bottom: 5px; 
+            color: #e65100; 
+            margin-bottom: 15px; 
+            display: block; 
         }
-        .method-desc { 
-            font-size: 0.9rem; 
-            color: #1565c0; 
+        .table-input { 
+            width: 200px; 
+            padding: 12px 20px; 
+            border: 2px solid #ffcc02; 
+            border-radius: 8px; 
+            font-size: 1.5rem; 
+            text-align: center; 
+            font-weight: bold; 
+            background: #fffde7; 
+        }
+        .table-input:focus { 
+            outline: none; 
+            border-color: #ff6b35; 
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2); 
         }
         .content-grid { 
             display: grid; 
@@ -98,27 +96,27 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
         }
         .menu-section h2 { 
-            color: #D2691E; 
-            font-size: 2rem; 
+            color: #FF6B35; 
+            font-size: 2.2rem; 
             margin-bottom: 25px; 
             font-weight: bold; 
         }
         .menu-grid { 
             display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
             gap: 20px; 
         }
         .menu-item { 
             border: 1px solid #ddd; 
             border-radius: 10px; 
             padding: 20px; 
-            background: #f8f9fa; 
+            background: #fafafa; 
             transition: all 0.3s ease; 
         }
         .menu-item:hover { 
             transform: translateY(-3px); 
             box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
-            border-color: #D2691E; 
+            border-color: #FF6B35; 
         }
         .item-name { 
             font-size: 1.25rem; 
@@ -140,10 +138,10 @@
         .item-price { 
             font-size: 1.4rem; 
             font-weight: bold; 
-            color: #D2691E; 
+            color: #FF6B35; 
         }
         .add-btn { 
-            background: #28a745; 
+            background: #4caf50; 
             color: white; 
             border: none; 
             padding: 10px 18px; 
@@ -153,7 +151,7 @@
             transition: all 0.3s; 
         }
         .add-btn:hover { 
-            background: #218838; 
+            background: #45a049; 
             transform: translateY(-1px); 
         }
         .cart-sidebar { 
@@ -172,12 +170,12 @@
             margin-bottom: 25px; 
         }
         .cart-header h3 { 
-            color: #D2691E; 
+            color: #FF6B35; 
             font-size: 1.5rem; 
             font-weight: bold; 
         }
         .cart-count { 
-            background: #D2691E; 
+            background: #FF6B35; 
             color: white; 
             border-radius: 50%; 
             width: 32px; 
@@ -217,7 +215,7 @@
             margin-bottom: 10px; 
         }
         .qty-btn { 
-            background: #D2691E; 
+            background: #FF6B35; 
             color: white; 
             border: none; 
             width: 28px; 
@@ -231,7 +229,7 @@
             justify-content: center; 
         }
         .qty-btn:hover { 
-            background: #b8571b; 
+            background: #e55a2b; 
         }
         .qty-display { 
             min-width: 30px; 
@@ -266,65 +264,36 @@
         .total-row.grand-total { 
             font-weight: bold; 
             font-size: 1.3rem; 
-            color: #D2691E; 
+            color: #FF6B35; 
             border-top: 1px solid #ddd; 
             padding-top: 12px; 
             margin-top: 15px; 
         }
-        .order-methods { 
-            display: grid; 
-            gap: 12px; 
-            margin-bottom: 20px; 
-        }
-        .method-btn { 
-            padding: 15px 20px; 
+        .send-btn { 
+            background: linear-gradient(45deg, #ff6b35, #f7931e); 
+            color: white; 
             border: none; 
-            border-radius: 8px; 
+            padding: 18px 25px; 
+            border-radius: 10px; 
             cursor: pointer; 
-            font-weight: 600; 
+            font-weight: 700; 
             text-align: center; 
             transition: all 0.3s; 
-            font-size: 0.95rem; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 8px; 
+            font-size: 1.1rem; 
+            width: 100%; 
+            margin-bottom: 15px; 
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3); 
         }
-        .email-btn { 
-            background: linear-gradient(45deg, #ff6b6b, #ff8e8e); 
-            color: white; 
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3); 
-        }
-        .email-btn:hover { 
+        .send-btn:hover { 
+            background: linear-gradient(45deg, #e55a2b, #e8811b); 
             transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4); 
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4); 
         }
-        .whatsapp-btn { 
-            background: linear-gradient(45deg, #25d366, #128c7e); 
-            color: white; 
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); 
-        }
-        .whatsapp-btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); 
-        }
-        .sms-btn { 
-            background: linear-gradient(45deg, #007bff, #0056b3); 
-            color: white; 
-            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3); 
-        }
-        .sms-btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4); 
-        }
-        .copy-btn { 
-            background: linear-gradient(45deg, #6f42c1, #5a3b9d); 
-            color: white; 
-            box-shadow: 0 4px 15px rgba(111, 66, 193, 0.3); 
-        }
-        .copy-btn:hover { 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(111, 66, 193, 0.4); 
+        .send-btn:disabled { 
+            background: #6c757d; 
+            cursor: not-allowed; 
+            transform: none; 
+            box-shadow: none; 
         }
         .clear-cart-btn { 
             background: #ffc107; 
@@ -335,7 +304,6 @@
             cursor: pointer; 
             font-weight: 600; 
             transition: all 0.3s; 
-            margin-top: 10px; 
             width: 100%; 
         }
         .clear-cart-btn:hover { 
@@ -349,8 +317,8 @@
             font-size: 1rem; 
         }
         .message { 
-            padding: 15px; 
-            border-radius: 6px; 
+            padding: 15px 20px; 
+            border-radius: 8px; 
             margin-bottom: 20px; 
             display: none; 
             font-weight: 500; 
@@ -366,33 +334,26 @@
             color: #721c24; 
             border: 1px solid #f5c6cb; 
         }
-        .message.info { 
-            background: #d1ecf1; 
-            color: #0c5460; 
-            border: 1px solid #bee5eb; 
+        .spinner { 
+            display: inline-block; 
+            width: 20px; 
+            height: 20px; 
+            border: 3px solid #f3f3f3; 
+            border-top: 3px solid #ff6b35; 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+            margin-right: 10px; 
         }
-        .restaurant-contact { 
-            background: #f8f9fa; 
-            padding: 15px; 
-            border-radius: 8px; 
-            margin-top: 20px; 
-            border-left: 4px solid #D2691E; 
-        }
-        .contact-title { 
-            font-weight: bold; 
-            color: #D2691E; 
-            margin-bottom: 10px; 
-        }
-        .contact-info { 
-            font-size: 0.9rem; 
-            line-height: 1.5; 
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
         }
         @media (max-width: 768px) { 
             .content-grid { 
                 grid-template-columns: 1fr; 
             } 
             .restaurant-name { 
-                font-size: 2.2rem; 
+                font-size: 2.5rem; 
             } 
             .menu-grid { 
                 grid-template-columns: 1fr; 
@@ -400,8 +361,8 @@
             .cart-sidebar { 
                 position: static; 
             }
-            .method-grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            .table-input {
+                width: 150px;
             }
         }
     </style>
@@ -409,40 +370,22 @@
 <body>
     <div class="container">
         <header class="header">
-            <h1 class="restaurant-name">🍽️ Bella Vista Restaurant</h1>
-            <p class="restaurant-tagline">Pure Client Solution - No APIs, Tokens, or Databases</p>
-            <p class="version-info">Direct order methods from anywhere</p>
+            <h1 class="restaurant-name">🍽️ Restaurant Menu</h1>
+            <p class="restaurant-tagline">Dine-In Ordering System</p>
+            <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Order directly to kitchen - No delivery, table service only</p>
         </header>
 
-        <div class="pure-client-info">
+        <div class="dine-in-info">
             <div class="info-title">
-                🚀 Pure Client-Side Order System
+                🪑 Dine-In Table Ordering
             </div>
             <div class="info-description">
-                Send orders directly from the browser without any APIs, tokens, databases, or external services. Choose your preferred method:
+                <strong>For restaurant customers:</strong> Select your items and enter your table number. Your order goes directly to the kitchen system instantly - no waitstaff needed for ordering!
             </div>
 
-            <div class="method-grid">
-                <div class="method-item">
-                    <div class="method-icon">📧</div>
-                    <div class="method-name">Email</div>
-                    <div class="method-desc">Opens email client</div>
-                </div>
-                <div class="method-item">
-                    <div class="method-icon">📱</div>
-                    <div class="method-name">WhatsApp</div>
-                    <div class="method-desc">Direct to WhatsApp</div>
-                </div>
-                <div class="method-item">
-                    <div class="method-icon">💬</div>
-                    <div class="method-name">SMS</div>
-                    <div class="method-desc">Text message</div>
-                </div>
-                <div class="method-item">
-                    <div class="method-icon">📋</div>
-                    <div class="method-name">Copy</div>
-                    <div class="method-desc">Copy to clipboard</div>
-                </div>
+            <div class="table-input-section">
+                <label class="table-label">📍 Your Table Number</label>
+                <input type="number" class="table-input" id="table-number" placeholder="5" min="1" max="50" required>
             </div>
         </div>
 
@@ -450,7 +393,7 @@
 
         <div class="content-grid">
             <section class="menu-section">
-                <h2>Our Delicious Menu</h2>
+                <h2>Today's Menu</h2>
                 <div id="menu-items" class="menu-grid"></div>
             </section>
 
@@ -465,93 +408,52 @@
                 <div class="cart-totals">
                     <div class="total-row">
                         <span>Subtotal:</span>
-                        <span id="subtotal">$0.00</span>
+                        <span id="subtotal">₹0</span>
                     </div>
                     <div class="total-row">
-                        <span>Tax (10%):</span>
-                        <span id="tax">$0.00</span>
+                        <span>Tax (5%):</span>
+                        <span id="tax">₹0</span>
                     </div>
                     <div class="total-row grand-total">
                         <span>Total:</span>
-                        <span id="total">$0.00</span>
+                        <span id="total">₹0</span>
                     </div>
                 </div>
 
-                <div class="order-methods">
-                    <button class="method-btn email-btn" onclick="sendViaEmail()">
-                        📧 Send via Email
-                    </button>
-                    <button class="method-btn whatsapp-btn" onclick="sendViaWhatsApp()">
-                        📱 Send via WhatsApp
-                    </button>
-                    <button class="method-btn sms-btn" onclick="sendViaSMS()">
-                        💬 Send via SMS
-                    </button>
-                    <button class="method-btn copy-btn" onclick="copyToClipboard()">
-                        📋 Copy Order Text
-                    </button>
-                </div>
-
+                <button id="send-btn" class="send-btn" onclick="sendToKitchen()">🍽️ SEND TO KITCHEN</button>
                 <button class="clear-cart-btn" onclick="clearCart()">🗑️ Clear Cart</button>
-
-                <div class="restaurant-contact">
-                    <div class="contact-title">📞 Restaurant Contact</div>
-                    <div class="contact-info">
-                        <strong>Email:</strong> orders@bellavista.com<br>
-                        <strong>Phone:</strong> +91 9173213576<br>
-                        <strong>WhatsApp:</strong> +91 9173213576
-                    </div>
-                </div>
             </aside>
         </div>
     </div>
 
     <script>
-        // 🚀 PURE CLIENT-SIDE SYSTEM - NO APIS, TOKENS, OR DATABASES
-
-        const RESTAURANT_INFO = {
-            name: 'Bella Vista Restaurant',
-            email: 'walaapurv@gmail.com',
-            phone: '+91 9173213576',  // For SMS (no spaces/dashes for tel: links)
-            phoneDisplay: '+1 (555) 123-4567',
-            whatsapp: '+91 9173213576',  // For WhatsApp (no spaces/dashes)
-            whatsappDisplay: '+91 9173213576'
-        };
-
-        // Professional menu items
+        // 🍽️ RESTAURANT MENU (Indian Restaurant)
         const MENU = [
-            { id: 1, name: "Garlic Bread", price: 8.99, description: "Fresh baked artisan bread with roasted garlic butter and Italian herbs" },
-            { id: 2, name: "Caesar Salad", price: 12.99, description: "Crisp romaine lettuce with house-made caesar dressing, croutons, and parmesan" },
-            { id: 3, name: "Buffalo Wings", price: 14.99, description: "Spicy buffalo chicken wings served with cool ranch dipping sauce and celery" },
-            { id: 4, name: "Mozzarella Sticks", price: 10.99, description: "Golden fried mozzarella cheese sticks with marinara sauce" },
-            { id: 5, name: "Loaded Nachos", price: 13.99, description: "Tortilla chips loaded with cheese, jalapeños, sour cream, and salsa" },
-            { id: 6, name: "Margherita Pizza", price: 18.99, description: "Classic wood-fired pizza with fresh tomato sauce, mozzarella, and basil" },
-            { id: 7, name: "Chicken Alfredo", price: 22.99, description: "Creamy fettuccine pasta with grilled chicken breast and parmesan cheese" },
-            { id: 8, name: "Grilled Salmon", price: 26.99, description: "Fresh Atlantic salmon with lemon herb butter and seasonal vegetables" },
-            { id: 9, name: "Ribeye Steak", price: 29.99, description: "Premium 12oz ribeye steak cooked to perfection with garlic mashed potatoes" },
-            { id: 10, name: "Fish Tacos", price: 19.99, description: "Grilled fish with fresh pico de gallo, avocado, and lime crema" },
-            { id: 11, name: "BBQ Ribs", price: 24.99, description: "Tender pork ribs with house BBQ sauce, coleslaw, and fries" },
-            { id: 12, name: "Chicken Parmesan", price: 21.99, description: "Breaded chicken breast with marinara, melted cheese, and spaghetti" },
-            { id: 13, name: "Mushroom Risotto", price: 20.99, description: "Creamy arborio rice with wild mushrooms and truffle oil" },
-            { id: 14, name: "Chocolate Lava Cake", price: 9.99, description: "Rich chocolate cake with molten center, served with vanilla ice cream" },
-            { id: 15, name: "Cheesecake", price: 8.99, description: "New York style cheesecake with seasonal berry compote" },
-            { id: 16, name: "Fresh Brewed Coffee", price: 4.99, description: "Premium Colombian coffee - regular, decaf, or espresso" },
-            { id: 17, name: "Fresh Juice", price: 6.99, description: "Orange, apple, cranberry, or tropical fruit blend" },
-            { id: 18, name: "Iced Tea", price: 3.99, description: "Freshly brewed iced tea - sweet, unsweetened, or flavored" }
+            { id: 1, name: "Chicken Tikka", price: 280, description: "Tender chicken marinated in yogurt and spices, grilled to perfection" },
+            { id: 2, name: "Paneer Butter Masala", price: 240, description: "Soft paneer cubes in rich tomato and butter gravy with aromatic spices" },
+            { id: 3, name: "Butter Chicken", price: 320, description: "Classic creamy tomato curry with tender chicken pieces and Indian spices" },
+            { id: 4, name: "Dal Makhani", price: 180, description: "Creamy black lentils slow-cooked with butter, cream, and traditional spices" },
+            { id: 5, name: "Biryani (Chicken)", price: 350, description: "Fragrant basmati rice cooked with spiced chicken and aromatic herbs" },
+            { id: 6, name: "Butter Naan", price: 60, description: "Fresh baked Indian bread brushed with butter and garlic" },
+            { id: 7, name: "Garlic Naan", price: 70, description: "Soft naan bread topped with fresh garlic and coriander" },
+            { id: 8, name: "Tandoori Roti", price: 45, description: "Whole wheat flatbread cooked in traditional tandoor oven" },
+            { id: 9, name: "Mango Lassi", price: 120, description: "Refreshing yogurt drink blended with sweet mango pulp" },
+            { id: 10, name: "Masala Chai", price: 40, description: "Traditional Indian spiced tea with milk and aromatic spices" },
+            { id: 11, name: "Gulab Jamun", price: 80, description: "Soft milk dumplings soaked in rose-flavored sugar syrup" },
+            { id: 12, name: "Raita", price: 60, description: "Cool yogurt side dish with cucumber, mint, and spices" }
         ];
 
         let cart = {};
 
         // Initialize system
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🍽️ Pure client-side restaurant system loading...');
-            console.log('🚀 No APIs, tokens, databases, or external services required');
-            console.log('📧 Direct order methods: Email, WhatsApp, SMS, Clipboard');
+            console.log('🍽️ Restaurant table ordering system loading...');
+            console.log('📱 Orders go directly to kitchen Android app');
 
             renderMenu();
             updateCart();
 
-            showMessage('✅ Pure client system ready! Choose your preferred order method below.', 'success');
+            showMessage('✅ Ready to order! Enter your table number and select items.', 'success');
         });
 
         function renderMenu() {
@@ -563,7 +465,7 @@
                     <div class="item-name">${item.name}</div>
                     <div class="item-description">${item.description}</div>
                     <div class="item-footer">
-                        <div class="item-price">$${item.price.toFixed(2)}</div>
+                        <div class="item-price">₹${item.price}</div>
                         <button class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
                     </div>
                 </div>
@@ -593,6 +495,7 @@
             if (items.length === 0) {
                 container.innerHTML = '<div class="empty-cart">Your cart is empty<br><small>Add items from our menu!</small></div>';
                 document.getElementById('cart-count').textContent = '0';
+                document.getElementById('send-btn').disabled = true;
                 updateTotals(0, 0, 0);
                 return;
             }
@@ -600,7 +503,7 @@
             container.innerHTML = items.map(item => `
                 <div class="cart-item">
                     <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">$${item.price.toFixed(2)} each</div>
+                    <div class="cart-item-price">₹${item.price} each</div>
                     <div class="quantity-controls">
                         <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">−</button>
                         <span class="qty-display">${item.quantity}</span>
@@ -612,9 +515,10 @@
 
             const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
             document.getElementById('cart-count').textContent = totalItems;
+            document.getElementById('send-btn').disabled = false;
 
             const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const tax = subtotal * 0.1;
+            const tax = subtotal * 0.05; // 5% tax
             const total = subtotal + tax;
 
             updateTotals(subtotal, tax, total);
@@ -640,9 +544,9 @@
         }
 
         function updateTotals(subtotal, tax, total) {
-            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
-            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
-            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(0)}`;
+            document.getElementById('tax').textContent = `₹${tax.toFixed(0)}`;
+            document.getElementById('total').textContent = `₹${total.toFixed(0)}`;
         }
 
         function clearCart() {
@@ -653,111 +557,77 @@
             }
         }
 
-        // Generate order text for all methods
-        function generateOrderText() {
+        // 🍽️ SEND ORDER TO KITCHEN
+        function sendToKitchen() {
             const items = Object.values(cart);
             if (items.length === 0) {
                 showMessage('Cart is empty!', 'error');
-                return null;
+                return;
             }
 
-            const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const tax = subtotal * 0.1;
-            const total = subtotal + tax;
-            const orderNumber = `BV-${Date.now().toString().slice(-6)}`;
-            const orderTime = new Date().toLocaleString();
+            // Validate table number
+            const tableNumber = document.getElementById('table-number').value.trim();
+            if (!tableNumber || isNaN(tableNumber) || tableNumber < 1) {
+                showMessage('Please enter a valid table number!', 'error');
+                return;
+            }
 
-            let orderText = `🍽️ ${RESTAURANT_INFO.name} - New Order\n\n`;
-            orderText += `📋 Order #${orderNumber}\n`;
-            orderText += `🕐 ${orderTime}\n\n`;
-            orderText += `🛒 ITEMS ORDERED:\n`;
-            orderText += `${items.map(item => 
-                `• ${item.name} x${item.quantity} @ $${item.price.toFixed(2)} = $${(item.quantity * item.price).toFixed(2)}`
-            ).join('\n')}\n\n`;
-            orderText += `💰 ORDER SUMMARY:\n`;
-            orderText += `Subtotal: $${subtotal.toFixed(2)}\n`;
-            orderText += `Tax (10%): $${tax.toFixed(2)}\n`;
-            orderText += `TOTAL: $${total.toFixed(2)}\n\n`;
-            orderText += `📱 Customer contact: [Your phone/email here]\n`;
-            orderText += `📍 Delivery address: [Your address here]\n\n`;
-            orderText += `Thank you for your order!`;
-
-            return orderText;
-        }
-
-        // Send via Email (mailto: link)
-        function sendViaEmail() {
-            const orderText = generateOrderText();
-            if (!orderText) return;
-
-            const subject = `New Order - ${RESTAURANT_INFO.name}`;
-            const body = orderText.replace(/\n/g, '%0A');
-            const mailtoLink = `mailto:${RESTAURANT_INFO.email}?subject=${encodeURIComponent(subject)}&body=${body}`;
-
-            window.open(mailtoLink, '_blank');
-            showMessage('📧 Email client opened with your order!', 'info');
-        }
-
-        // Send via WhatsApp
-        function sendViaWhatsApp() {
-            const orderText = generateOrderText();
-            if (!orderText) return;
-
-            const whatsappText = orderText.replace(/\n/g, '%0A');
-            const whatsappLink = `https://wa.me/${RESTAURANT_INFO.whatsapp}?text=${whatsappText}`;
-
-            window.open(whatsappLink, '_blank');
-            showMessage('📱 WhatsApp opened with your order!', 'info');
-        }
-
-        // Send via SMS
-        function sendViaSMS() {
-            const orderText = generateOrderText();
-            if (!orderText) return;
-
-            // SMS links have character limits, so create shorter version
-            const items = Object.values(cart);
-            const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0) * 1.1; // Include tax
-            const orderNumber = `BV-${Date.now().toString().slice(-6)}`;
-
-            const shortText = `${RESTAURANT_INFO.name} Order #${orderNumber}: ${items.map(item => 
-                `${item.name} x${item.quantity}`
-            ).join(', ')}. Total: $${total.toFixed(2)}. [Add your contact & address]`;
-
-            const smsLink = `sms:${RESTAURANT_INFO.phone}?body=${encodeURIComponent(shortText)}`;
-
-            window.open(smsLink, '_blank');
-            showMessage('💬 SMS app opened with your order!', 'info');
-        }
-
-        // Copy to Clipboard
-        async function copyToClipboard() {
-            const orderText = generateOrderText();
-            if (!orderText) return;
-
-            const cleanText = orderText.replace(/\n/g, '\n');
+            const sendBtn = document.getElementById('send-btn');
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<div class="spinner"></div>Sending to Kitchen...';
 
             try {
-                await navigator.clipboard.writeText(cleanText);
-                showMessage('📋 Order text copied to clipboard! Paste it anywhere.', 'success');
-            } catch (err) {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = cleanText;
-                textArea.style.position = 'fixed';
-                textArea.style.opacity = '0';
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
+                // Prepare order data for table service
+                const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                const tax = subtotal * 0.05;
+                const total = subtotal + tax;
+                const orderNumber = `R-${Date.now().toString().slice(-6)}`;
+                const orderTime = new Date().toLocaleTimeString('en-IN', { 
+                    hour: '2-digit', 
+                    minute: '2-digit'
+                });
 
-                try {
-                    document.execCommand('copy');
-                    showMessage('📋 Order text copied to clipboard! Paste it anywhere.', 'success');
-                } catch (err) {
-                    showMessage('❌ Could not copy to clipboard. Please select and copy manually.', 'error');
-                }
+                const tableOrderData = {
+                    orderNumber: orderNumber,
+                    tableNumber: tableNumber,
+                    items: items,
+                    subtotal: subtotal.toFixed(0),
+                    tax: tax.toFixed(0),
+                    total: total.toFixed(0),
+                    orderTime: orderTime,
+                    timestamp: new Date().toISOString(),
+                    status: "new"
+                };
 
-                document.body.removeChild(textArea);
+                console.log('🍽️ Sending table order to kitchen:', tableOrderData);
+
+                // Send to kitchen Android app using custom URL scheme
+                const encodedData = encodeURIComponent(JSON.stringify(tableOrderData));
+                const kitchenUrl = `restaurant://table?data=${encodedData}`;
+
+                console.log('🔗 Kitchen URL:', kitchenUrl);
+
+                // Try to open kitchen app
+                window.location.href = kitchenUrl;
+
+                // Show success message
+                setTimeout(() => {
+                    showMessage(`✅ Order ${orderNumber} sent to kitchen! Table ${tableNumber} - ₹${total.toFixed(0)}`, 'success');
+
+                    // Clear cart after successful order
+                    cart = {};
+                    updateCart();
+                    document.getElementById('table-number').value = '';
+
+                    sendBtn.disabled = false;
+                    sendBtn.innerHTML = '🍽️ SEND TO KITCHEN';
+                }, 1000);
+
+            } catch (error) {
+                console.error('❌ Error sending order:', error);
+                showMessage(`❌ Failed to send order: ${error.message}`, 'error');
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '🍽️ SEND TO KITCHEN';
             }
         }
 
@@ -774,21 +644,9 @@
             }, 6000);
         }
 
-        // Global functions
-        window.addToCart = addToCart;
-        window.changeQuantity = changeQuantity;
-        window.removeFromCart = removeFromCart;
-        window.sendViaEmail = sendViaEmail;
-        window.sendViaWhatsApp = sendViaWhatsApp;
-        window.sendViaSMS = sendViaSMS;
-        window.copyToClipboard = copyToClipboard;
-        window.clearCart = clearCart;
-
-        console.log('✅ Pure client-side restaurant system loaded');
-        console.log('📧 Email orders to:', RESTAURANT_INFO.email);
-        console.log('📱 WhatsApp orders to:', RESTAURANT_INFO.whatsappDisplay);
-        console.log('💬 SMS orders to:', RESTAURANT_INFO.phoneDisplay);
-        console.log('🚀 All methods work without any external services!');
+        console.log('✅ Restaurant table ordering system loaded');
+        console.log('🍽️ Ready to send orders to kitchen Android app');
+        console.log('🔗 Using restaurant://table URL scheme');
     </script>
 </body>
 </html>
