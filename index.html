@@ -75,10 +75,21 @@
             opacity: 1;
         }
         .logo-container {
-            justify-items: center;
-            align-items: center;
-            animation: blur-to-visible 1.5s forwards;
-        }
+    display: flex;
+    justify-content: center;   /* Center horizontally */
+    align-items: center;       /* Center vertically */
+    height: 100vh;             /* Full screen height */
+    width: 100vw;              /* Full screen width */
+    animation: blur-to-visible 1.5s forwards;
+    margin: 0;
+    padding: 0;
+}
+
+.logo-container img {
+    max-width: 90%;            /* Prevent overflow */
+    height: auto;
+    display: block;            /* Removes inline extra spacing */
+}
         .logo-text {
             font-family: 'Playfair Display', serif;
             font-size: 3rem;
