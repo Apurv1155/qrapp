@@ -3,453 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Restaurant Cloud Orders</title>
+    <title>Royal Cloud Restaurant</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Playfair Display and Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(135deg, #8e24aa 0%, #5e35b1 100%); 
-            min-height: 100vh; 
-            color: #333; 
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fdfaf7; /* Soft cream background */
+            color: #333;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .header { 
-            background: white; 
-            border-radius: 15px; 
-            padding: 30px; 
-            margin-bottom: 30px; 
-            text-align: center; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        .container {
+            max-width: 1400px;
         }
-        .restaurant-name { 
-            font-size: 3rem; 
-            color: #8e24aa; 
-            margin-bottom: 15px; 
-            font-weight: bold; 
+        .menu-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         }
-        .restaurant-tagline { 
-            color: #666; 
-            font-size: 1.3rem; 
-            margin-bottom: 15px; 
+
+        /* Responsive cart sidebar for all screen sizes */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fdfaf7;
+            z-index: 50;
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+            padding: 1.5rem;
+            box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
         }
-        .cloud-info { 
-            background: linear-gradient(145deg, #f3e5f5, #e1bee7); 
-            border: 2px solid #8e24aa; 
-            padding: 25px; 
-            border-radius: 15px; 
-            margin-bottom: 30px; 
-            box-shadow: 0 8px 25px rgba(142, 36, 170, 0.2); 
-        }
-        .info-title { 
-            font-size: 1.4rem; 
-            font-weight: bold; 
-            color: #6a1b9a; 
-            margin-bottom: 15px; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-        }
-        .info-description { 
-            color: #7b1fa2; 
-            margin-bottom: 20px; 
-            font-size: 1.1rem; 
-            line-height: 1.6; 
-        }
-        .table-input-section { 
-            background: rgba(255, 255, 255, 0.9); 
-            padding: 20px; 
-            border-radius: 12px; 
-            border: 2px solid #8e24aa; 
-            text-align: center; 
-        }
-        .table-label { 
-            font-size: 1.2rem; 
-            font-weight: bold; 
-            color: #6a1b9a; 
-            margin-bottom: 15px; 
-            display: block; 
-        }
-        .table-input { 
-            width: 200px; 
-            padding: 12px 20px; 
-            border: 2px solid #8e24aa; 
-            border-radius: 8px; 
-            font-size: 1.5rem; 
-            text-align: center; 
-            font-weight: bold; 
-            background: #fce4ec; 
-        }
-        .table-input:focus { 
-            outline: none; 
-            border-color: #5e35b1; 
-            box-shadow: 0 0 0 3px rgba(142, 36, 170, 0.2); 
-        }
-        .content-grid { 
-            display: grid; 
-            grid-template-columns: 2fr 1fr; 
-            gap: 30px; 
-        }
-        .menu-section { 
-            background: white; 
-            border-radius: 15px; 
-            padding: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-        }
-        .menu-section h2 { 
-            color: #8e24aa; 
-            font-size: 2.2rem; 
-            margin-bottom: 25px; 
-            font-weight: bold; 
-        }
-        .menu-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
-            gap: 20px; 
-        }
-        .menu-item { 
-            border: 1px solid #ddd; 
-            border-radius: 10px; 
-            padding: 20px; 
-            background: #fafafa; 
-            transition: all 0.3s ease; 
-        }
-        .menu-item:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15); 
-            border-color: #8e24aa; 
-        }
-        .item-name { 
-            font-size: 1.25rem; 
-            font-weight: bold; 
-            color: #333; 
-            margin-bottom: 10px; 
-        }
-        .item-description { 
-            color: #666; 
-            margin-bottom: 15px; 
-            line-height: 1.5; 
-            font-size: 0.95rem; 
-        }
-        .item-footer { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-        }
-        .item-price { 
-            font-size: 1.4rem; 
-            font-weight: bold; 
-            color: #8e24aa; 
-        }
-        .add-btn { 
-            background: #4caf50; 
-            color: white; 
-            border: none; 
-            padding: 10px 18px; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            transition: all 0.3s; 
-        }
-        .add-btn:hover { 
-            background: #45a049; 
-            transform: translateY(-1px); 
-        }
-        .cart-sidebar { 
-            background: white; 
-            border-radius: 15px; 
-            padding: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
-            height: fit-content; 
-            position: sticky; 
-            top: 20px; 
-        }
-        .cart-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 25px; 
-        }
-        .cart-header h3 { 
-            color: #8e24aa; 
-            font-size: 1.5rem; 
-            font-weight: bold; 
-        }
-        .cart-count { 
-            background: #8e24aa; 
-            color: white; 
-            border-radius: 50%; 
-            width: 32px; 
-            height: 32px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: bold; 
-            font-size: 1rem; 
-        }
-        .cart-items { 
-            max-height: 300px; 
-            overflow-y: auto; 
-            margin-bottom: 25px; 
-        }
-        .cart-item { 
-            padding: 15px 0; 
-            border-bottom: 1px solid #eee; 
-        }
-        .cart-item:last-child { 
-            border-bottom: none; 
-        }
-        .cart-item-name { 
-            font-weight: 600; 
-            margin-bottom: 8px; 
-            font-size: 1.05rem; 
-        }
-        .cart-item-price { 
-            color: #666; 
-            font-size: 0.9rem; 
-            margin-bottom: 10px; 
-        }
-        .quantity-controls { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            margin-bottom: 10px; 
-        }
-        .qty-btn { 
-            background: #8e24aa; 
-            color: white; 
-            border: none; 
-            width: 28px; 
-            height: 28px; 
-            border-radius: 50%; 
-            cursor: pointer; 
-            font-size: 1rem; 
-            font-weight: bold; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-        }
-        .qty-btn:hover { 
-            background: #7b1fa2; 
-        }
-        .qty-display { 
-            min-width: 30px; 
-            text-align: center; 
-            font-weight: 600; 
-            font-size: 1.1rem; 
-        }
-        .remove-btn { 
-            background: #dc3545; 
-            color: white; 
-            border: none; 
-            padding: 5px 10px; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 0.85rem; 
-            font-weight: 500; 
-        }
-        .remove-btn:hover { 
-            background: #c82333; 
-        }
-        .cart-totals { 
-            border-top: 2px solid #ddd; 
-            padding-top: 20px; 
-            margin-bottom: 25px; 
-        }
-        .total-row { 
-            display: flex; 
-            justify-content: space-between; 
-            margin: 8px 0; 
-            font-size: 1rem; 
-        }
-        .total-row.grand-total { 
-            font-weight: bold; 
-            font-size: 1.3rem; 
-            color: #8e24aa; 
-            border-top: 1px solid #ddd; 
-            padding-top: 12px; 
-            margin-top: 15px; 
-        }
-        .send-btn { 
-            background: linear-gradient(45deg, #8e24aa, #5e35b1); 
-            color: white; 
-            border: none; 
-            padding: 18px 25px; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-weight: 700; 
-            text-align: center; 
-            transition: all 0.3s; 
-            font-size: 1.1rem; 
-            width: 100%; 
-            margin-bottom: 15px; 
-            box-shadow: 0 4px 15px rgba(142, 36, 170, 0.3); 
-        }
-        .send-btn:hover { 
-            background: linear-gradient(45deg, #7b1fa2, #512da8); 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(142, 36, 170, 0.4); 
-        }
-        .send-btn:disabled { 
-            background: #6c757d; 
-            cursor: not-allowed; 
-            transform: none; 
-            box-shadow: none; 
-        }
-        .clear-cart-btn { 
-            background: #ffc107; 
-            color: #212529; 
-            padding: 12px 20px; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            transition: all 0.3s; 
-            width: 100%; 
-        }
-        .clear-cart-btn:hover { 
-            background: #ffb300; 
-            transform: translateY(-1px); 
-        }
-        .empty-cart { 
-            text-align: center; 
-            color: #666; 
-            padding: 30px 0; 
-            font-size: 1rem; 
-        }
-        .message { 
-            padding: 15px 20px; 
-            border-radius: 8px; 
-            margin-bottom: 20px; 
-            display: none; 
-            font-weight: 500; 
-            font-size: 0.95rem; 
-        }
-        .message.success { 
-            background: #d4edda; 
-            color: #155724; 
-            border: 1px solid #c3e6cb; 
-        }
-        .message.error { 
-            background: #f8d7da; 
-            color: #721c24; 
-            border: 1px solid #f5c6cb; 
-        }
-        .spinner { 
-            display: inline-block; 
-            width: 20px; 
-            height: 20px; 
-            border: 3px solid #f3f3f3; 
-            border-top: 3px solid #8e24aa; 
-            border-radius: 50%; 
-            animation: spin 1s linear infinite; 
-            margin-right: 10px; 
-        }
-        @keyframes spin { 
-            0% { transform: rotate(0deg); } 
-            100% { transform: rotate(360deg); } 
-        }
-        .cloud-status { 
-            background: #e3f2fd; 
-            border: 1px solid #2196f3; 
-            padding: 15px; 
-            border-radius: 8px; 
-            margin-bottom: 20px; 
-            text-align: center; 
-        }
-        .cloud-status.sending { 
-            background: #fff3e0; 
-            border-color: #ff9800; 
-        }
-        .cloud-status.success { 
-            background: #e8f5e9; 
-            border-color: #4caf50; 
-        }
-        .cloud-status.error { 
-            background: #ffebee; 
-            border-color: #f44336; 
-        }
-        @media (max-width: 768px) { 
-            .content-grid { 
-                grid-template-columns: 1fr; 
-            } 
-            .restaurant-name { 
-                font-size: 2.5rem; 
-            } 
-            .menu-grid { 
-                grid-template-columns: 1fr; 
-            } 
-            .cart-sidebar { 
-                position: static; 
+
+        @media (min-width: 1024px) { /* On large screens (lg), the sidebar is static */
+            .cart-sidebar {
+                position: static;
+                width: auto;
+                height: auto;
+                transform: translateX(0);
+                box-shadow: none;
             }
-            .table-input {
-                width: 150px;
-            }
+        }
+        
+        .cart-sidebar.open {
+            transform: translateX(0);
+        }
+
+        .cart-items {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        /* Splash screen styles */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 1s ease-in-out;
+            opacity: 1;
+        }
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: blur-to-visible 1.5s forwards;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #1f2937;
+            letter-spacing: -1px;
+        }
+        @keyframes blur-to-visible {
+            0% { opacity: 0; filter: blur(10px); transform: scale(0.9); }
+            100% { opacity: 1; filter: blur(0); transform: scale(1); }
+        }
+        /* Hide scrollbar for cart items */
+        .cart-items::-webkit-scrollbar {
+            width: 8px;
+        }
+        .cart-items::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 4px;
+        }
+        .cart-items::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        h2.royal, h3.royal {
+            font-family: 'Playfair Display', serif;
+        }
+        /* Search modal styles */
+        .search-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 60;
+            transition: opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        .search-modal {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease-in-out;
+        }
+        .search-modal-overlay.open {
+            display: flex;
+            opacity: 1;
+        }
+        .search-modal-overlay.open .search-modal {
+            transform: translateY(0);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header class="header">
-            <h1 class="restaurant-name">☁️ Cloud Restaurant</h1>
-            <p class="restaurant-tagline">Ready-to-Deploy Global Ordering</p>
-            <p style="color: #888; font-size: 0.9rem; margin-top: 5px;">Orders sent to real cloud database - Restaurant receives instantly</p>
-        </header>
-
-        <div class="cloud-info">
-            <div class="info-title">
-                ✅ Pre-Configured Cloud System
-            </div>
-            <div class="info-description">
-                <strong>Ready to use!</strong> This system is pre-configured with your JSONBin.io credentials. When you place an order, it's automatically saved to the global cloud database. The restaurant's Android app will receive your order within seconds!
-            </div>
-
-            <div class="table-input-section">
-                <label class="table-label">📍 Your Table Number</label>
-                <input type="number" class="table-input" id="table-number" placeholder="5" min="1" max="50" required>
-            </div>
+<body class="bg-stone-50 flex flex-col min-h-screen">
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="hidden">
+        <div class="logo-container">
+            <svg class="w-24 h-24 mb-4 text-rose-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zM9 12a3 3 0 116 0 3 3 0 01-6 0z" />
+            </svg>
+            <div class="logo-text">The Grand Plate</div>
         </div>
-
-        <div id="cloud-status" class="cloud-status">
-            ☁️ Cloud system ready - Place your order below
-        </div>
-
-        <div id="message" class="message"></div>
-
-        <div class="content-grid">
-            <section class="menu-section">
-                <h2>Restaurant Menu</h2>
-                <div id="menu-items" class="menu-grid"></div>
-            </section>
-
-            <aside class="cart-sidebar">
-                <div class="cart-header">
-                    <h3>Your Order</h3>
-                    <span id="cart-count" class="cart-count">0</span>
+    </div>
+    <div id="main-content" class="hidden">
+        <!-- Main Application Header -->
+        <header class="bg-white sticky top-0 z-50 shadow-lg shadow-black/5 rounded-b-2xl">
+            <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+                <!-- Company Logo and Name -->
+                <a href="#" class="flex items-center space-x-2">
+                    <svg class="w-8 h-8 text-rose-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zM9 12a3 3 0 116 0 3 3 0 01-6 0z" />
+                    </svg>
+                    <span class="font-extrabold text-xl text-gray-800 font-['Playfair_Display']">The Grand Plate</span>
+                </a>
+                <!-- Cart Button -->
+                <div class="flex items-center space-x-4">
+                    <div id="table-input-section" class="flex items-center space-x-2">
+                        <label for="table-number" class="text-sm font-medium text-gray-700">Table No:</label>
+                        <input type="number" id="table-number" placeholder="1-50" min="1" max="50" class="w-20 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors">
+                    </div>
+                    <button onclick="toggleSearchModal()" class="relative p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                        <svg class="w-6 h-6 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                    <button onclick="toggleCart()" class="relative p-2 rounded-xl hover:bg-gray-100 transition-colors">
+                        <svg class="w-6 h-6 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        <span id="cart-count" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-rose-600 rounded-full">0</span>
+                    </button>
                 </div>
-
-                <div id="cart-items" class="cart-items"></div>
-
-                <div class="cart-totals">
-                    <div class="total-row">
-                        <span>Subtotal:</span>
-                        <span id="subtotal">₹0</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Tax (5%):</span>
-                        <span id="tax">₹0</span>
-                    </div>
-                    <div class="total-row grand-total">
+            </nav>
+        </header>
+        <!-- Main Content Grid -->
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Menu Section -->
+            <section class="lg:col-span-2">
+                <h2 class="text-4xl royal font-bold text-gray-800 mb-8">Explore Our Menu</h2>
+                <div id="categories" class="flex flex-wrap gap-2 mb-6"></div>
+                <div id="menu-items" class="menu-grid gap-8"></div>
+            </section>
+            <!-- Cart Sidebar -->
+            <aside id="cart-sidebar" class="bg-white p-6 rounded-3xl shadow-2xl lg:sticky lg:top-24 overflow-y-auto cart-sidebar">
+                <div id="previous-order-section" class="mb-6 hidden">
+                    <h3 class="text-xl royal font-semibold text-gray-800 mb-2">Previous Order</h3>
+                    <div id="previous-order-content" class="p-4 bg-gray-50 rounded-xl border border-gray-200"></div>
+                </div>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl royal font-semibold text-gray-800">Your Order</h3>
+                    <button onclick="toggleCart()" class="lg:hidden p-2 rounded-full hover:bg-gray-100 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    </button>
+                </div>
+                <div id="cart-items" class="space-y-4 overflow-y-auto cart-items"></div>
+                <div class="mt-6 pt-6 border-t border-gray-200">
+                    <div class="flex justify-between text-lg font-medium text-gray-800 mb-2">
                         <span>Total:</span>
                         <span id="total">₹0</span>
                     </div>
                 </div>
-
-                <button id="send-btn" class="send-btn" onclick="sendToCloud()">☁️ SEND TO RESTAURANT</button>
-                <button class="clear-cart-btn" onclick="clearCart()">🗑️ Clear Cart</button>
+                <div id="message" class="hidden my-4 p-3 rounded-xl text-sm font-medium"></div>
+                <button id="send-btn" class="w-full mt-4 py-3 px-6 rounded-xl text-white font-semibold transition-all duration-300 bg-gradient-to-r from-indigo-950 to-purple-900 hover:from-indigo-900 hover:to-purple-800 focus:outline-none focus:ring-4 focus:ring-rose-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2" onclick="sendToCloud()">
+                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin text-white hidden" id="spinner">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span id="send-btn-text">Send Order</span>
+                </button>
             </aside>
         </div>
     </div>
 
+    <!-- Search Modal -->
+    <div id="search-modal-overlay" class="search-modal-overlay" onclick="closeSearchModal(event)">
+        <div class="search-modal" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl royal font-semibold text-gray-800">Search Menu</h3>
+                <button onclick="closeSearchModal()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
+            <div class="flex space-x-2">
+                <input type="text" id="search-input" placeholder="e.g., Tikka, Paneer, Rice" class="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors">
+                <button onclick="performSearch()" class="bg-indigo-950 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:bg-indigo-900 transition-colors">
+                    Search
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <script>
         // ☁️ PRE-CONFIGURED CLOUD STORAGE
         const CLOUD_CONFIG = {
@@ -460,45 +250,131 @@
 
         // 🍽️ RESTAURANT MENU
         const MENU = [
-            { id: 1, name: "Chicken Tikka", price: 280, description: "Tender chicken marinated in yogurt and spices, grilled to perfection" },
-            { id: 2, name: "Paneer Butter Masala", price: 240, description: "Soft paneer cubes in rich tomato and butter gravy with aromatic spices" },
-            { id: 3, name: "Butter Chicken", price: 320, description: "Classic creamy tomato curry with tender chicken pieces and Indian spices" },
-            { id: 4, name: "Dal Makhani", price: 180, description: "Creamy black lentils slow-cooked with butter, cream, and traditional spices" },
-            { id: 5, name: "Biryani (Chicken)", price: 350, description: "Fragrant basmati rice cooked with spiced chicken and aromatic herbs" },
-            { id: 6, name: "Butter Naan", price: 60, description: "Fresh baked Indian bread brushed with butter and garlic" },
-            { id: 7, name: "Garlic Naan", price: 70, description: "Soft naan bread topped with fresh garlic and coriander" },
-            { id: 8, name: "Tandoori Roti", price: 45, description: "Whole wheat flatbread cooked in traditional tandoor oven" },
-            { id: 9, name: "Mango Lassi", price: 120, description: "Refreshing yogurt drink blended with sweet mango pulp" },
-            { id: 10, name: "Masala Chai", price: 40, description: "Traditional Indian spiced tea with milk and aromatic spices" },
-            { id: 11, name: "Gulab Jamun", price: 80, description: "Soft milk dumplings soaked in rose-flavored sugar syrup" },
-            { id: 12, name: "Raita", price: 60, description: "Cool yogurt side dish with cucumber, mint, and spices" }
+            { id: 1, name: "Chicken Tikka", price: 280, description: "Tender chicken marinated in yogurt and spices, grilled to perfection", image: "https://t3.ftcdn.net/jpg/02/76/94/29/360_F_276942978_c635uN0rUqX4iK2f0l1P6TfK5yV30aI4.jpg", category: "Main Course" },
+            { id: 2, name: "Paneer Butter Masala", price: 240, description: "Soft paneer cubes in rich tomato and butter gravy with aromatic spices", image: "https://img.freepik.com/premium-photo/paneer-butter-masala-cheese-cottage-curry-served-glass-bowl-plate_466689-14739.jpg", category: "Main Course" },
+            { id: 3, name: "Butter Chicken", price: 320, description: "Classic creamy tomato curry with tender chicken pieces and Indian spices", image: "https://img.freepik.com/premium-photo/delicious-chicken-butter-masala-curry-served-bowl-with-butter-naan_466689-53748.jpg", category: "Main Course" },
+            { id: 4, name: "Dal Makhani", price: 180, description: "Creamy black lentils slow-cooked with butter, cream, and traditional spices", image: "https://media.istockphoto.com/id/1286088231/photo/dal-makhani-and-roti.jpg", category: "Main Course" },
+            { id: 5, name: "Biryani (Chicken)", price: 350, description: "Fragrant basmati rice cooked with spiced chicken and aromatic herbs", image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/07/hyderabadi-biryani-recipe.jpg", category: "Main Course" },
+            { id: 6, name: "Butter Naan", price: 60, description: "Fresh baked Indian bread brushed with butter and garlic", image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/02/butter-naan-recipe.jpg", category: "Bread" },
+            { id: 7, name: "Garlic Naan", price: 70, description: "Soft naan bread topped with fresh garlic and coriander", image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2022/02/butter-naan-recipe.jpg", category: "Bread" },
+            { id: 8, name: "Tandoori Roti", price: 45, description: "Whole wheat flatbread cooked in traditional tandoor oven", image: "https://thumbs.dreamstime.com/b/tandoori-roti-served-plate-tandoori-roti-served-plate-159672017.jpg", category: "Bread" },
+            { id: 9, name: "Mango Lassi", price: 120, description: "Refreshing yogurt drink blended with sweet mango pulp", image: "https://www.cookwithmanali.com/wp-content/uploads/2018/06/Mango-Lassi-Recipe.jpg", category: "Beverages" },
+            { id: 10, name: "Masala Chai", price: 40, description: "Traditional Indian spiced tea with milk and aromatic spices", image: "https://www.teahub.io/photos/full/159-1594950_masala-chai.jpg", category: "Beverages" },
+            { id: 11, name: "Gulab Jamun", price: 80, description: "Soft milk dumplings soaked in rose-flavored sugar syrup", image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2016/06/gulab-jamun-recipe-500x500.jpg", category: "Dessert" },
+            { id: 12, name: "Raita", price: 60, description: "Cool yogurt side dish with cucumber, mint, and spices", image: "https://www.indianhealthyrecipes.com/wp-content/uploads/2021/05/raita-recipe-500x500.jpg", category: "Side Dish" }
         ];
 
         let cart = {};
+        let isCartVisible = false;
 
         // Initialize system
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('☁️ Pre-configured cloud system loading...');
-            console.log('🔑 API Key configured:', CLOUD_CONFIG.jsonBinApiKey.substring(0, 20) + '...');
-            console.log('📦 Bin ID configured:', CLOUD_CONFIG.binId);
-
-            renderMenu();
-            updateCart();
-
-            showMessage('✅ Cloud system ready! Your credentials are pre-configured.', 'success');
+            showSplashScreen();
+            displayPreviousOrder();
         });
 
-        function renderMenu() {
+        function showSplashScreen() {
+            const splashScreen = document.getElementById('splash-screen');
+            const mainContent = document.getElementById('main-content');
+            splashScreen.style.display = 'flex';
+            mainContent.style.display = 'none';
+
+            setTimeout(() => {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    renderCategories();
+                    renderMenu();
+                    updateCart();
+                }, 1000); // Wait for fade-out to complete
+            }, 2000); // Display for 2 seconds
+        }
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cart-sidebar');
+            isCartVisible = !isCartVisible;
+            if (isCartVisible) {
+                cartSidebar.classList.add('open');
+            } else {
+                cartSidebar.classList.remove('open');
+            }
+        }
+
+        function toggleSearchModal() {
+            const modal = document.getElementById('search-modal-overlay');
+            if (modal.classList.contains('open')) {
+                modal.classList.remove('open');
+            } else {
+                modal.classList.add('open');
+                document.getElementById('search-input').focus();
+            }
+        }
+
+        function closeSearchModal(event) {
+            // Prevent closing if click is inside the modal itself
+            if (event && event.target.closest('.search-modal')) return;
+            document.getElementById('search-modal-overlay').classList.remove('open');
+        }
+
+        function performSearch() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filteredResults = MENU.filter(item => 
+                item.name.toLowerCase().includes(query) || 
+                item.description.toLowerCase().includes(query)
+            );
+            renderMenu(null, filteredResults);
+            closeSearchModal();
+        }
+
+        function renderCategories() {
+            const container = document.getElementById('categories');
+            const categories = [...new Set(MENU.map(item => item.category))];
+            
+            let html = `<button class="category-btn active bg-indigo-950 text-white px-6 py-2 rounded-full font-medium shadow-md hover:bg-indigo-900 transition-colors" onclick="filterMenu('All')">All</button>`;
+            
+            categories.forEach(category => {
+                html += `<button class="category-btn bg-stone-200 text-gray-700 px-6 py-2 rounded-full font-medium hover:bg-stone-300 transition-colors" onclick="filterMenu('${category}')">${category}</button>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function filterMenu(category) {
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => btn.classList.remove('active', 'bg-indigo-950', 'text-white'));
+            const activeBtn = document.querySelector(`[onclick="filterMenu('${category}')"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-indigo-950', 'text-white');
+            }
+            renderMenu(category);
+        }
+
+        function renderMenu(category = 'All', itemsToRender = null) {
             const container = document.getElementById('menu-items');
             if (!container) return;
 
-            container.innerHTML = MENU.map(item => `
-                <div class="menu-item">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-description">${item.description}</div>
-                    <div class="item-footer">
-                        <div class="item-price">₹${item.price}</div>
-                        <button class="add-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+            const finalMenu = itemsToRender || (category === 'All' ? MENU : MENU.filter(item => item.category === category));
+
+            if (finalMenu.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500 text-lg">No items found. Please try another search.</div>';
+                return;
+            }
+
+            container.innerHTML = finalMenu.map(item => `
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform transition duration-300 hover:scale-[1.02]">
+                    <div class="relative w-full h-48 bg-gray-100">
+                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-t-2xl">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold royal text-gray-800 mb-2">${item.name}</h3>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${item.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-rose-600">₹${item.price}</span>
+                            <button class="bg-indigo-950 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:bg-indigo-900 transition-colors" onclick="addToCart(${item.id})">
+                                Add to Cart
+                            </button>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -513,35 +389,37 @@
             } else {
                 cart[itemId] = { ...item, quantity: 1 };
             }
-
             updateCart();
-            showMessage(`${item.name} added to cart!`, 'success');
+            showMessage(`'${item.name}' added to your order!`, 'success');
         }
 
         function updateCart() {
             const items = Object.values(cart);
             const container = document.getElementById('cart-items');
-
             if (!container) return;
 
             if (items.length === 0) {
-                container.innerHTML = '<div class="empty-cart">Your cart is empty<br><small>Add items from our menu!</small></div>';
+                container.innerHTML = '<div class="text-center text-gray-500 py-8">Your cart is empty.</div>';
                 document.getElementById('cart-count').textContent = '0';
                 document.getElementById('send-btn').disabled = true;
-                updateTotals(0, 0, 0);
+                updateTotals(0);
                 return;
             }
 
             container.innerHTML = items.map(item => `
-                <div class="cart-item">
-                    <div class="cart-item-name">${item.name}</div>
-                    <div class="cart-item-price">₹${item.price} each</div>
-                    <div class="quantity-controls">
-                        <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">−</button>
-                        <span class="qty-display">${item.quantity}</span>
-                        <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                <div class="flex items-center justify-between border-b border-gray-100 pb-4 last:border-b-0 last:pb-0">
+                    <div class="flex items-center space-x-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 rounded-xl object-cover">
+                        <div>
+                            <p class="font-medium text-gray-800">${item.name}</p>
+                            <p class="text-sm text-gray-500">₹${item.price} each</p>
+                        </div>
                     </div>
-                    <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                    <div class="flex items-center space-x-2">
+                        <button class="bg-stone-200 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-lg hover:bg-stone-300 transition-colors" onclick="changeQuantity(${item.id}, -1)">-</button>
+                        <span class="font-semibold text-gray-800 w-6 text-center">${item.quantity}</span>
+                        <button class="bg-stone-200 text-gray-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-lg hover:bg-stone-300 transition-colors" onclick="changeQuantity(${item.id}, 1)">+</button>
+                    </div>
                 </div>
             `).join('');
 
@@ -549,11 +427,8 @@
             document.getElementById('cart-count').textContent = totalItems;
             document.getElementById('send-btn').disabled = false;
 
-            const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const tax = subtotal * 0.05;
-            const total = subtotal + tax;
-
-            updateTotals(subtotal, tax, total);
+            const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            updateTotals(total);
         }
 
         function changeQuantity(itemId, change) {
@@ -566,26 +441,54 @@
             }
         }
 
-        function removeFromCart(itemId) {
-            if (cart[itemId]) {
-                const item = cart[itemId];
-                delete cart[itemId];
-                updateCart();
-                showMessage(`${item.name} removed`, 'success');
-            }
-        }
-
-        function updateTotals(subtotal, tax, total) {
-            document.getElementById('subtotal').textContent = `₹${subtotal.toFixed(0)}`;
-            document.getElementById('tax').textContent = `₹${tax.toFixed(0)}`;
+        function updateTotals(total) {
             document.getElementById('total').textContent = `₹${total.toFixed(0)}`;
         }
 
         function clearCart() {
-            if (Object.keys(cart).length > 0 && confirm('Clear cart?')) {
-                cart = {};
-                updateCart();
-                showMessage('Cart cleared', 'success');
+            if (Object.keys(cart).length > 0) {
+                showCustomMessage('Are you sure you want to clear the cart?', 'confirm').then(result => {
+                    if (result) {
+                        cart = {};
+                        updateCart();
+                        showMessage('Cart cleared successfully!', 'success');
+                    }
+                });
+            }
+        }
+
+        // Functions for previous order history
+        function savePreviousOrderToLocalStorage(orderData) {
+            localStorage.setItem('previousOrder', JSON.stringify(orderData));
+        }
+
+        function displayPreviousOrder() {
+            const previousOrderData = localStorage.getItem('previousOrder');
+            const container = document.getElementById('previous-order-content');
+            const section = document.getElementById('previous-order-section');
+            
+            if (previousOrderData && container && section) {
+                const order = JSON.parse(previousOrderData);
+                const orderDate = new Date(order.timestamp).toLocaleDateString();
+                
+                const itemsHtml = order.items.map(item => `
+                    <div class="flex justify-between text-sm">
+                        <span class="text-gray-600">${item.name} x ${item.quantity}</span>
+                        <span class="font-medium text-gray-700">₹${item.price * item.quantity}</span>
+                    </div>
+                `).join('');
+
+                container.innerHTML = `
+                    <p class="text-gray-500 text-xs mb-2">Order placed on ${orderDate}</p>
+                    ${itemsHtml}
+                    <div class="flex justify-between font-bold text-md mt-2 pt-2 border-t border-gray-300">
+                        <span>Total:</span>
+                        <span>₹${order.total}</span>
+                    </div>
+                `;
+                section.classList.remove('hidden');
+            } else if (section) {
+                section.classList.add('hidden');
             }
         }
 
@@ -593,42 +496,37 @@
         async function sendToCloud() {
             const items = Object.values(cart);
             if (items.length === 0) {
-                showMessage('Cart is empty!', 'error');
+                showMessage('Your cart is empty. Please add items before placing an order.', 'error');
                 return;
             }
 
             // Validate table number
-            const tableNumber = document.getElementById('table-number').value.trim();
-            if (!tableNumber || isNaN(tableNumber) || tableNumber < 1) {
-                showMessage('Please enter a valid table number!', 'error');
+            const tableNumberInput = document.getElementById('table-number');
+            const tableNumber = tableNumberInput.value.trim();
+            if (!tableNumber || isNaN(tableNumber) || tableNumber < 1 || tableNumber > 50) {
+                showMessage('Please enter a valid table number between 1 and 50.', 'error');
+                tableNumberInput.focus();
                 return;
             }
 
             const sendBtn = document.getElementById('send-btn');
-            const cloudStatus = document.getElementById('cloud-status');
+            const sendBtnText = document.getElementById('send-btn-text');
+            const spinner = document.getElementById('spinner');
 
             sendBtn.disabled = true;
-            sendBtn.innerHTML = '<div class="spinner"></div>Uploading to cloud...';
-            cloudStatus.className = 'cloud-status sending';
-            cloudStatus.textContent = '☁️ Uploading order to restaurant cloud...';
+            sendBtnText.textContent = 'Sending...';
+            spinner.classList.remove('hidden');
 
             try {
                 // Prepare order data
-                const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-                const tax = subtotal * 0.05;
-                const total = subtotal + tax;
+                const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 const orderNumber = `C-${Date.now().toString().slice(-6)}`;
-                const orderTime = new Date().toLocaleTimeString('en-IN', { 
-                    hour: '2-digit', 
-                    minute: '2-digit'
-                });
+                const orderTime = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
 
                 const orderData = {
                     orderNumber: orderNumber,
                     tableNumber: tableNumber,
                     items: items,
-                    subtotal: subtotal.toFixed(0),
-                    tax: tax.toFixed(0),
                     total: total.toFixed(0),
                     orderTime: orderTime,
                     timestamp: new Date().toISOString(),
@@ -638,15 +536,15 @@
                     location: Intl.DateTimeFormat().resolvedOptions().timeZone
                 };
 
-                console.log('☁️ Uploading order to pre-configured cloud:', orderData);
-
                 // Upload to cloud storage
                 await uploadToConfiguredCloud(orderData);
 
                 // Success
-                cloudStatus.className = 'cloud-status success';
-                cloudStatus.textContent = `✅ Order ${orderNumber} sent to restaurant! Table ${tableNumber}`;
-                showMessage(`✅ Order sent successfully! ${orderNumber} for Table ${tableNumber} - ₹${total.toFixed(0)}`, 'success');
+                showMessage(`✅ Order ${orderNumber} for Table ${tableNumber} sent successfully!`, 'success');
+
+                // Save this order to local storage and display it
+                savePreviousOrderToLocalStorage(orderData);
+                displayPreviousOrder();
 
                 // Clear cart
                 cart = {};
@@ -655,16 +553,14 @@
 
             } catch (error) {
                 console.error('❌ Cloud upload error:', error);
-                cloudStatus.className = 'cloud-status error';
-                cloudStatus.textContent = '❌ Failed to upload to cloud';
                 showMessage(`❌ Failed to send order: ${error.message}`, 'error');
             } finally {
                 sendBtn.disabled = false;
-                sendBtn.innerHTML = '☁️ SEND TO RESTAURANT';
+                sendBtnText.textContent = 'Send Order';
+                spinner.classList.add('hidden');
             }
         }
 
-        // ☁️ UPLOAD TO PRE-CONFIGURED CLOUD STORAGE
         async function uploadToConfiguredCloud(orderData) {
             try {
                 // First, get existing orders from cloud
@@ -681,7 +577,6 @@
                     existingData = await getResponse.json();
                 }
 
-                // Add new order to beginning of array
                 existingData.orders.unshift(orderData);
 
                 // Keep only last 100 orders to prevent storage overflow
@@ -704,14 +599,13 @@
                 });
 
                 if (!putResponse.ok) {
-                    throw new Error(`Cloud upload failed: ${putResponse.status}`);
+                    const errorText = await putResponse.text();
+                    throw new Error(`Cloud upload failed: ${putResponse.status} - ${errorText}`);
                 }
 
-                console.log('✅ Order uploaded to configured cloud successfully');
                 return orderData;
 
             } catch (error) {
-                console.error('❌ Pre-configured cloud storage error:', error);
                 throw error;
             }
         }
@@ -721,16 +615,74 @@
             if (!msg) return;
 
             msg.textContent = text;
-            msg.className = `message ${type}`;
-            msg.style.display = 'block';
+            msg.className = `my-4 p-3 rounded-xl text-sm font-medium transition-opacity duration-500 ease-in-out block ${type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`;
 
             setTimeout(() => { 
-                msg.style.display = 'none'; 
-            }, 8000);
+                msg.classList.add('opacity-0');
+                setTimeout(() => {
+                    msg.classList.add('hidden');
+                    msg.classList.remove('opacity-0');
+                }, 500);
+            }, 5000);
         }
 
-        console.log('✅ Pre-configured cloud restaurant system loaded');
-        console.log('☁️ Ready to send orders to restaurant with your credentials');
+        // Custom modal replacement for alert/confirm
+        function showCustomMessage(message, type = 'alert') {
+            return new Promise((resolve) => {
+                const modalId = 'custom-modal';
+                let modal = document.getElementById(modalId);
+                if (!modal) {
+                    modal = document.createElement('div');
+                    modal.id = modalId;
+                    modal.className = "fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-[100] flex justify-center items-center hidden";
+                    modal.innerHTML = `
+                        <div class="relative bg-white rounded-2xl shadow-xl p-6 w-96 max-w-sm mx-auto transform transition-all duration-300 scale-95">
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold royal mb-4">Message</h3>
+                                <p class="text-gray-700 mb-6">${message}</p>
+                                <div class="flex justify-center space-x-4">
+                                    <button id="modal-ok-btn" class="px-6 py-2 bg-indigo-950 text-white rounded-lg hover:bg-indigo-900 transition-colors">OK</button>
+                                    <button id="modal-cancel-btn" class="hidden px-6 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    document.body.appendChild(modal);
+                }
+
+                const okBtn = document.getElementById('modal-ok-btn');
+                const cancelBtn = document.getElementById('modal-cancel-btn');
+                const modalMessage = modal.querySelector('p');
+                const modalTitle = modal.querySelector('h3');
+
+                modalMessage.textContent = message;
+                modalTitle.textContent = type === 'confirm' ? 'Confirmation' : 'Notification';
+
+                if (type === 'confirm') {
+                    cancelBtn.classList.remove('hidden');
+                } else {
+                    cancelBtn.classList.add('hidden');
+                }
+
+                const hideModal = () => {
+                    modal.classList.add('hidden');
+                    okBtn.onclick = null;
+                    cancelBtn.onclick = null;
+                };
+
+                okBtn.onclick = () => {
+                    hideModal();
+                    resolve(true);
+                };
+
+                cancelBtn.onclick = () => {
+                    hideModal();
+                    resolve(false);
+                };
+
+                modal.classList.remove('hidden');
+            });
+        }
     </script>
 </body>
 </html>
