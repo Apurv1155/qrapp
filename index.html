@@ -14,9 +14,14 @@
         body {
             font-family: 'Inter', sans-serif;
             background: #fdfaf7; /* Soft cream background */
-            color: #333;
+            color: white;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+        #main-content{
+            background-color: #081c37;
+            color: white;
+            font-display: ;
         }
         .container {
             max-width: 1400px;
@@ -32,7 +37,7 @@
             right: 0;
             width: 100%;
             height: 100%;
-            background-color: #fdfaf7;
+            background-color: #25180a;
             z-index: 50;
             transition: transform 0.3s ease-in-out;
             transform: translateX(100%);
@@ -58,7 +63,14 @@
             max-height: calc(100vh - 200px);
             overflow-y: auto;
         }
-
+        .hidden {
+    
+    background-color: #081c37;
+    color: white;
+}
+.container mx-auto px-4 sm:px-6 lg:px-8 mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8{
+    color: white;
+}
         /* Splash screen styles */
         #splash-screen {
             position: fixed;
@@ -66,7 +78,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #fff;
+            background: #f2e3e3;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -88,7 +100,8 @@
 .logo-container img {
     max-width: 90%;            /* Prevent overflow */
     height: auto;
-    display: block;            /* Removes inline extra spacing */
+    display: block;   
+             /* Removes inline extra spacing */
 }
         .logo-text {
             font-family: 'Playfair Display', serif;
@@ -114,6 +127,9 @@
         }
         h2.royal, h3.royal {
             font-family: 'Playfair Display', serif;
+        }
+        .nav{
+            
         }
         /* Search modal styles */
         .search-modal-overlay {
@@ -158,95 +174,93 @@
     </div>
     <div id="main-content" class="hidden">
         <!-- Main Application Header -->
-        <header class="bg-white sticky top-0 z-50 shadow-lg shadow-black/5 rounded-b-2xl">
-            <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-                <!-- Company Logo and Name -->
-                <a href="#" class="flex items-center space-x-2 flex-shrink-0">
-                    <svg class="w-8 h-8 text-rose-600" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8zM9 12a3 3 0 116 0 3 3 0 01-6 0z" />
-                    </svg>
-                    <span class="font-extrabold text-xl text-gray-800 font-['Playfair_Display']">The Grand Plate</span>
-                </a>
-                <!-- Cart Button -->
-                <div class="flex items-center space-x-2 sm:space-x-4">
-                    <div id="table-input-section" class="flex items-center space-x-1 sm:space-x-2">
-                        <label for="table-number" class="text-sm font-medium text-gray-700 hidden sm:inline">Table No:</label>
-                        <input type="number" id="table-number" placeholder="1-50" min="1" max="50" class="w-16 sm:w-20 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors">
-                    </div>
-                    <button onclick="toggleSearchModal()" class="relative p-2 rounded-xl hover:bg-gray-100 transition-colors">
-                        <svg class="w-6 h-6 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                    </button>
-                    <button onclick="toggleCart()" class="relative p-2 rounded-xl hover:bg-gray-100 transition-colors">
-                        <svg class="w-6 h-6 text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="9" cy="21" r="1"></circle>
-                            <circle cx="20" cy="21" r="1"></circle>
-                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        <span id="cart-count" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-rose-600 rounded-full">0</span>
-                    </button>
-                </div>
-            </nav>
-        </header>
-        <!-- Main Content Grid -->
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Menu Section -->
-            <section class="lg:col-span-2">
-                <h2 class="text-4xl royal font-bold text-gray-800 mb-8">Explore Our Menu</h2>
-                <div id="categories" class="flex flex-wrap gap-2 mb-6"></div>
-                <div id="menu-items" class="menu-grid gap-8"></div>
-            </section>
-            <!-- Cart Sidebar -->
-            <aside id="cart-sidebar" class="bg-white p-6 rounded-3xl shadow-2xl lg:sticky lg:top-24 overflow-y-auto cart-sidebar">
-                <div id="previous-order-section" class="mb-6 hidden">
-                    <h3 class="text-xl royal font-semibold text-gray-800 mb-2">Previous Order</h3>
-                    <div id="previous-order-content" class="p-4 bg-gray-50 rounded-xl border border-gray-200"></div>
-                </div>
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl royal font-semibold text-gray-800">Your Order</h3>
-                    <button onclick="toggleCart()" class="lg:hidden p-2 rounded-full hover:bg-gray-100 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                    </button>
-                </div>
-                <div id="cart-items" class="space-y-4 overflow-y-auto cart-items"></div>
-                <div class="mt-6 pt-6 border-t border-gray-200">
-                    <div class="flex justify-between text-lg font-medium text-gray-800 mb-2">
-                        <span>Total:</span>
-                        <span id="total">₹0</span>
-                    </div>
-                </div>
-                <div id="message" class="hidden my-4 p-3 rounded-xl text-sm font-medium"></div>
-                <button id="send-btn" class="w-full mt-4 py-3 px-6 rounded-xl text-white font-semibold transition-all duration-300 bg-gradient-to-r from-indigo-950 to-purple-900 hover:from-indigo-900 hover:to-purple-800 focus:outline-none focus:ring-4 focus:ring-rose-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2" onclick="sendToCloud()">
-                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin text-white hidden" id="spinner">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span id="send-btn-text">Send Order</span>
-                </button>
-            </aside>
+      <header class="sticky top-0 z-50 shadow-lg shadow-black/5 rounded-b-2xl text-white" style="background-color: #081c37;">
+    <nav class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <!-- Company Logo and Name -->
+        <a href="#" class="flex items-center space-x-2 flex-shrink-0">
+    <img src="https://aambli.club/wp-content/uploads/2024/05/Aambli-Logo.svg" alt="The Grand Plate Logo" class="h-10 w-auto">
+    <span class="font-extrabold text-xl font-['Playfair_Display']"></span>
+    </a>
+        <!-- Cart Button -->
+        <div class="flex items-center space-x-2 sm:space-x-4">
+            <div id="table-input-section" class="flex items-center space-x-1 sm:space-x-2">
+                <label for="table-number" class="text-sm font-medium hidden sm:inline">Table No:</label>
+                <input type="number" id="table-number" placeholder="1-50" min="1" max="50" class="w-16 sm:w-20 p-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors text-black">
+            </div>
+            <button onclick="toggleSearchModal()" class="relative p-2 rounded-xl hover:bg-indigo-900 transition-colors">
+                <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </button>
+            <button onclick="toggleCart()" class="relative p-2 rounded-xl hover:bg-indigo-900 transition-colors">
+                <svg class="w-6 h-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                </svg>
+                <span id="cart-count" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-rose-600 rounded-full">0</span>
+            </button>
         </div>
-    </div>
+    </nav>
+</header>
 
-    <!-- Search Modal -->
-    <div id="search-modal-overlay" class="search-modal-overlay" onclick="closeSearchModal(event)">
-        <div class="search-modal" onclick="event.stopPropagation()">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-2xl royal font-semibold text-gray-800">Search Menu</h3>
-                <button onclick="closeSearchModal()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-            </div>
-            <div class="flex space-x-2">
-                <input type="text" id="search-input" placeholder="e.g., Tikka, Paneer, Rice" class="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors">
-                <button onclick="performSearch()" class="bg-indigo-950 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:bg-indigo-900 transition-colors">
-                    Search
-                </button>
+        <!-- Main Content Grid -->
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-8 grid grid-cols-1 lg:grid-cols-3 gap-8 text-white" style="color: white;">
+    <!-- Menu Section -->
+    <section class="lg:col-span-2 ">
+        <h2 class="text-4xl royal font-bold mb-8">Explore Our Menu</h2>
+        <div id="categories" class="flex flex-wrap gap-2 mb-6"></div>
+        <div id="menu-items" class="menu-grid gap-8"></div>
+    </section>
+    <!-- Cart Sidebar -->
+    <aside id="cart-sidebar" class="bg-white p-6 rounded-3xl shadow-2xl lg:sticky lg:top-24 overflow-y-auto cart-sidebar">
+        <div id="previous-order-section" class="mb-6 hidden">
+            <h3 class="text-xl royal font-semibold mb-2">Previous Order</h3>
+            <div id="previous-order-content" class="p-4 bg-gray-50 rounded-xl border border-gray-200"></div>
+        </div>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl royal font-semibold">Your Order</h3>
+            <button onclick="toggleCart()" class="lg:hidden p-2 rounded-full hover:bg-gray-100 transition-colors bg-black text-white">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+</button>
+        </div>
+        <div id="cart-items" class="space-y-4 overflow-y-auto cart-items"></div>
+        <div class="mt-6 pt-6 border-t border-gray-200">
+            <div class="flex justify-between text-lg font-medium mb-2">
+                <span>Total:</span>
+                <span id="total">₹0</span>
             </div>
         </div>
+        <div id="message" class="hidden my-4 p-3 rounded-xl text-sm font-medium"></div>
+        <button id="send-btn" class="w-full mt-4 py-3 px-6 rounded-xl text-white font-semibold transition-all duration-300 bg-gradient-to-r from-indigo-950 to-purple-900 hover:from-indigo-900 hover:to-purple-800 focus:outline-none focus:ring-4 focus:ring-rose-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2" onclick="sendToCloud()">
+            <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin text-white hidden" id="spinner">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <span id="send-btn-text">Send Order</span>
+        </button>
+    </aside>
+</div>
+
+<!-- Search Modal -->
+<div id="search-modal-overlay" class="search-modal-overlay" onclick="closeSearchModal(event)">
+    <div class="search-modal" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-2xl royal font-semibold">Search Menu</h3>
+            <button onclick="closeSearchModal()" class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+        </div>
+        <div class="flex space-x-2">
+            <input type="text" id="search-input" placeholder="e.g., Tikka, Paneer, Rice" class="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-rose-500 transition-colors">
+            <button onclick="performSearch()" class="bg-indigo-950 text-white px-6 py-2 rounded-lg font-medium shadow-md hover:bg-indigo-900 transition-colors">
+                Search
+            </button>
+        </div>
     </div>
-    
+</div>
+
     <script>
         // ☁️ PRE-CONFIGURED CLOUD STORAGE
         const CLOUD_CONFIG = {
