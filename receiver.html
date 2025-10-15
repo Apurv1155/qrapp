@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ultra Pro Restaurant Manager</title>
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -18,13 +21,17 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        .royal { font-family: 'Playfair Display', serif; }
+
+        .royal {
+            font-family: 'Playfair Display', serif;
+        }
 
         /* Order Card Animations */
         .order-card {
             transition: all 0.3s ease;
             animation: slideIn 0.5s ease-out;
         }
+
         .order-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -36,25 +43,63 @@
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes newOrderPulse {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
         }
 
-        .status-new { border-left: 4px solid #ef4444; }
-        .status-preparing { border-left: 4px solid #f59e0b; }
-        .status-ready { border-left: 4px solid #10b981; }
-        .status-delivered { border-left: 4px solid #6366f1; }
+        .status-new {
+            border-left: 4px solid #ef4444;
+        }
 
-        .badge-new { background: #fee2e2; color: #dc2626; }
-        .badge-preparing { background: #fef3c7; color: #d97706; }
-        .badge-ready { background: #d1fae5; color: #047857; }
-        .badge-delivered { background: #e0e7ff; color: #4338ca; }
+        .status-preparing {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .status-ready {
+            border-left: 4px solid #10b981;
+        }
+
+        .status-delivered {
+            border-left: 4px solid #6366f1;
+        }
+
+        .badge-new {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .badge-preparing {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge-ready {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .badge-delivered {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
 
         .custom-option {
             display: inline-block;
@@ -67,7 +112,7 @@
             font-weight: 500;
         }
 
-        /* Enhanced Table Status with High Contrast */
+        /* Enhanced Responsive Table Status */
         .table-box {
             width: 90px;
             height: 90px;
@@ -82,6 +127,22 @@
             position: relative;
             border: 3px solid transparent;
             font-size: 14px;
+        }
+
+        @media (max-width: 640px) {
+            .table-box {
+                width: 65px;
+                height: 65px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .table-box {
+                width: 55px;
+                height: 55px;
+                font-size: 10px;
+            }
         }
 
         .table-free {
@@ -114,124 +175,348 @@
         }
 
         @keyframes busyPulse {
-            0% { transform: scale(1); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); }
-            50% { transform: scale(1.08); box-shadow: 0 8px 25px rgba(239, 68, 68, 0.6); }
-            100% { transform: scale(1); box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4); }
+            0% {
+                transform: scale(1);
+                box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+            }
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 8px 25px rgba(239, 68, 68, 0.6);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+            }
         }
 
         .table-count {
             position: absolute;
-            top: -8px;
-            right: -8px;
+            top: -6px;
+            right: -6px;
             background: #1f2937;
             color: white;
             border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 13px;
+            font-size: 11px;
             font-weight: bold;
             border: 2px solid white;
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .container { padding: 10px; }
-            .kitchen-title { font-size: 1.8rem; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .order-grid { grid-template-columns: 1fr; }
-            .table-box { width: 70px; height: 70px; font-size: 12px; }
+        @media (max-width: 640px) {
+            .table-count {
+                width: 20px;
+                height: 20px;
+                font-size: 10px;
+                top: -5px;
+                right: -5px;
+            }
         }
 
-        /* Enhanced UI Controls */
+        /* PERFECT MOBILE RESPONSIVE DESIGN - NO BLANK SPACES */
+        @media (max-width: 768px) {
+            .container {
+                padding: 4px;
+            }
+
+            .kitchen-title {
+                font-size: 1.25rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 4px;
+            }
+
+            .order-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .control-panel {
+                padding: 6px;
+                margin-bottom: 8px;
+            }
+
+            .order-card {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 3px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .action-btn {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+
+        /* PERFECT MOBILE CONTROL PANEL - NO BLANK SPACES */
         .control-panel {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 8px;
+            margin-bottom: 12px;
         }
 
         .control-button {
             background: rgba(255, 255, 255, 0.2);
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 6px 8px;
+            border-radius: 5px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 3px;
+            font-size: 11px;
+            min-width: 50px;
+            height: 32px;
+        }
+
+        @media (max-width: 640px) {
+            .control-button {
+                padding: 5px 6px;
+                font-size: 10px;
+                gap: 2px;
+                min-width: 45px;
+                height: 30px;
+            }
         }
 
         .control-button:hover {
             background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         .control-button.active {
             background: #10b981;
         }
 
-        /* KOT Printer Style Invoice */
+        /* PERFECT MOBILE FILTER BUTTONS - NO GAPS */
+        .filter-btn {
+            padding: 5px 10px;
+            border-radius: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 11px;
+            white-space: nowrap;
+            margin: 1px;
+        }
+
+        @media (max-width: 640px) {
+            .filter-btn {
+                padding: 6px 8px;
+                font-size: 10px;
+                border-radius: 12px;
+                margin: 0.5px;
+            }
+        }
+
+        /* PERFECT MOBILE TAB BUTTONS - NO SPACES */
+        .tab-button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 11px;
+            white-space: nowrap;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 640px) {
+            .tab-button {
+                padding: 6px 8px;
+                font-size: 10px;
+                height: 30px;
+            }
+        }
+
+        .tab-button.active {
+            background: #10b981;
+            color: white;
+        }
+
+        /* MOBILE CONTROL ROWS - NO BLANK SPACES */
+        .control-row-1 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4px;
+            margin-bottom: 6px;
+        }
+
+        .control-row-2 {
+            display: flex;
+            gap: 3px;
+            justify-content: flex-start;
+        }
+
+        @media (max-width: 640px) {
+            .control-row-1 {
+                gap: 2px;
+                margin-bottom: 4px;
+            }
+
+            .control-row-2 {
+                gap: 2px;
+            }
+        }
+
+        .control-group-left {
+            display: flex;
+            gap: 3px;
+        }
+
+        @media (max-width: 640px) {
+            .control-group-left {
+                gap: 2px;
+            }
+        }
+
+        /* Enhanced Responsive KOT */
         .invoice-overlay {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            padding: 20px;
+            padding: 8px;
         }
+
         .invoice-modal {
             background: white;
-            padding: 1rem;
+            padding: 0.75rem;
             border-radius: 8px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 400px;
+            max-width: 380px;
             max-height: 90vh;
             overflow-y: auto;
             color: #333;
             font-family: 'Courier New', monospace;
         }
-        .invoice-overlay.open { display: flex; }
 
-        /* Combined bill confirmation modal */
+        @media (max-width: 640px) and (orientation: portrait) {
+            .invoice-modal {
+                max-width: 95%;
+                padding: 0.5rem;
+                max-height: 85vh;
+            }
+        }
+
+        @media (max-width: 896px) and (orientation: landscape) {
+            .invoice-overlay {
+                padding: 6px;
+                align-items: flex-start;
+                overflow-y: auto;
+            }
+
+            .invoice-modal {
+                max-width: 88%;
+                width: auto;
+                min-width: 300px;
+                max-height: 88vh;
+                padding: 0.4rem;
+                margin: 8px auto;
+            }
+        }
+
+        .invoice-overlay.open {
+            display: flex;
+        }
+
         .confirm-overlay {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 1100;
-            padding: 20px;
+            padding: 12px;
         }
+
         .confirm-modal {
             background: white;
-            padding: 2rem;
+            padding: 1.25rem;
             border-radius: 1rem;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             color: #333;
         }
-        .confirm-overlay.open { display: flex; }
+
+        @media (max-width: 640px) {
+            .confirm-modal {
+                padding: 1rem;
+                max-width: 95%;
+            }
+        }
+
+        @media (max-width: 896px) and (orientation: landscape) {
+            .confirm-overlay {
+                padding: 8px;
+                align-items: flex-start;
+                overflow-y: auto;
+            }
+
+            .confirm-modal {
+                max-width: 85%;
+                margin: 15px auto;
+                padding: 0.75rem;
+            }
+        }
+
+        .confirm-overlay.open {
+            display: flex;
+        }
 
         @media print {
-            .no-print { display: none !important; }
-            body { background: white; margin: 0; padding: 0; }
-            .invoice-modal { 
-                box-shadow: none; 
-                border-radius: 0; 
+            .no-print {
+                display: none !important;
+            }
+            body {
+                background: white;
+                margin: 0;
+                padding: 0;
+            }
+            .invoice-modal {
+                box-shadow: none;
+                border-radius: 0;
                 padding: 20px;
                 max-width: none;
                 width: 100%;
@@ -240,169 +525,256 @@
             }
         }
 
-        /* Loading animation */
         .loading {
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
-        /* Tab System */
         .tab-content {
             display: none;
         }
+
         .tab-content.active {
             display: block;
         }
 
-        .tab-button {
-            padding: 10px 20px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .tab-button.active {
-            background: #10b981;
-            color: white;
-        }
-
-        /* KOT Receipt Style */
         .kot-receipt {
             font-family: 'Courier New', monospace;
-            font-size: 12px;
-            line-height: 1.4;
-            max-width: 300px;
+            font-size: 11px;
+            line-height: 1.3;
+            max-width: 280px;
             margin: 0 auto;
             text-align: center;
         }
 
+        @media (max-width: 640px) and (orientation: portrait) {
+            .kot-receipt {
+                font-size: 10px;
+                max-width: 260px;
+                line-height: 1.2;
+            }
+        }
+
+        @media (max-width: 896px) and (orientation: landscape) {
+            .kot-receipt {
+                font-size: 9px;
+                max-width: 240px;
+                line-height: 1.1;
+            }
+
+            .kot-line {
+                margin: 6px 0;
+            }
+
+            .kot-item {
+                margin: 1px 0;
+            }
+        }
+
         .kot-line {
             border-top: 1px dashed #333;
-            margin: 10px 0;
+            margin: 8px 0;
         }
 
         .kot-item {
             display: flex;
             justify-content: space-between;
             text-align: left;
-            margin: 2px 0;
+            margin: 1px 0;
+        }
+
+        /* Perfect Mobile Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.375rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            flex: 1;
+            min-width: 70px;
+            padding: 6px 8px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        @media (max-width: 640px) {
+            .action-buttons {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .action-btn {
+                min-width: auto;
+                padding: 10px;
+                font-size: 12px;
+            }
+        }
+
+        .btn-preparing {
+            background: linear-gradient(45deg, #ff9f43, #ff6348);
+            color: white;
+        }
+
+        .btn-ready {
+            background: linear-gradient(45deg, #0abde3, #006ba6);
+            color: white;
+        }
+
+        .btn-delivered {
+            background: linear-gradient(45deg, #26de81, #20bf6b);
+            color: white;
+        }
+
+        .btn-print {
+            background: linear-gradient(45deg, #a55eea, #8854d0);
+            color: white;
+        }
+
+        .btn-completed {
+            background: linear-gradient(45deg, #fd79a8, #e84393);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
     </style>
 </head>
+
 <body class="min-h-screen">
-    <!-- Header -->
+    <!-- Perfect Mobile Header -->
     <header class="bg-gradient-to-r from-indigo-950 to-purple-900 shadow-xl">
-        <div class="container mx-auto px-4 py-6">
+        <div class="container mx-auto px-2 sm:px-4 py-2 sm:py-4">
             <div class="flex flex-col sm:flex-row items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <img src="https://aambli.club/wp-content/uploads/2024/05/Aambli-Logo.svg" alt="Aambli Restaurant" class="h-12 w-auto">
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <img src="https://aambli.club/wp-content/uploads/2024/05/Aambli-Logo.svg" alt="Aambli Restaurant" class="h-8 sm:h-10 lg:h-12 w-auto">
                     <div>
-                        <h1 class="text-2xl sm:text-3xl royal font-bold text-white"></h1>
-                        <p class="text-indigo-200 text-sm">Aambli Restaurant - NextGen Technology</p>
+                        <h1 class="text-base sm:text-xl lg:text-2xl xl:text-3xl royal font-bold text-white">Ultra Pro Restaurant</h1>
+                        <p class="text-indigo-200 text-xs sm:text-sm">NextGen Technology</p>
                     </div>
                 </div>
-                <div class="mt-4 sm:mt-0 flex items-center space-x-4">
-                    <div class="bg-white/20 px-4 py-2 rounded-lg">
-                        <span class="text-white font-medium" id="live-time"></span>
+                <div class="mt-2 sm:mt-0 flex items-center space-x-2 sm:space-x-4">
+                    <div class="bg-white/20 px-2 sm:px-3 lg:px-4 py-1 sm:py-2 rounded-lg">
+                        <span class="text-white font-medium text-xs sm:text-sm lg:text-base" id="live-time"></span>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Enhanced Control Panel -->
-    <div class="container mx-auto px-4 py-4">
+    <!-- PERFECT MOBILE CONTROL PANEL - NO BLANK SPACES -->
+    <div class="container mx-auto px-2 sm:px-4 py-1 sm:py-3">
         <div class="control-panel">
-            <div class="flex flex-wrap items-center justify-between gap-4">
-                <div class="flex flex-wrap gap-2">
+            <!-- Row 1: Control Buttons - PERFECTLY ALIGNED -->
+            <div class="control-row-1">
+                <div class="control-group-left">
                     <button id="sound-toggle" class="control-button" onclick="toggleSound()">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path id="sound-icon" stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"></path>
                         </svg>
-                        <span id="sound-text">Sound ON</span>
+                        <span id="sound-text" class="text-xs">ON</span>
                     </button>
 
                     <button class="control-button" onclick="refreshOrders()">
-                        <svg class="w-5 h-5 refresh-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 refresh-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
-                        <span>Refresh</span>
+                        <span class="text-xs hidden sm:inline">Refresh</span>
                     </button>
-
-                    <div class="control-button bg-green-500">
-                        <div class="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                        <span>Auto-refresh 10s</span>
-                    </div>
                 </div>
 
-                <div class="flex gap-2 flex-wrap">
-                    <button class="tab-button active" onclick="switchTab('orders')" id="orders-tab">Live Orders</button>
-                    <button class="tab-button" onclick="switchTab('tables')" id="tables-tab">Table Management</button>
+                <div class="control-button bg-green-500">
+                    <div class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
+                    <span class="text-xs">Auto</span>
                 </div>
+            </div>
+
+            <!-- Row 2: Tab Buttons - NO SPACES -->
+            <div class="control-row-2">
+                <button class="tab-button active" onclick="switchTab('orders')" id="orders-tab">Live Orders</button>
+                <button class="tab-button" onclick="switchTab('tables')" id="tables-tab">Tables</button>
             </div>
         </div>
     </div>
 
-    <!-- Stats Dashboard -->
-    <div class="container mx-auto px-4 pb-6">
-        <div class="stats-grid grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8">
-            <div class="bg-white rounded-2xl p-4 shadow-xl">
+    <!-- Perfect Mobile Stats Dashboard -->
+    <div class="container mx-auto px-2 sm:px-4 pb-2 sm:pb-4">
+        <div class="stats-grid grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-3 sm:mb-6">
+            <div class="bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 shadow-xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-600 text-sm font-medium">New Orders</p>
-                        <p class="text-2xl font-bold text-red-600" id="new-count">0</p>
+                        <p class="text-gray-600 text-xs font-medium">New Orders</p>
+                        <p class="text-lg sm:text-xl lg:text-2xl font-bold text-red-600" id="new-count">0</p>
                     </div>
-                    <div class="bg-red-100 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <div class="bg-red-100 p-1.5 sm:p-2 lg:p-3 rounded-full">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                         </svg>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl p-4 shadow-xl">
+            <div class="bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 shadow-xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-600 text-sm font-medium">Preparing</p>
-                        <p class="text-2xl font-bold text-orange-600" id="preparing-count">0</p>
+                        <p class="text-gray-600 text-xs font-medium">Preparing</p>
+                        <p class="text-lg sm:text-xl lg:text-2xl font-bold text-orange-600" id="preparing-count">0</p>
                     </div>
-                    <div class="bg-orange-100 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <div class="bg-orange-100 p-1.5 sm:p-2 lg:p-3 rounded-full">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 text-orange-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl p-4 shadow-xl">
+            <div class="bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 shadow-xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-600 text-sm font-medium">Ready</p>
-                        <p class="text-2xl font-bold text-green-600" id="ready-count">0</p>
+                        <p class="text-gray-600 text-xs font-medium">Ready</p>
+                        <p class="text-lg sm:text-xl lg:text-2xl font-bold text-green-600" id="ready-count">0</p>
                     </div>
-                    <div class="bg-green-100 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <div class="bg-green-100 p-1.5 sm:p-2 lg:p-3 rounded-full">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl p-4 shadow-xl">
+            <div class="bg-white rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 shadow-xl">
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-gray-600 text-sm font-medium">Busy Tables</p>
-                        <p class="text-2xl font-bold text-purple-600" id="busy-tables-count">0</p>
+                        <p class="text-gray-600 text-xs font-medium">Busy Tables</p>
+                        <p class="text-lg sm:text-xl lg:text-2xl font-bold text-purple-600" id="busy-tables-count">0</p>
                     </div>
-                    <div class="bg-purple-100 p-3 rounded-full">
-                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <div class="bg-purple-100 p-1.5 sm:p-2 lg:p-3 rounded-full">
+                        <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 text-purple-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                         </svg>
                     </div>
@@ -413,21 +785,21 @@
 
     <!-- Live Orders Tab Content -->
     <div id="orders-content" class="tab-content active">
-        <div class="container mx-auto px-4">
-            <!-- Order Status Filter -->
-            <div class="flex flex-wrap gap-2 mb-6">
-                <button onclick="filterOrders('all')" class="filter-btn bg-indigo-950 text-white px-4 py-2 rounded-full font-medium shadow-md hover:bg-indigo-900 transition-colors">All Active</button>
-                <button onclick="filterOrders('new')" class="filter-btn bg-red-500 text-white px-4 py-2 rounded-full font-medium shadow-md hover:bg-red-600 transition-colors">New</button>
-                <button onclick="filterOrders('preparing')" class="filter-btn bg-orange-500 text-white px-4 py-2 rounded-full font-medium shadow-md hover:bg-orange-600 transition-colors">Preparing</button>
-                <button onclick="filterOrders('ready')" class="filter-btn bg-green-500 text-white px-4 py-2 rounded-full font-medium shadow-md hover:bg-green-600 transition-colors">Ready</button>
-                <button onclick="filterOrders('delivered')" class="filter-btn bg-indigo-500 text-white px-4 py-2 rounded-full font-medium shadow-md hover:bg-indigo-600 transition-colors">Delivered</button>
+        <div class="container mx-auto px-2 sm:px-4">
+            <!-- PERFECT MOBILE ORDER STATUS FILTER - NO GAPS -->
+            <div class="flex flex-wrap gap-1 mb-3 sm:mb-4 justify-center">
+                <button onclick="filterOrders('all')" class="filter-btn bg-indigo-950 text-white hover:bg-indigo-900">All Active</button>
+                <button onclick="filterOrders('new')" class="filter-btn bg-red-500 text-white hover:bg-red-600">New</button>
+                <button onclick="filterOrders('preparing')" class="filter-btn bg-orange-500 text-white hover:bg-orange-600">Preparing</button>
+                <button onclick="filterOrders('ready')" class="filter-btn bg-green-500 text-white hover:bg-green-600">Ready</button>
+                <button onclick="filterOrders('delivered')" class="filter-btn bg-indigo-500 text-white hover:bg-indigo-600">Delivered</button>
             </div>
 
             <!-- Orders Grid -->
-            <div id="orders-container" class="order-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div id="orders-container" class="order-grid grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 lg:gap-6">
                 <div class="text-center py-12 col-span-full">
-                    <div class="loading w-12 h-12 border-4 border-indigo-200 border-top-indigo-600 rounded-full mx-auto mb-4"></div>
-                    <p class="text-gray-400">Loading orders...</p>
+                    <div class="loading w-10 h-10 sm:w-12 sm:h-12 border-4 border-indigo-200 border-top-indigo-600 rounded-full mx-auto mb-4"></div>
+                    <p class="text-gray-400 text-sm sm:text-base">Loading orders...</p>
                 </div>
             </div>
         </div>
@@ -435,40 +807,45 @@
 
     <!-- Table Management Tab Content -->
     <div id="tables-content" class="tab-content">
-        <div class="container mx-auto px-4">
-            <div class="bg-white rounded-2xl p-6 shadow-xl mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 royal mb-4">🏠 Table Management (25 Tables)</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                    <div class="flex items-center space-x-2 p-3 bg-green-50 rounded-lg">
-                        <div class="w-6 h-6 bg-green-500 rounded-lg"></div>
+        <div class="container mx-auto px-2 sm:px-4">
+            <div class="bg-white rounded-lg sm:rounded-xl lg:rounded-2xl p-3 sm:p-4 lg:p-6 shadow-xl mb-4 sm:mb-6">
+                <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 royal mb-3 sm:mb-4">Table Management (25 Tables)</h2>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 mb-3 sm:mb-4 lg:mb-6">
+                    <div class="flex items-center space-x-1 sm:space-x-2 p-2 sm:p-3 bg-green-50 rounded-lg">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 bg-green-500 rounded-lg"></div>
                         <div>
-                            <span class="text-gray-800 font-medium">Free Tables</span>
-                            <p class="text-sm text-gray-600" id="free-tables-text">Ready for customers</p>
+                            <span class="text-gray-800 font-medium text-xs sm:text-sm lg:text-base">Free</span>
+                            <p class="text-xs text-gray-600" id="free-tables-text">Ready</p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-2 p-3 bg-red-50 rounded-lg">
-                        <div class="w-6 h-6 bg-red-500 rounded-lg"></div>
+
+                    <div class="flex items-center space-x-1 sm:space-x-2 p-2 sm:p-3 bg-red-50 rounded-lg">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 bg-red-500 rounded-lg"></div>
                         <div>
-                            <span class="text-gray-800 font-medium">New Orders</span>
-                            <p class="text-sm text-gray-600">Urgent attention</p>
+                            <span class="text-gray-800 font-medium text-xs sm:text-sm lg:text-base">New</span>
+                            <p class="text-xs text-gray-600">Urgent</p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-2 p-3 bg-orange-50 rounded-lg">
-                        <div class="w-6 h-6 bg-orange-500 rounded-lg"></div>
+
+                    <div class="flex items-center space-x-1 sm:space-x-2 p-2 sm:p-3 bg-orange-50 rounded-lg">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 bg-orange-500 rounded-lg"></div>
                         <div>
-                            <span class="text-gray-800 font-medium">Preparing</span>
-                            <p class="text-sm text-gray-600">Kitchen working</p>
+                            <span class="text-gray-800 font-medium text-xs sm:text-sm lg:text-base">Preparing</span>
+                            <p class="text-xs text-gray-600">Working</p>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-2 p-3 bg-indigo-50 rounded-lg">
-                        <div class="w-6 h-6 bg-indigo-500 rounded-lg"></div>
+
+                    <div class="flex items-center space-x-1 sm:space-x-2 p-2 sm:p-3 bg-indigo-50 rounded-lg">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 lg:w-6 lg:h-6 bg-indigo-500 rounded-lg"></div>
                         <div>
-                            <span class="text-gray-800 font-medium">Delivered</span>
-                            <p class="text-sm text-gray-600">Ready for billing</p>
+                            <span class="text-gray-800 font-medium text-xs sm:text-sm lg:text-base">Delivered</span>
+                            <p class="text-xs text-gray-600">Billing</p>
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-5 gap-4" id="tables-grid">
+
+                <div class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-1.5 sm:gap-2 lg:gap-4" id="tables-grid">
                     <!-- Tables will be generated here -->
                 </div>
             </div>
@@ -478,34 +855,26 @@
     <!-- Combined Bill Confirmation Modal -->
     <div id="confirm-overlay" class="confirm-overlay">
         <div class="confirm-modal">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4">🧾 Combined Table Bill</h2>
+            <h2 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">Combined Table Bill</h2>
             <div id="confirm-content"></div>
-            <div class="flex space-x-4 mt-6">
-                <button onclick="generateCombinedInvoice()" class="bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors flex-1">
-                    ✅ Combined Bill
-                </button>
-                <button onclick="generateSingleInvoice()" class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex-1">
-                    📄 Single Order
-                </button>
-                <button onclick="closeConfirmModal()" class="bg-gray-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-600 transition-colors">
-                    ❌ Cancel
-                </button>
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 mt-4 sm:mt-6">
+                <button onclick="generateCombinedInvoice()" class="bg-green-600 text-white px-3 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-lg font-medium hover:bg-green-700 transition-colors flex-1">Combined Bill</button>
+                <button onclick="generateSingleInvoice()" class="bg-indigo-600 text-white px-3 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors flex-1">Single Order</button>
+                <button onclick="closeConfirmModal()" class="bg-gray-500 text-white px-3 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-lg font-medium hover:bg-gray-600 transition-colors">Cancel</button>
             </div>
         </div>
     </div>
 
-    <!-- KOT Printer Style Invoice Modal -->
+    <!-- KOT Invoice Modal -->
     <div id="invoice-overlay" class="invoice-overlay">
         <div class="invoice-modal">
-            <div class="no-print flex justify-between items-center mb-4">
-                <h2 class="text-lg font-bold text-gray-800">KOT Bill</h2>
-                <div class="flex space-x-2">
-                    <button onclick="printInvoice()" class="bg-indigo-950 text-white px-3 py-1 text-sm rounded hover:bg-indigo-900 transition-colors">
-                        Print
-                    </button>
+            <div class="no-print flex justify-between items-center mb-3 sm:mb-4">
+                <h2 class="text-sm sm:text-base lg:text-lg font-bold text-gray-800">Kitchen Order Ticket</h2>
+                <div class="flex space-x-1 sm:space-x-2">
+                    <button onclick="printInvoice()" class="bg-indigo-950 text-white px-2 sm:px-3 py-1 text-xs sm:text-sm rounded hover:bg-indigo-900 transition-colors">Print</button>
                     <button onclick="closeInvoiceModal()" class="text-gray-500 hover:text-gray-700 transition-colors">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M18 6L6 18M6 6l12 12"/>
+                        <svg width="16" height="16" sm:width="18" sm:height="18" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -518,12 +887,8 @@
     </div>
 
     <script>
-        // Configuration
-        const CLOUD_CONFIG = {
-            jsonBinApiKey: '$2a$10$sKN1nZNUuRh7v7M1gYrZNuBbPKkXMf7i/hWYKyBlkZ8RJV9r/VgAi',
-            binId: '68d3f7c643b1c97be94e5143',
-            baseUrl: 'https://api.jsonbin.io/v3/b'
-        };
+        // Configuration - GOOGLE SHEETS INSTEAD OF JSON
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwr1_9lc-dqmQMLOsrZyur1lGSP19bR3loVGQU0-ZM4f0XTILJ9UYWHqy9zHwpPLwmEEg/exec";
 
         let allOrders = [];
         let completedOrders = [];
@@ -540,13 +905,14 @@
             updateLiveTime();
             setInterval(updateLiveTime, 1000);
             loadOrders();
+
             // Auto-refresh every 10 seconds
             setInterval(loadOrders, 10000);
 
             // Load sound preference
             const savedSoundPreference = localStorage.getItem('kitchenSoundEnabled');
             if (savedSoundPreference !== null) {
-                soundEnabled = savedSoundPreference === 'true';
+                soundEnabled = (savedSoundPreference === 'true');
                 updateSoundButton();
             }
 
@@ -558,28 +924,24 @@
             const now = new Date();
             const timeString = now.toLocaleTimeString('en-IN', { 
                 hour: '2-digit', 
-                minute: '2-digit',
-                second: '2-digit'
+                minute: '2-digit', 
+                second: '2-digit' 
             });
             document.getElementById('live-time').textContent = timeString;
         }
 
+        // LOAD ORDERS FROM GOOGLE SHEETS - PROPERLY FILTER OUT COMPLETED ORDERS
         async function loadOrders() {
             try {
-                const response = await fetch(`${CLOUD_CONFIG.baseUrl}/${CLOUD_CONFIG.binId}/latest`, {
-                    method: 'GET',
-                    headers: {
-                        'X-Master-Key': CLOUD_CONFIG.jsonBinApiKey,
-                        'X-Bin-Meta': 'false'
-                    }
+                const response = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?action=getOrders`, {
+                    method: 'GET'
                 });
 
                 if (response.ok) {
                     const data = await response.json();
-                    let newOrders = data.orders || [];
 
-                    // Process delivered orders with invoice generation tracking
-                    newOrders = processDeliveredOrders(newOrders);
+                    // IMPORTANT: Filter out completed orders from active orders
+                    let newOrders = (data.orders || []).filter(order => order.status !== 'completed');
 
                     // Separate completed orders for analytics
                     completedOrders = data.completedOrders || [];
@@ -593,10 +955,6 @@
                     renderTablesGrid();
                     updateStats();
 
-                    // Update cloud if orders were processed
-                    if (newOrders.length !== (data.orders || []).length) {
-                        await saveOrdersToCloud();
-                    }
                 } else {
                     console.error('Failed to load orders');
                     showEmptyState();
@@ -607,47 +965,22 @@
             }
         }
 
-        function processDeliveredOrders(orders) {
-            const fifteenMinutesAgo = new Date(Date.now() - (15 * 60 * 1000)); // 15 minutes ago
-            const remainingOrders = [];
-
-            orders.forEach(order => {
-                if (order.status === 'delivered' && order.invoiceGeneratedAt) {
-                    const invoiceTime = new Date(order.invoiceGeneratedAt);
-                    if (invoiceTime < fifteenMinutesAgo) {
-                        // Move to completed orders
-                        order.completedAt = new Date().toISOString();
-                        completedOrders.unshift(order);
-
-                        // Keep only last 50 completed orders
-                        if (completedOrders.length > 50) {
-                            completedOrders = completedOrders.slice(0, 50);
-                        }
-                    } else {
-                        remainingOrders.push(order);
-                    }
-                } else {
-                    remainingOrders.push(order);
-                }
-            });
-
-            return remainingOrders;
-        }
-
         function updateTableStatus() {
             // Reset table status for 25 tables
             tableStatus = {};
+            for (let i = 1; i <= 25; i++) {
+                tableStatus[i] = { status: 'free', orderCount: 0, orders: [] };
+            }
 
-            // Update based on current orders
+            // Update based on ONLY ACTIVE ORDERS (not completed)
             allOrders.forEach(order => {
+                // Skip completed orders
+                if (order.status === 'completed') return;
+
                 const tableNum = parseInt(order.tableNumber);
                 if (tableNum >= 1 && tableNum <= 25) {
                     if (!tableStatus[tableNum]) {
-                        tableStatus[tableNum] = {
-                            status: 'free',
-                            orderCount: 0,
-                            orders: []
-                        };
+                        tableStatus[tableNum] = { status: 'free', orderCount: 0, orders: [] };
                     }
 
                     tableStatus[tableNum].orderCount += 1;
@@ -711,29 +1044,29 @@
             // Update free tables text
             const freeTablesText = document.getElementById('free-tables-text');
             if (freeTablesText) {
-                freeTablesText.textContent = `${freeTables} tables available`;
+                freeTablesText.textContent = `${freeTables} available`;
             }
         }
 
         function showTableDetails(tableNumber) {
             const status = tableStatus[tableNumber];
             if (!status || status.orderCount === 0) {
-                showNotification(`✅ Table ${tableNumber} is FREE and ready for customers`);
+                showNotification(`Table ${tableNumber} is FREE and ready for customers`);
                 return;
             }
 
             const ordersList = status.orders.map(order => 
-                `• Order #${order.orderNumber} - ${order.status.toUpperCase()} - ₹${order.total}`
+                `Order #${order.orderNumber} - ${order.status.toUpperCase()} - ₹${order.total}`
             ).join('\n');
 
             // Check if table has delivered orders ready for billing
             const deliveredOrders = status.orders.filter(order => order.status === 'delivered');
             const hasDeliveredOrders = deliveredOrders.length > 0;
 
-            let message = `🏠 Table ${tableNumber} Status:\n\n📊 Status: ${status.status.toUpperCase()}\n📋 Active Orders: ${status.orderCount}\n\n${ordersList}`;
+            let message = `Table ${tableNumber} Status:\nStatus: ${status.status.toUpperCase()}\nActive Orders: ${status.orderCount}\n\n${ordersList}`;
 
             if (hasDeliveredOrders) {
-                message += `\n\n💡 ${deliveredOrders.length} order${deliveredOrders.length > 1 ? 's' : ''} ready for billing!`;
+                message += `\n\n${deliveredOrders.length} order${deliveredOrders.length > 1 ? 's' : ''} ready for billing!`;
             }
 
             alert(message);
@@ -761,7 +1094,7 @@
             const currentNewOrderCount = newOrders.filter(order => order.status === 'new').length;
 
             // If we have more new orders than before, play sound
-            if (currentNewOrderCount > previousNewOrderCount && previousNewOrderCount >= 0) {
+            if (currentNewOrderCount > previousNewOrderCount && previousNewOrderCount > 0) {
                 if (currentNewOrderCount > previousNewOrderCount) {
                     playNotificationSound();
                     showNewOrderAlert(currentNewOrderCount - previousNewOrderCount);
@@ -795,18 +1128,19 @@
 
         function showNewOrderAlert(newOrderCount) {
             const notification = document.createElement('div');
-            notification.className = 'fixed top-20 right-4 bg-red-500 text-white px-6 py-4 rounded-lg shadow-xl z-50 transform translate-x-full transition-transform duration-300 animate-pulse';
+            notification.className = 'fixed top-16 right-2 sm:top-20 sm:right-4 bg-red-500 text-white px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4 rounded-lg shadow-xl z-50 transform translate-x-full transition-transform duration-300 animate-pulse';
             notification.innerHTML = `
-                <div class="flex items-center space-x-3">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <div class="flex items-center space-x-2 sm:space-x-3">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-5 5v-5zM10.5 3.5L2 12l2 2 5.5-5.5L15 4l-4.5-.5z"></path>
                     </svg>
                     <div>
-                        <p class="font-bold">🔔 New Order Alert!</p>
-                        <p class="text-sm">${newOrderCount} new order${newOrderCount > 1 ? 's' : ''} received</p>
+                        <p class="font-bold text-xs sm:text-sm lg:text-base">New Order Alert!</p>
+                        <p class="text-xs sm:text-sm">${newOrderCount} new order${newOrderCount > 1 ? 's' : ''} received</p>
                     </div>
                 </div>
             `;
+
             document.body.appendChild(notification);
 
             setTimeout(() => {
@@ -827,7 +1161,7 @@
             soundEnabled = !soundEnabled;
             updateSoundButton();
             localStorage.setItem('kitchenSoundEnabled', soundEnabled);
-            showNotification(soundEnabled ? '🔊 Sound notifications enabled' : '🔇 Sound notifications disabled');
+            showNotification(soundEnabled ? 'Sound notifications enabled' : 'Sound notifications disabled');
         }
 
         function updateSoundButton() {
@@ -837,108 +1171,112 @@
 
             if (soundEnabled) {
                 button.classList.add('active');
-                text.textContent = 'Sound ON';
+                text.textContent = 'ON';
                 icon.setAttribute('d', 'M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z');
             } else {
                 button.classList.remove('active');
-                text.textContent = 'Sound OFF';
+                text.textContent = 'OFF';
                 icon.setAttribute('d', 'M5.586 15H2v-6h3.586l5.707-5.707A1 1 0 0113 4v16a1 1 0 01-1.707.707L5.586 15zM17 9l4 4m0-4l-4 4');
             }
         }
 
         function renderOrders() {
             const container = document.getElementById('orders-container');
-
             let filteredOrders = allOrders;
+
+            // IMPORTANT: Always filter out completed orders from display
+            filteredOrders = allOrders.filter(order => order.status !== 'completed');
+
             if (currentFilter !== 'all') {
-                filteredOrders = allOrders.filter(order => order.status === currentFilter);
+                filteredOrders = filteredOrders.filter(order => order.status === currentFilter);
             }
 
             if (filteredOrders.length === 0) {
                 container.innerHTML = `
                     <div class="text-center py-12 col-span-full">
-                        <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                        <svg class="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                         </svg>
-                        <p class="text-gray-400 text-lg">No ${currentFilter === 'all' ? 'active' : currentFilter} orders found</p>
+                        <p class="text-gray-400 text-sm sm:text-base lg:text-lg">No ${currentFilter === 'all' ? 'active' : currentFilter} orders found</p>
                     </div>
                 `;
                 return;
             }
 
             container.innerHTML = filteredOrders.map(order => `
-                <div class="order-card bg-white rounded-2xl p-6 shadow-xl status-${order.status} ${order.status === 'new' ? 'new-order-alert' : ''}">
-                    <div class="flex justify-between items-start mb-4">
+                <div class="order-card bg-white rounded-lg sm:rounded-xl lg:rounded-2xl p-3 sm:p-4 lg:p-6 shadow-xl status-${order.status} ${order.status === 'new' ? 'new-order-alert' : ''}">
+                    <div class="flex justify-between items-start mb-3 sm:mb-4">
                         <div>
-                            <h3 class="text-xl font-bold text-gray-800 royal">Order #${order.orderNumber}</h3>
-                            <p class="text-gray-600">📍 Table ${order.tableNumber}</p>
-                            <p class="text-sm text-gray-500">🕐 ${new Date(order.timestamp).toLocaleString('en-IN')}</p>
-                            ${order.status === 'delivered' && order.invoiceGeneratedAt ? `
-                                <p class="text-xs text-purple-600">💜 Invoice: ${new Date(order.invoiceGeneratedAt).toLocaleTimeString('en-IN')}</p>
-                            ` : ''}
+                            <h3 class="text-base sm:text-lg lg:text-xl font-bold text-gray-800 royal">Order #${order.orderNumber}</h3>
+                            <p class="text-gray-600 text-sm">Table ${order.tableNumber}</p>
+                            <p class="text-xs text-gray-500">${new Date(order.timestamp).toLocaleString('en-IN')}</p>
+                            ${order.status === 'delivered' && order.invoiceGeneratedAt ? `<p class="text-xs text-purple-600">Invoice: ${new Date(order.invoiceGeneratedAt).toLocaleTimeString('en-IN')}</p>` : ''}
                         </div>
-                        <div class="flex flex-col items-end space-y-2">
-                            <span class="badge-${order.status} px-3 py-1 rounded-full text-xs font-semibold uppercase">
-                                ${order.status}
-                            </span>
-                            <span class="text-lg font-bold text-indigo-950">₹${order.total}</span>
+                        <div class="flex flex-col items-end space-y-1 sm:space-y-2">
+                            <span class="badge-${order.status} px-2 py-1 rounded-full text-xs font-semibold uppercase">${order.status}</span>
+                            <span class="text-sm sm:text-base lg:text-lg font-bold text-indigo-950">₹${order.total}</span>
                         </div>
                     </div>
 
-                    <div class="space-y-3 mb-6">
+                    <div class="space-y-2 mb-3 sm:mb-4">
                         ${order.items.map(item => `
-                            <div class="flex justify-between items-start p-3 bg-gray-50 rounded-lg">
+                            <div class="flex justify-between items-start p-2 bg-gray-50 rounded-lg">
                                 <div class="flex-1">
-                                    <p class="font-medium text-gray-800">${item.name}</p>
-                                    <p class="text-sm text-gray-600">Qty: ${item.quantity} × ₹${item.price}</p>
-                                    ${item.customizations ? `
-                                        <div class="mt-2">
-                                            ${item.customizations.map(custom => `<span class="custom-option">${custom}</span>`).join('')}
-                                        </div>
-                                    ` : ''}
+                                    <p class="font-medium text-gray-800 text-sm">${item.name}</p>
+                                    <p class="text-xs text-gray-600">Qty: ${item.quantity} × ₹${item.price}</p>
+                                    ${item.customizations ? `<div class="mt-1">${item.customizations.map(custom => `<span class="custom-option">${custom}</span>`).join('')}</div>` : ''}
                                 </div>
                                 <div class="text-right">
-                                    <p class="font-bold text-gray-800">₹${item.price * item.quantity}</p>
+                                    <p class="font-bold text-gray-800 text-sm">₹${item.price * item.quantity}</p>
                                 </div>
                             </div>
                         `).join('')}
                     </div>
 
-                    <div class="flex flex-wrap gap-2">
+                    <div class="action-buttons">
                         ${order.status === 'new' ? `
-                            <button onclick="updateOrderStatus('${order.orderNumber}', 'preparing')" 
-                                    class="bg-orange-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors">
-                                🍳 Start Preparing
+                            <button onclick="updateOrderStatus('${order.orderNumber}', 'preparing')" class="action-btn btn-preparing">
+                                👨‍🍳 Start Preparing
                             </button>
                         ` : ''}
 
                         ${order.status === 'preparing' ? `
-                            <button onclick="updateOrderStatus('${order.orderNumber}', 'ready')" 
-                                    class="bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-600 transition-colors">
+                            <button onclick="updateOrderStatus('${order.orderNumber}', 'ready')" class="action-btn btn-ready">
                                 ✅ Mark Ready
                             </button>
                         ` : ''}
 
                         ${order.status === 'ready' ? `
-                            <button onclick="updateOrderStatus('${order.orderNumber}', 'delivered')" 
-                                    class="bg-blue-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors">
+                            <button onclick="updateOrderStatus('${order.orderNumber}', 'delivered')" class="action-btn btn-delivered">
                                 🚚 Mark Delivered
                             </button>
                         ` : ''}
 
-                        <button onclick="handleInvoiceGeneration('${order.orderNumber}')" 
-                                class="bg-indigo-950 text-white px-4 py-2 rounded-lg font-medium hover:bg-indigo-900 transition-colors">
-                            🧾 ${order.invoiceGeneratedAt ? 'View Bill' : 'Generate Bill'}
-                        </button>
+                        <!-- Print Bill and Completed buttons for delivered orders -->
+                        ${order.status === 'delivered' ? `
+                            <button onclick="handleInvoiceGeneration('${order.orderNumber}')" class="action-btn btn-print">
+                                🖨️ Print Bill
+                            </button>
+                            <button onclick="completeOrder('${order.orderNumber}')" class="action-btn btn-completed">
+                                ✨ Completed
+                            </button>
+                        ` : `
+                            <button onclick="handleInvoiceGeneration('${order.orderNumber}')" class="action-btn btn-print">
+                                ${order.invoiceGeneratedAt ? '📋 View KOT' : '📋 Generate KOT'}
+                            </button>
+                        `}
                     </div>
                 </div>
             `).join('');
         }
 
         function updateStats() {
-            const newCount = allOrders.filter(order => order.status === 'new').length;
-            const preparingCount = allOrders.filter(order => order.status === 'preparing').length;
-            const readyCount = allOrders.filter(order => order.status === 'ready').length;
+            // Count only ACTIVE ORDERS (not completed)
+            const activeOrders = allOrders.filter(order => order.status !== 'completed');
+
+            const newCount = activeOrders.filter(order => order.status === 'new').length;
+            const preparingCount = activeOrders.filter(order => order.status === 'preparing').length;
+            const readyCount = activeOrders.filter(order => order.status === 'ready').length;
             const busyTablesCount = Object.values(tableStatus).filter(status => status.orderCount > 0).length;
 
             document.getElementById('new-count').textContent = newCount;
@@ -950,17 +1288,16 @@
         function showEmptyState() {
             document.getElementById('orders-container').innerHTML = `
                 <div class="text-center py-12 col-span-full">
-                    <svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+                    <svg class="w-10 h-10 sm:w-12 sm:h-12 lg:w-16 lg:h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <p class="text-gray-400 text-lg">Failed to load orders</p>
-                    <button onclick="refreshOrders()" class="mt-4 bg-indigo-950 text-white px-6 py-2 rounded-lg font-medium hover:bg-indigo-900 transition-colors">
-                        🔄 Try Again
-                    </button>
+                    <p class="text-gray-400 text-sm sm:text-base lg:text-lg">Failed to load orders</p>
+                    <button onclick="refreshOrders()" class="mt-4 bg-indigo-950 text-white px-4 sm:px-6 py-2 rounded-lg font-medium hover:bg-indigo-900 transition-colors">Try Again</button>
                 </div>
             `;
         }
 
+        // UPDATE ORDER STATUS IN GOOGLE SHEETS - REPLACED JSON
         async function updateOrderStatus(orderNumber, newStatus) {
             try {
                 const orderIndex = allOrders.findIndex(order => order.orderNumber === orderNumber);
@@ -972,38 +1309,66 @@
                 allOrders[orderIndex].status = newStatus;
                 allOrders[orderIndex].lastUpdated = new Date().toISOString();
 
-                await saveOrdersToCloud();
+                // Send update to Google Sheets
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        orderNumber: orderNumber,
+                        status: newStatus,
+                        lastUpdated: new Date().toISOString()
+                    })
+                });
 
-                updateTableStatus();
-                renderOrders();
-                renderTablesGrid();
-                updateStats();
-                showNotification(`✅ Order #${orderNumber} updated to ${newStatus.toUpperCase()}`);
+                if (response.ok) {
+                    updateTableStatus();
+                    renderOrders();
+                    renderTablesGrid();
+                    updateStats();
+                    showNotification(`Order #${orderNumber} updated to ${newStatus.toUpperCase()}`);
+                } else {
+                    throw new Error('Failed to update order status');
+                }
             } catch (error) {
                 console.error('Error updating order status:', error);
                 alert('Failed to update order status');
             }
         }
 
-        async function saveOrdersToCloud() {
-            const updateData = {
-                orders: allOrders,
-                completedOrders: completedOrders,
-                lastUpdated: new Date().toISOString(),
-                totalOrders: allOrders.length
-            };
+        // FIXED: Complete Order function - removes from display permanently
+        async function completeOrder(orderNumber) {
+            try {
+                const orderIndex = allOrders.findIndex(order => order.orderNumber === orderNumber);
+                if (orderIndex === -1) {
+                    alert('Order not found!');
+                    return;
+                }
 
-            const response = await fetch(`${CLOUD_CONFIG.baseUrl}/${CLOUD_CONFIG.binId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Master-Key': CLOUD_CONFIG.jsonBinApiKey
-                },
-                body: JSON.stringify(updateData)
-            });
+                // Send completion to Google Sheets (will move to completed orders sheet)
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        orderNumber: orderNumber,
+                        status: 'completed',
+                        completedAt: new Date().toISOString()
+                    })
+                });
 
-            if (!response.ok) {
-                throw new Error('Failed to save to cloud');
+                if (response.ok) {
+                    // IMPORTANT: Remove from LOCAL allOrders array immediately
+                    allOrders.splice(orderIndex, 1);
+
+                    // Update everything
+                    updateTableStatus();
+                    renderOrders();
+                    renderTablesGrid();
+                    updateStats();
+                    showNotification(`Order #${orderNumber} completed! Table is now FREE.`);
+                } else {
+                    throw new Error('Failed to complete order');
+                }
+            } catch (error) {
+                console.error('Error completing order:', error);
+                alert('Failed to complete order');
             }
         }
 
@@ -1015,7 +1380,7 @@
                 btn.classList.add('bg-white', 'text-gray-700');
             });
 
-            event.target.classList.remove('bg-white', 'text-gray-700');
+            event.target.classList.remove('bg-white', 'text-gray-700'); 
             event.target.classList.add('bg-indigo-950', 'text-white');
 
             renderOrders();
@@ -1029,7 +1394,7 @@
                 refreshIcon.classList.remove('loading');
             });
 
-            showNotification('🔄 Dashboard refreshed!');
+            showNotification('Dashboard refreshed!');
         }
 
         // COMBINED INVOICE GENERATION SYSTEM
@@ -1043,8 +1408,10 @@
             const tableNumber = parseInt(order.tableNumber);
             pendingTableNumber = tableNumber;
 
-            // Find all orders for this table
-            const tableOrders = allOrders.filter(o => parseInt(o.tableNumber) === tableNumber);
+            // Find all ACTIVE orders for this table (not completed)
+            const tableOrders = allOrders.filter(o => 
+                parseInt(o.tableNumber) === tableNumber && o.status !== 'completed'
+            );
 
             if (tableOrders.length > 1) {
                 // Show combined bill confirmation
@@ -1062,21 +1429,19 @@
 
             const confirmContent = `
                 <div class="mb-4">
-                    <p class="text-gray-700 mb-3">Table ${selectedOrder.tableNumber} has multiple orders:</p>
+                    <p class="text-gray-700 mb-3">Table ${selectedOrder.tableNumber} has multiple orders</p>
 
-                    <div class="bg-green-50 p-4 rounded-lg mb-4">
-                        <h4 class="font-bold text-green-800 mb-2">🧾 Combined Bill</h4>
-                        <p class="text-sm text-gray-600 mb-2">All ${tableOrders.length} orders in one KOT:</p>
+                    <div class="bg-green-50 p-3 sm:p-4 rounded-lg mb-4">
+                        <h4 class="font-bold text-green-800 mb-2">Combined Bill</h4>
+                        <p class="text-sm text-gray-600 mb-2">All ${tableOrders.length} orders in one KOT</p>
                         <ul class="text-sm space-y-1">
-                            ${tableOrders.map(order => `
-                                <li>• Order #${order.orderNumber} - ₹${order.total}</li>
-                            `).join('')}
+                            ${tableOrders.map(order => `<li>Order #${order.orderNumber} - ₹${order.total}</li>`).join('')}
                         </ul>
                         <p class="font-bold text-green-800 mt-2">Total: ₹${totalAmount}</p>
                     </div>
 
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <h4 class="font-bold text-blue-800 mb-2">📄 Single Order</h4>
+                    <div class="bg-blue-50 p-3 sm:p-4 rounded-lg">
+                        <h4 class="font-bold text-blue-800 mb-2">Single Order</h4>
                         <p class="text-sm text-gray-600">Only Order #${selectedOrder.orderNumber} - ₹${selectedOrder.total}</p>
                     </div>
                 </div>
@@ -1096,7 +1461,7 @@
 
         function generateSingleInvoice() {
             // Find the originally selected order
-            const selectedOrder = currentInvoiceOrders.find(order => order.orderNumber);
+            const selectedOrder = currentInvoiceOrders.find(order => order.orderNumber === currentInvoiceOrders[0].orderNumber);
             currentInvoiceOrders = [selectedOrder];
             closeConfirmModal();
             generateKOTInvoice();
@@ -1106,7 +1471,7 @@
             document.getElementById('confirm-overlay').classList.remove('open');
         }
 
-        // KOT PRINTER STYLE INVOICE GENERATION
+        // ENHANCED RESPONSIVE KOT PRINTER STYLE INVOICE GENERATION
         function generateKOTInvoice() {
             if (!currentInvoiceOrders || currentInvoiceOrders.length === 0) {
                 alert('No orders selected for invoice!');
@@ -1131,30 +1496,30 @@
             const currentDate = new Date().toLocaleDateString('en-IN');
             const currentTime = new Date().toLocaleTimeString('en-IN');
 
-            // KOT Printer Style Invoice Content
+            // PERFECT MOBILE RESPONSIVE KOT CONTENT
             const kotContent = `
-                <div style="text-align: center; margin-bottom: 15px;">
-                    <div style="font-size: 18px; font-weight: bold;">AAMBLI RESTAURANT</div>
-                    <div style="font-size: 12px; margin: 2px 0;">Authentic Indian Cuisine</div>
-                    <div style="font-size: 10px;">Ph: +91 98765 43210</div>
+                <div style="text-align: center; margin-bottom: 10px;">
+                    <div style="font-size: 14px; font-weight: bold;">ULTRA PRO RESTAURANT</div>
+                    <div style="font-size: 10px; margin: 1px 0;">NextGen Technology</div>
+                    <div style="font-size: 8px;">Ph: +91 98765 43210</div>
                     <div class="kot-line"></div>
                 </div>
 
-                <div style="text-align: left; font-size: 11px; margin-bottom: 10px;">
+                <div style="text-align: left; font-size: 9px; margin-bottom: 6px;">
                     <div style="display: flex; justify-content: space-between;">
                         <span>Table: ${tableNumber}</span>
                         <span>Date: ${currentDate}</span>
                     </div>
                     <div style="display: flex; justify-content: space-between;">
-                        <span>${isCombiledBill ? 'Combined Bill' : 'Bill'}: TBL${tableNumber}${Date.now().toString().slice(-4)}</span>
+                        <span>${isCombiledBill ? 'Combined Bill' : 'Bill'} #TBL${tableNumber}${Date.now().toString().slice(-4)}</span>
                         <span>Time: ${currentTime}</span>
                     </div>
-                    ${isCombiledBill ? `<div>Orders: ${currentInvoiceOrders.map(o => '#' + o.orderNumber).join(', ')}</div>` : ''}
+                    ${isCombiledBill ? `<div style="font-size: 8px;">Orders: ${currentInvoiceOrders.map(o => o.orderNumber).join(', ')}</div>` : ''}
                 </div>
 
                 <div class="kot-line"></div>
 
-                <div style="font-size: 11px; margin: 5px 0;">
+                <div style="font-size: 9px; margin: 3px 0;">
                     <div style="display: flex; justify-content: space-between; font-weight: bold;">
                         <span style="width: 50%;">ITEM</span>
                         <span style="width: 15%; text-align: center;">QTY</span>
@@ -1165,59 +1530,36 @@
 
                 <div class="kot-line"></div>
 
-                <div style="font-size: 10px;">
+                <div style="font-size: 8px;">
                     ${allItems.map(item => `
-                        <div style="margin: 3px 0;">
+                        <div style="margin: 1px 0;">
                             <div style="display: flex; justify-content: space-between;">
-                                <span style="width: 50%;">${item.name}${isCombiledBill ? ` (#${item.orderNumber})` : ''}</span>
+                                <span style="width: 50%; word-break: break-word;">${item.name}${isCombiledBill ? ` (#${item.orderNumber})` : ''}</span>
                                 <span style="width: 15%; text-align: center;">${item.quantity}</span>
                                 <span style="width: 20%; text-align: right;">₹${item.price}</span>
                                 <span style="width: 15%; text-align: right;">₹${item.price * item.quantity}</span>
                             </div>
-                            ${item.customizations ? `
-                                <div style="font-size: 9px; color: #666; margin-left: 5px;">
-                                    ${item.customizations.join(', ')}
-                                </div>
-                            ` : ''}
+                            ${item.customizations ? `<div style="font-size: 7px; color: #666; margin-left: 2px;">${item.customizations.join(', ')}</div>` : ''}
                         </div>
                     `).join('')}
                 </div>
 
                 <div class="kot-line"></div>
 
-                <div style="font-size: 11px; margin: 5px 0;">
+                <div style="font-size: 11px; font-weight: bold; text-align: center; margin: 5px 0;">
                     <div style="display: flex; justify-content: space-between;">
-                        <span>Subtotal:</span>
-                        <span>₹${grandTotal}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>CGST (0%):</span>
-                        <span>₹0</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>SGST (0%):</span>
-                        <span>₹0</span>
-                    </div>
-                </div>
-
-                <div class="kot-line"></div>
-
-                <div style="font-size: 14px; font-weight: bold; text-align: center; margin: 8px 0;">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>TOTAL:</span>
+                        <span>TOTAL</span>
                         <span>₹${grandTotal}</span>
                     </div>
                 </div>
 
                 <div class="kot-line"></div>
 
-                <div style="text-align: center; font-size: 10px; margin-top: 10px;">
+                <div style="text-align: center; font-size: 8px; margin-top: 6px;">
                     <div>Thank you for visiting!</div>
                     <div>Please visit again</div>
-                    ${isCombiledBill ? `<div style="margin-top: 5px; font-size: 9px;">${currentInvoiceOrders.length} orders combined</div>` : ''}
-                    <div style="margin-top: 8px; font-size: 8px;">
-                        Powered by NextGen Technology
-                    </div>
+                    ${isCombiledBill ? `<div style="margin-top: 2px; font-size: 7px;">${currentInvoiceOrders.length} orders combined</div>` : ''}
+                    <div style="margin-top: 4px; font-size: 6px;">🍽️ Powered by NextGen Technology</div>
                 </div>
             `;
 
@@ -1233,7 +1575,6 @@
                 markInvoicesGenerated();
             }
 
-            currentInvoiceOrders = [];
             pendingTableNumber = null;
         }
 
@@ -1251,10 +1592,9 @@
                 });
 
                 if (updated) {
-                    await saveOrdersToCloud();
                     renderOrders();
                     const orderNumbers = currentInvoiceOrders.map(o => o.orderNumber).join(', ');
-                    showNotification(`📄 KOT Bill generated for Order(s) #${orderNumbers}. Table will be freed in 15 minutes.`);
+                    showNotification(`KOT Bill generated for Orders: ${orderNumbers}.`);
                 }
             } catch (error) {
                 console.error('Error marking invoices as generated:', error);
@@ -1272,8 +1612,9 @@
 
         function showNotification(message) {
             const notification = document.createElement('div');
-            notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-xl z-50 transform translate-x-full transition-transform duration-300';
-            notification.textContent = message;
+            notification.className = 'fixed bottom-3 right-2 sm:bottom-4 sm:right-4 bg-green-500 text-white px-3 sm:px-4 lg:px-6 py-2 sm:py-3 rounded-lg shadow-xl z-50 transform translate-x-full transition-transform duration-300 max-w-xs sm:max-w-sm';
+            notification.innerHTML = `<p class="text-xs sm:text-sm lg:text-base">${message}</p>`;
+
             document.body.appendChild(notification);
 
             setTimeout(() => {
