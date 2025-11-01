@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Aambli Restaurant & Banquets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Deep, dark slate background */
+            color: #F9FAFB; /* Clean off-white text */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+        .royal-font {
+            font-family: 'Playfair Display', serif;
+        }
+        .search-modal-overlay {
+            background-color: rgba(17, 24, 39, 0.8); /* Darker, themed overlay */
+            backdrop-filter: blur(4px);
+        }
+        /* Modern lift and border effect for cards on hover */
+        .card-hover-effect:hover {
+             transform: translateY(-6px);
+             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        .card-hover-effect:hover .card-border {
+            border-color: #f59e0b; /* Amber-500 for gold accent */
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="min-h-screen">
+
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="fixed top-0 left-0 w-full h-full bg-[#111827] flex justify-center items-center z-50 transition-opacity duration-1000 opacity-100">
+        <div id="splash-content" class="text-center transition-all duration-1000 opacity-100 scale-100">
+             <img src="https://aambli.club/wp-content/uploads/2024/05/Aambli-Logo.svg" alt="Aambli Logo" class="max-w-[80%] max-h-[50vh] h-auto block mx-auto" />
+            <h1 class="royal-font text-3xl md:text-5xl font-extrabold text-[#F9FAFB] mt-4 tracking-tight">Aambli Restaurant</h1>
+        </div>
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div id="main-content" class="opacity-0 transition-opacity duration-500">
+        <!-- Header -->
+        <header class="sticky top-0 z-40 bg-[#1F2937]/80 backdrop-blur-lg w-full border-b border-gray-700/50">
+            <nav class="container mx-auto px-2 sm:px-4 lg:px-8 py-2 sm:py-4 flex justify-between items-center">
+                <a href="#" class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+                    <img src="https://aambli.club/wp-content/uploads/2024/05/Aambli-Logo.svg" alt="Aambli Logo" class="h-6 sm:h-8 lg:h-10 w-auto" />
+                    <span class="font-extrabold text-sm sm:text-lg lg:text-xl royal-font text-[#F9FAFB]">Aambli Restaurant</span>
+                </a>
+                <div class="flex items-center space-x-1 sm:space-x-2">
+                    <button id="open-search-btn" class="group relative p-1.5 sm:p-2 rounded-full hover:bg-gray-700/50 transition-colors" aria-label="Search menu">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-gray-300 group-hover:text-amber-400 transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Main Body -->
+        <main class="container mx-auto px-2 sm:px-4 lg:px-8 mt-4 sm:mt-6 lg:mt-8">
+            <section class="w-full">
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl royal-font font-bold mb-4 sm:mb-6 lg:mb-8">Explore Our Menu</h2>
+                
+                <!-- Category Filters -->
+                <div id="category-filter-container" class="flex flex-wrap gap-2 mb-4 sm:mb-6 lg:mb-8"></div>
+                
+                <!-- Search Results Header -->
+                <div id="search-results-header" class="hidden flex items-center justify-between mb-4 sm:mb-6">
+                    <h3 id="search-results-title" class="text-lg sm:text-xl lg:text-2xl royal-font font-semibold text-white"></h3>
+                    <button id="clear-search-btn" class="text-sm text-gray-400 hover:text-amber-400 transition-colors">
+                        Clear Search
+                    </button>
+                </div>
+                
+                <!-- Menu Items Grid -->
+                <div id="menu-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="hidden search-modal-overlay fixed inset-0 z-50 justify-center items-start pt-20 sm:pt-24 p-4">
+        <div class="bg-[#1F2937] p-4 sm:p-6 rounded-2xl shadow-2xl w-full max-w-lg max-h-[70vh] flex flex-col text-[#F9FAFB] border border-gray-700">
+            <div class="flex justify-between items-center mb-4 flex-shrink-0">
+                <h3 class="text-xl sm:text-2xl royal-font font-semibold text-white">Search Menu</h3>
+                <button id="close-search-modal-btn" class="p-2 rounded-full hover:bg-gray-700/50 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
+            <input
+                id="search-input"
+                type="text"
+                placeholder="Search for dishes... (e.g., Tikka, Paneer)"
+                class="w-full p-3 mb-4 bg-[#111827] border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-white placeholder-gray-400 flex-shrink-0"
+            />
+            <div id="modal-content-area" class="flex-grow overflow-y-auto pr-2">
+                <!-- Content is rendered here by JS -->
+            </div>
+            <div class="flex gap-2 mt-4 flex-shrink-0">
+                <button id="modal-search-btn" class="w-full bg-amber-500 text-black py-3 rounded-lg font-semibold hover:bg-amber-600 transition-colors shadow-lg">Search</button>
+                <button id="modal-clear-btn" class="w-full bg-gray-600 text-white py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors">Clear</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- DATA ---
+    const MENU = [
+        { id: 1, name: "Chicken Tikka", price: 280, description: "Tender chicken marinated in yogurt and spices, grilled to perfection.", image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=400&auto=format&fit=crop", category: "Main Course", searchTerms: ["chicken", "tikka", "grilled", "spicy", "indian", "starter", "non-veg", "protein"] },
+        { id: 2, name: "Paneer Butter Masala", price: 240, description: "Soft paneer cubes in rich tomato and butter gravy with aromatic spices.", image: "https://images.unsplash.com/photo-1565557623262-b51c2513a641?q=80&w=400&auto=format&fit=crop", category: "Main Course", searchTerms: ["paneer", "butter", "masala", "vegetarian", "veg", "tomato", "gravy", "creamy", "indian", "cheese"] },
+        { id: 3, name: "Butter Chicken", price: 320, description: "Classic creamy tomato curry with tender chicken pieces and Indian spices.", image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?q=80&w=400&auto=format&fit=crop", category: "Main Course", searchTerms: ["butter", "chicken", "curry", "creamy", "tomato", "indian", "popular", "mild", "non-veg"] },
+        { id: 4, name: "Dal Makhani", price: 180, description: "Creamy black lentils slow-cooked with butter, cream, and traditional spices.", image: "https://images.unsplash.com/photo-1606023222837-a1e17d7a229a?q=80&w=400&auto=format&fit=crop", category: "Main Course", searchTerms: ["dal", "makhani", "lentils", "vegetarian", "veg", "creamy", "butter", "traditional", "healthy"] },
+        { id: 5, name: "Chicken Biryani", price: 350, description: "Fragrant basmati rice cooked with spiced chicken and aromatic herbs.", image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?q=80&w=400&auto=format&fit=crop", category: "Main Course", searchTerms: ["biryani", "chicken", "rice", "basmati", "aromatic", "spiced", "herbs", "indian", "non-veg", "fragrant"] },
+        { id: 6, name: "Masala Dosa", price: 150, description: "Crispy rice crepe filled with spiced potato filling, served with chutney and sambar.", image: "https://plus.unsplash.com/premium_photo-1664478241329-9f34a1b0a9f2?q=80&w=400&auto=format&fit=crop", category: "South Indian", searchTerms: ["dosa", "masala", "south indian", "vegetarian", "veg", "crepe", "potato"] },
+        { id: 7, name: "Samosa Chaat", price: 120, description: "Crushed samosas topped with yogurt, tamarind and mint chutneys, and spices.", image: "https://plus.unsplash.com/premium_photo-1695271830626-40742a2292c9?q=80&w=400&auto=format&fit=crop", category: "Starters", searchTerms: ["samosa", "chaat", "starter", "vegetarian", "veg", "street food", "spicy"] }
+    ];
+    const popularSearches = ["chicken", "paneer", "biryani", "masala", "spicy"];
+
+    // --- STATE ---
+    let activeCategory = 'All';
+    let searchQuery = '';
+
+    // --- DOM ELEMENTS ---
+    const splashScreen = document.getElementById('splash-screen');
+    const splashContent = document.getElementById('splash-content');
+    const mainContent = document.getElementById('main-content');
+    const menuContainer = document.getElementById('menu-container');
+    const categoryContainer = document.getElementById('category-filter-container');
+    const searchResultsHeader = document.getElementById('search-results-header');
+    const searchResultsTitle = document.getElementById('search-results-title');
+    const clearSearchBtn = document.getElementById('clear-search-btn');
+
+    // Search Modal Elements
+    const searchModal = document.getElementById('search-modal');
+    const openSearchBtn = document.getElementById('open-search-btn');
+    const closeSearchModalBtn = document.getElementById('close-search-modal-btn');
+    const searchInput = document.getElementById('search-input');
+    const modalContentArea = document.getElementById('modal-content-area');
+    const modalSearchBtn = document.getElementById('modal-search-btn');
+    const modalClearBtn = document.getElementById('modal-clear-btn');
+
+
+    // --- RENDER FUNCTIONS ---
+    
+    const renderMenuItem = (item) => `
+        <div class="bg-[#1F2937] rounded-2xl shadow-lg overflow-hidden transition-all duration-300 card-hover-effect">
+            <div class="relative w-full h-48 sm:h-56">
+                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" />
+                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            </div>
+            <div class="p-4 sm:p-5 border-t-4 border-gray-700 transition-colors duration-300 card-border">
+                <div class="flex justify-between items-start gap-3">
+                    <h3 class="text-xl sm:text-2xl font-semibold royal-font mb-2 flex-1 text-white">${item.name}</h3>
+                    <span class="text-xl sm:text-2xl font-bold text-amber-400 whitespace-nowrap">₹${item.price}</span>
+                </div>
+                <p class="text-gray-400 text-sm line-clamp-2 h-10">${item.description}</p>
+            </div>
+        </div>
+    `;
+
+    const renderMenu = () => {
+        let itemsToDisplay = MENU;
+
+        if (searchQuery) {
+            const lowercasedQuery = searchQuery.toLowerCase();
+            itemsToDisplay = MENU.filter(item =>
+                item.name.toLowerCase().includes(lowercasedQuery) ||
+                item.description.toLowerCase().includes(lowercasedQuery) ||
+                (item.searchTerms && item.searchTerms.some(term => term.toLowerCase().includes(lowercasedQuery)))
+            );
+            searchResultsHeader.classList.remove('hidden');
+            searchResultsTitle.textContent = `Search Results for "${searchQuery}"`;
+        } else {
+            searchResultsHeader.classList.add('hidden');
+            if (activeCategory !== 'All') {
+                itemsToDisplay = MENU.filter(item => item.category === activeCategory);
+            }
+        }
+        
+        if (itemsToDisplay.length > 0) {
+            menuContainer.innerHTML = itemsToDisplay.map(renderMenuItem).join('');
+        } else {
+            menuContainer.innerHTML = `
+                <div class="col-span-full text-center py-16 text-gray-500">
+                    <svg class="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" strokeWidth="1" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 10.5a.5.5 0 01.5-.5h3a.5.5 0 010 1h-3a.5.5 0 01-.5-.5z"/>
+                    </svg>
+                    <p class="text-lg text-gray-400">No dishes found.</p>
+                    <p class="text-sm mt-1">Please try a different category or search term.</p>
+                </div>
+            `;
+        }
+    };
+    
+    const renderCategories = () => {
+        const categories = ['All', ...new Set(MENU.map(item => item.category))];
+        categoryContainer.innerHTML = categories.map(category => `
+            <button
+                data-category="${category}"
+                class="category-btn px-4 sm:px-5 py-2 rounded-full font-semibold transition-all duration-300 text-xs sm:text-sm border-2
+                ${activeCategory === category
+                    ? 'bg-amber-500 text-black border-amber-500'
+                    : 'bg-[#374151] text-[#F9FAFB] border-transparent hover:border-amber-500'
+                }"
+            >
+                ${category}
+            </button>
+        `).join('');
+    };
+    
+    const renderModalContent = () => {
+        const query = searchInput.value.toLowerCase();
+        if (query.length < 2) {
+             modalContentArea.innerHTML = `
+                <div>
+                    <h4 class="text-sm font-semibold text-gray-400 mb-2">Popular Searches:</h4>
+                    <div class="flex flex-wrap gap-2">
+                        ${popularSearches.map(term => `<span class="popular-search-tag bg-[#374151] text-gray-200 px-3 py-1.5 rounded-full text-sm cursor-pointer hover:bg-amber-500 hover:text-black transition-colors">${term}</span>`).join('')}
+                    </div>
+                </div>
+             `;
+             document.querySelectorAll('.popular-search-tag').forEach(tag => {
+                tag.addEventListener('click', () => {
+                    searchInput.value = tag.textContent;
+                    renderModalContent();
+                });
+             });
+        } else {
+             const results = MENU.filter(item =>
+                item.name.toLowerCase().includes(query) ||
+                item.description.toLowerCase().includes(query) ||
+                (item.searchTerms && item.searchTerms.some(term => term.toLowerCase().includes(query)))
+            );
+            if (results.length > 0) {
+                modalContentArea.innerHTML = results.map(item => `
+                    <div class="flex items-center gap-4 p-3 border-b border-gray-700/50">
+                        <img src="${item.image}" alt="${item.name}" class="w-14 h-14 rounded-md object-cover flex-shrink-0"/>
+                        <div class="flex-1">
+                            <p class="font-semibold text-white">${item.name}</p>
+                            <p class="text-sm text-gray-400 line-clamp-1">${item.description}</p>
+                        </div>
+                        <span class="font-bold text-lg text-amber-400">₹${item.price}</span>
+                    </div>
+                `).join('');
+            } else {
+                 modalContentArea.innerHTML = `<p class="text-center text-gray-400 py-6">No dishes found for "${searchInput.value}".</p>`;
+            }
+        }
+    };
+
+    // --- EVENT HANDLERS & LOGIC ---
+
+    const handleCategorySelect = (category) => {
+        activeCategory = category;
+        searchQuery = '';
+        renderCategories();
+        renderMenu();
+    };
+
+    const handleSearch = () => {
+        const query = searchInput.value.trim();
+        if (query) {
+            searchQuery = query;
+            activeCategory = 'All';
+            renderCategories();
+            renderMenu();
+            toggleSearchModal(false);
+        }
+    };
+    
+    const clearSearch = () => {
+        searchQuery = '';
+        renderMenu();
+    };
+    
+    const toggleSearchModal = (show) => {
+        if (show) {
+            searchModal.classList.remove('hidden');
+            searchModal.classList.add('flex');
+            searchInput.focus();
+            renderModalContent();
+        } else {
+            searchModal.classList.add('hidden');
+            searchModal.classList.remove('flex');
+        }
+    };
+    
+    // Splash Screen Logic
+    const initApp = () => {
+        setTimeout(() => {
+            splashContent.style.opacity = '0';
+            splashContent.style.filter = 'blur(10px)';
+            splashContent.style.transform = 'scale(0.9)';
+            
+            setTimeout(() => {
+                splashScreen.style.opacity = '0';
+                mainContent.style.opacity = '1';
+                setTimeout(() => {
+                     splashScreen.classList.add('hidden');
+                }, 1000);
+            }, 500);
+        }, 1500);
+
+        renderCategories();
+        renderMenu();
+
+        // --- EVENT LISTENERS ---
+        categoryContainer.addEventListener('click', (e) => {
+            if (e.target.matches('.category-btn')) {
+                handleCategorySelect(e.target.dataset.category);
+            }
+        });
+        
+        clearSearchBtn.addEventListener('click', clearSearch);
+        
+        // Modal Listeners
+        openSearchBtn.addEventListener('click', () => toggleSearchModal(true));
+        closeSearchModalBtn.addEventListener('click', () => toggleSearchModal(false));
+        searchModal.addEventListener('click', (e) => {
+            if (e.target === searchModal) {
+                 toggleSearchModal(false);
+            }
+        });
+        searchInput.addEventListener('input', renderModalContent);
+        searchInput.addEventListener('keydown', (e) => {
+             if (e.key === 'Enter') handleSearch();
+        });
+        modalSearchBtn.addEventListener('click', handleSearch);
+        modalClearBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            renderModalContent();
+        });
+    };
+
+    // --- INITIALIZATION ---
+    initApp();
+});
+</script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
