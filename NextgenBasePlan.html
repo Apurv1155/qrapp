@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextGen Restaurant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* bg-slate-50 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        .splash-screen {
+            transition: opacity 1s ease-out;
+        }
+        #main-content {
+            display: none; /* Initially hidden */
+        }
+        .cart-sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        @media (max-width: 1023px) {
+            .cart-sidebar.open {
+                transform: translateX(0);
+            }
+            .cart-sidebar:not(.open) {
+                transform: translateX(100%);
+            }
+        }
+        
+        /* Animation Keyframes */
+        @keyframes fade-in {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-fade-in { animation: fade-in 0.3s ease-out forwards; }
+
+        @keyframes slide-up {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-slide-up { animation: slide-up 0.3s ease-out forwards; }
+        
+        @keyframes fade-in-up {
+            from { transform: translate(-50%, 20px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        .animate-fade-in-up { animation: fade-in-up 0.3s ease-out forwards; }
+        
+        /* Updated Loading Logo Styles */
+        .nextgen-logo {
+            width: 258px;
+            height: 65px;
+            object-fit: contain; /* Ensures aspect ratio is respected */
+            animation: logoFade 2s ease-in-out infinite alternate;
+        }
+        @keyframes logoFade{
+            from{ opacity:0.7; }
+            to{ opacity:1; }
+        }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body class="bg-slate-50">
+
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen fixed inset-0 bg-white flex items-center justify-center z-[100]">
+        <img src="Logo2.png" alt="NextGen Restaurant Logo" class="nextgen-logo" />
+    </div>
+
+    <!-- Main Application Content -->
+    <div id="main-content">
+        <!-- Header -->
+        <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-lg shadow-sm">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center space-x-3">
+                        <img src="Logo2.png" alt="NextGen Restaurant Logo" class="h-10 w-auto" />
+                        <h1 class="font-display text-xl sm:text-2xl font-bold text-slate-800">Restaurant Management</h1>
+                    </div>
+                    <div class="flex items-center space-x-2 sm:space-x-4">
+                        <div class="hidden sm:flex items-center space-x-2">
+                            <label for="table-number" class="text-sm font-medium text-slate-600">Table:</label>
+                            <input type="number" id="table-number" placeholder="No." min="1" max="50" class="w-16 p-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors text-slate-900" />
+                        </div>
+                        <button onclick="toggleSearchModal(true)" class="p-2 rounded-full text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition-colors">
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </button>
+                        <button onclick="toggleCart(true)" class="relative p-2 rounded-full text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition-colors">
+                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            <span id="cart-count-bubble" class="hidden absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-indigo-600 rounded-full">0</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:grid lg:grid-cols-3 lg:gap-8">
+                <div class="lg:col-span-2">
+                    <!-- Menu Section -->
+                    <section class="py-8">
+                        <h2 class="text-4xl font-bold font-display text-slate-800 mb-6">Explore Our Menu</h2>
+                        <div id="categories-container" class="flex flex-wrap gap-2 mb-8"></div>
+                        <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
+                    </section>
+                </div>
+                <div class="lg:sticky lg:top-16 self-start py-8">
+                    <!-- Cart Sidebar -->
+                    <aside id="cart-sidebar" class="cart-sidebar fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-2xl transform lg:relative lg:translate-x-0 lg:shadow-none lg:bg-transparent lg:max-w-none lg:w-auto">
+                        <div id="cart-content" class="h-full flex flex-col p-4 sm:p-6 lg:p-0"></div>
+                    </aside>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Search Modal -->
+        <div id="search-modal" class="hidden fixed inset-0 bg-black/50 z-50 items-start justify-center p-4 pt-[10vh] animate-fade-in" onclick="toggleSearchModal(false)">
+            <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl transform transition-transform duration-300 animate-slide-up" onclick="event.stopPropagation()">
+                <div id="search-modal-content"></div>
+            </div>
+        </div>
+        
+        <!-- Notification Area -->
+        <div id="notification-container"></div>
+    </div>
+
+<script>
+// --- CONSTANTS ---
+const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwr1_9lc-dqmQMLOsrZyur1lGSP19bR3loVGQU0-ZM4f0XTILJ9UYWHqy9zHwpPLwmEEg/exec";
+const MENU = [
+    {id: 1, name: "Chicken Tikka", price: 280, description: "Tender chicken marinated in yogurt and spices, grilled to perfection.", image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", category: "Main Course", searchTerms: ["chicken", "tikka", "grilled", "spicy", "indian", "starter", "non-veg", "protein"]},
+    {id: 2, name: "Paneer Butter Masala", price: 240, description: "Soft paneer cubes in rich tomato and butter gravy with aromatic spices.", image: "https://images.unsplash.com/photo-1565557623262-b9a35fcde3a7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", category: "Main Course", searchTerms: ["paneer", "butter", "masala", "vegetarian", "veg", "tomato", "gravy", "creamy", "indian", "cheese"]},
+    {id: 3, name: "Butter Chicken", price: 320, description: "Classic creamy tomato curry with tender chicken pieces and Indian spices.", image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", category: "Main Course", searchTerms: ["butter", "chicken", "curry", "creamy", "tomato", "indian", "popular", "mild", "non-veg"]},
+    {id: 4, name: "Dal Makhani", price: 180, description: "Creamy black lentils slow-cooked with butter, cream, and traditional spices.", image: "https://images.unsplash.com/photo-1585937421612-70a058416da7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", category: "Main Course", searchTerms: ["dal", "makhani", "lentils", "vegetarian", "veg", "creamy", "butter", "traditional", "healthy"]},
+    {id: 5, name: "Chicken Biryani", price: 350, description: "Fragrant basmati rice cooked with spiced chicken and aromatic herbs.", image: "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80", category: "Main Course", searchTerms: ["biryani", "chicken", "rice", "basmati", "aromatic", "spiced", "herbs", "indian", "non-veg", "fragrant"]}
+];
+
+// --- APPLICATION STATE ---
+let cart = {};
+let tableNumber = '';
+let activeCategory = 'All';
+let isSendingOrder = false;
+let previousOrder = null;
+let notificationTimeout;
+
+// --- DOM ELEMENTS ---
+const splashScreen = document.getElementById('splash-screen');
+const mainContent = document.getElementById('main-content');
+const menuGrid = document.getElementById('menu-grid');
+const categoriesContainer = document.getElementById('categories-container');
+const cartContent = document.getElementById('cart-content');
+const cartCountBubble = document.getElementById('cart-count-bubble');
+const tableNumberInput = document.getElementById('table-number');
+const searchModal = document.getElementById('search-modal');
+const searchModalContent = document.getElementById('search-modal-content');
+const notificationContainer = document.getElementById('notification-container');
+
+// --- RENDER FUNCTIONS ---
+function renderMenu() {
+    const itemsToRender = activeCategory === 'All' 
+        ? MENU 
+        : MENU.filter(item => item.category === activeCategory);
+    
+    menuGrid.innerHTML = itemsToRender.map(item => `
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform transition duration-300 hover:-translate-y-1 hover:shadow-2xl flex flex-col">
+            <div class="relative w-full h-48 bg-slate-100">
+                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover" />
+            </div>
+            <div class="p-5 flex flex-col flex-grow">
+                <h3 class="text-xl font-bold font-display text-slate-800 mb-2">${item.name}</h3>
+                <p class="text-slate-600 text-sm mb-4 flex-grow">${item.description}</p>
+                <div class="flex justify-between items-center mt-auto">
+                    <span class="text-2xl font-bold text-slate-900">₹${item.price}</span>
+                    <button onclick="handleAddToCart(${item.id})" class="bg-slate-800 text-white px-5 py-2.5 rounded-xl font-semibold shadow-md hover:bg-slate-700 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Add</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderCategories() {
+    const categories = ['All', ...new Set(MENU.map(item => item.category))];
+    categoriesContainer.innerHTML = categories.map(category => `
+        <button 
+            onclick="handleCategoryChange('${category}')"
+            class="category-btn px-4 py-2 rounded-full font-medium text-sm transition-colors ${activeCategory === category ? 'bg-slate-800 text-white' : 'bg-white text-slate-600 hover:bg-slate-200'}">
+            ${category}
+        </button>
+    `).join('');
+}
+
+function renderCart() {
+    const cartItems = Object.values(cart);
+    const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+    let previousOrderHtml = '';
+    if (previousOrder) {
+        previousOrderHtml = `
+        <div class="mb-6 p-4 bg-slate-100 rounded-xl border border-slate-200">
+            <h4 class="text-sm font-semibold text-slate-700 mb-2">Previous Order</h4>
+            ${previousOrder.items.map(item => `
+                <div class="flex justify-between text-xs text-slate-600">
+                    <span>${item.name} x ${item.quantity}</span>
+                    <span class="font-medium">₹${item.price * item.quantity}</span>
+                </div>
+            `).join('')}
+            <div class="flex justify-between font-bold text-sm mt-2 pt-2 border-t border-slate-300 text-slate-800">
+                <span>Total</span>
+                <span>₹${previousOrder.total}</span>
+            </div>
+        </div>`;
+    }
+
+    cartContent.innerHTML = `
+        <div class="flex justify-between items-center mb-6 lg:hidden">
+            <h3 class="text-2xl font-bold font-display text-slate-800">Your Order</h3>
+            <button onclick="toggleCart(false)" class="p-2 rounded-full hover:bg-slate-100 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+        <div class="bg-white lg:rounded-2xl lg:shadow-lg lg:p-6 flex-grow flex flex-col">
+            <h3 class="hidden lg:block text-2xl font-bold font-display text-slate-800 mb-6">Your Order</h3>
+            ${previousOrderHtml}
+            <div class="flex-grow overflow-y-auto -mr-4 pr-4 space-y-4">
+                ${cartItems.length === 0 ? `<div class="text-center text-slate-500 py-16">Your cart is empty.</div>` :
+                cartItems.map(item => `
+                    <div class="flex items-center space-x-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0"/>
+                        <div class="flex-grow min-w-0">
+                            <p class="font-semibold text-slate-800 truncate">${item.name}</p>
+                            <p class="text-sm text-slate-500">₹${item.price}</p>
+                        </div>
+                        <div class="flex items-center space-x-2 flex-shrink-0">
+                            <button onclick="handleChangeQuantity(${item.id}, -1)" class="bg-slate-100 text-slate-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-lg hover:bg-slate-200 transition-colors">-</button>
+                            <span class="font-semibold text-slate-800 w-6 text-center">${item.quantity}</span>
+                            <button onclick="handleChangeQuantity(${item.id}, 1)" class="bg-slate-100 text-slate-700 w-7 h-7 rounded-full flex items-center justify-center font-bold text-lg hover:bg-slate-200 transition-colors">+</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="mt-auto pt-6 border-t border-slate-200">
+                <div class="flex sm:hidden items-center space-x-2 mb-4">
+                    <label for="table-number-mobile" class="text-sm font-medium text-slate-600">Table No:</label>
+                    <input type="number" id="table-number-mobile" placeholder="1-50" min="1" max="50" value="${tableNumber}" oninput="setTableNumber(this.value)" class="w-20 p-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors text-slate-900" />
+                </div>
+                <div class="flex justify-between text-xl font-bold text-slate-900 mb-4">
+                    <span>Total</span>
+                    <span>₹${total.toFixed(0)}</span>
+                </div>
+                <button id="send-order-btn" onclick="handleSendOrder()" ${isSendingOrder || cartItems.length === 0 ? 'disabled' : ''} class="w-full bg-slate-800 text-white py-3 px-4 rounded-xl font-semibold transition-all duration-300 hover:bg-slate-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">
+                    ${isSendingOrder ? `<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>` : ''}
+                    <span>${isSendingOrder ? 'Sending...' : 'Send Order'}</span>
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Sync mobile and desktop table number inputs
+    const mobileTableInput = document.getElementById('table-number-mobile');
+    if (mobileTableInput) mobileTableInput.value = tableNumber;
+
+    if (cartItemCount > 0) {
+        cartCountBubble.textContent = cartItemCount;
+        cartCountBubble.classList.remove('hidden');
+    } else {
+        cartCountBubble.classList.add('hidden');
+    }
+}
+
+function renderSearchModal(query = '') {
+    const popularSearches = ["chicken", "paneer", "biryani", "masala", "spicy"];
+    let content;
+
+    if (query.length < 2) {
+        content = `
+            <div>
+                <h4 class="text-sm font-semibold text-slate-600 mb-3">Popular Searches</h4>
+                <div class="flex flex-wrap gap-2">
+                    ${popularSearches.map(term => `
+                        <button onclick="handleSearchClick('${term}')" class="bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg text-sm hover:bg-slate-200 transition-colors capitalize">${term}</button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    } else {
+        const lowerCaseQuery = query.toLowerCase();
+        const searchResults = MENU.filter(item => 
+            item.name.toLowerCase().includes(lowerCaseQuery) ||
+            item.description.toLowerCase().includes(lowerCaseQuery) ||
+            item.searchTerms.some(term => term.toLowerCase().includes(lowerCaseQuery))
+        );
+        if (searchResults.length > 0) {
+            content = `
+                <div class="space-y-3">
+                    ${searchResults.map(item => `
+                        <div class="flex items-center space-x-4 p-2 rounded-lg hover:bg-slate-50">
+                            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-lg object-cover flex-shrink-0" />
+                            <div class="flex-grow">
+                                <p class="font-semibold text-slate-800">${item.name}</p>
+                                <p class="text-sm text-slate-500">₹${item.price}</p>
+                            </div>
+                            <button onclick="handleAddToCartFromSearch(${item.id})" class="bg-slate-800 text-white px-4 py-2 rounded-lg font-semibold shadow-sm hover:bg-slate-700 transition-colors text-sm flex-shrink-0">Add</button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        } else {
+            content = `<div class="text-center py-10"><p class="text-slate-600">No results found for "${query}"</p></div>`;
+        }
+    }
+
+    searchModalContent.innerHTML = `
+        <div class="p-4 border-b border-slate-200">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                   <svg class="w-6 h-6 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <input id="search-input" type="text" placeholder="Search for dishes..." value="${query}" oninput="renderSearchModal(this.value)" class="w-full p-3 pl-12 text-lg bg-slate-100 border-transparent rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                <button onclick="toggleSearchModal(false)" class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-500 hover:text-slate-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div class="p-6 max-h-[60vh] overflow-y-auto">${content}</div>
+    `;
+    
+    // Auto-focus on input if modal is opened
+    const searchInput = document.getElementById('search-input');
+    if(searchInput) searchInput.focus();
+}
+
+// --- EVENT HANDLERS & LOGIC ---
+function handleAddToCart(itemId) {
+    const item = MENU.find(i => i.id === itemId);
+    if (!item) return;
+
+    if (cart[itemId]) {
+        cart[itemId].quantity++;
+    } else {
+        cart[itemId] = { ...item, quantity: 1 };
+    }
+    showNotification(`${item.name} added to cart`, 'success');
+    renderCart();
+}
+
+function handleAddToCartFromSearch(itemId) {
+    handleAddToCart(itemId);
+    toggleSearchModal(false);
+}
+
+function handleChangeQuantity(itemId, change) {
+    if (cart[itemId]) {
+        cart[itemId].quantity += change;
+        if (cart[itemId].quantity <= 0) {
+            delete cart[itemId];
+        }
+        renderCart();
+    }
+}
+
+function handleCategoryChange(category) {
+    activeCategory = category;
+    renderCategories();
+    renderMenu();
+}
+
+function setTableNumber(value) {
+    tableNumber = value;
+    tableNumberInput.value = value;
+    const mobileTableInput = document.getElementById('table-number-mobile');
+    if (mobileTableInput) mobileTableInput.value = value;
+}
+
+function toggleCart(open) {
+    const cartSidebar = document.getElementById('cart-sidebar');
+    if (open) {
+        cartSidebar.classList.add('open');
+    } else {
+        cartSidebar.classList.remove('open');
+    }
+}
+
+function toggleSearchModal(open) {
+    if (open) {
+        renderSearchModal();
+        searchModal.style.display = 'flex';
+    } else {
+        searchModal.style.display = 'none';
+    }
+}
+
+function handleSearchClick(term) {
+    renderSearchModal(term);
+}
+
+async function handleSendOrder() {
+    if (Object.keys(cart).length === 0) {
+        showNotification('Cart is empty.', 'error');
+        return;
+    }
+    if (!tableNumber || isNaN(Number(tableNumber)) || Number(tableNumber) < 1 || Number(tableNumber) > 50) {
+        showNotification('Please enter a valid table number (1-50).', 'error');
+        return;
+    }
+
+    isSendingOrder = true;
+    renderCart();
+
+    const orderData = {
+        orderNumber: `NGR-${Date.now().toString().slice(-6)}`,
+        tableNumber,
+        items: Object.values(cart),
+        total: Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(0),
+        orderTime: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date().toISOString()
+    };
+
+    try {
+        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(orderData)
+        });
+        if (!response.ok) throw new Error('Network response was not ok.');
+        
+        showNotification(`Order ${orderData.orderNumber} sent!`, 'success');
+        localStorage.setItem('previousOrder', JSON.stringify(orderData));
+        previousOrder = orderData;
+        cart = {};
+        setTableNumber('');
+    } catch (error) {
+        console.error('Failed to send order:', error);
+        showNotification('Failed to send order. Please try again.', 'error');
+    } finally {
+        isSendingOrder = false;
+        renderCart();
+    }
+}
+
+function showNotification(message, type) {
+    clearTimeout(notificationTimeout);
+    const isSuccess = type === 'success';
+    const notification = document.createElement('div');
+    notification.className = `fixed bottom-5 left-1/2 -translate-x-1/2 px-6 py-3 rounded-xl shadow-lg text-white ${isSuccess ? 'bg-slate-800' : 'bg-red-600'} transition-all duration-300 animate-fade-in-up`;
+    notification.textContent = message;
+    
+    notificationContainer.innerHTML = '';
+    notificationContainer.appendChild(notification);
+    
+    notificationTimeout = setTimeout(() => {
+        notification.remove();
+    }, 3000);
+}
+
+
+// --- INITIALIZATION ---
+function init() {
+    // Show splash screen, then fade out and show main content
+    setTimeout(() => {
+        splashScreen.style.opacity = '0';
+        setTimeout(() => {
+            splashScreen.style.display = 'none';
+            mainContent.style.display = 'block';
+        }, 1000);
+    }, 2000);
+    
+    // Load previous order
+    const savedOrder = localStorage.getItem('previousOrder');
+    if (savedOrder) {
+        previousOrder = JSON.parse(savedOrder);
+    }
+    
+    // Add event listeners
+    tableNumberInput.addEventListener('input', (e) => setTableNumber(e.target.value));
+
+    // Initial render
+    renderCategories();
+    renderMenu();
+    renderCart();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+</script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
