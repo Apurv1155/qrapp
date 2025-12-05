@@ -1,0 +1,946 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nextgen Restaurant Dashboard</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #f1f5f9;
+            --surface: #ffffff;
+            --primary: #0f172a;
+            --border-subtle: #e2e8f0;
+            
+            /* Status Colors */
+            --color-new: #ef4444;
+            --color-new-bg: #fef2f2;
+            --color-prep: #f97316;
+            --color-prep-bg: #fff7ed;
+            --color-ready: #10b981;
+            --color-ready-bg: #ecfdf5;
+            --color-done: #6366f1;
+            --color-done-bg: #eef2ff;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--primary);
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* Smooth Transitions */
+        * { transition: background-color 0.2s, border-color 0.2s, color 0.2s, box-shadow 0.2s; }
+        
+        /* Sidebar Drawer */
+        #sidebar { 
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); 
+            box-shadow: 20px 0 40px rgba(0,0,0,0.05);
+        }
+        #sidebar-overlay { transition: opacity 0.3s ease; backdrop-filter: blur(2px); }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        /* Tab Animation */
+        .tab-content { display: none; opacity: 0; animation: fadeUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .tab-content.active { display: block; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- MODERN CARD DESIGN --- */
+        .order-card {
+            background: var(--surface);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(148, 163, 184, 0.1);
+            border: 1px solid white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .order-card:active { transform: scale(0.995); }
+
+        /* Status Header Stripes */
+        .card-header-stripe {
+            height: 4px;
+            width: 100%;
+        }
+        .status-new .card-header-stripe { background: var(--color-new); }
+        .status-preparing .card-header-stripe { background: var(--color-prep); }
+        .status-ready .card-header-stripe { background: var(--color-ready); }
+        .status-delivered .card-header-stripe { background: var(--color-done); }
+
+        /* Card Header Section */
+        .card-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .status-new .card-header { background: var(--color-new-bg); }
+        .status-preparing .card-header { background: var(--color-prep-bg); }
+        .status-ready .card-header { background: var(--color-ready-bg); }
+        .status-delivered .card-header { background: var(--color-done-bg); }
+
+        /* Table Badge */
+        .table-badge {
+            background: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .status-new .table-badge { color: var(--color-new); }
+        .status-preparing .table-badge { color: var(--color-prep); }
+        .status-ready .table-badge { color: var(--color-ready); }
+        .status-delivered .table-badge { color: var(--color-done); }
+
+        /* New Order Pulse */
+        .new-order-pulse { animation: cardPulse 2s infinite; }
+        @keyframes cardPulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+
+        /* Items List */
+        .item-list { padding: 16px; flex-grow: 1; }
+        .item-row { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px dashed #f1f5f9;
+        }
+        .item-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        
+        .qty-badge {
+            background: #f1f5f9;
+            color: #334155;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+
+        /* Action Footer */
+        .card-footer {
+            padding: 16px;
+            background: #f8fafc;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        /* Button Styles */
+        .btn-modern {
+            width: 100%;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.1s;
+        }
+        .btn-modern:active { transform: scale(0.97); }
+
+        .btn-start { background: linear-gradient(135deg, #f97316, #fb923c); color: white; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3); }
+        .btn-done { background: linear-gradient(135deg, #10b981, #34d399); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+        .btn-deliver { background: linear-gradient(135deg, #6366f1, #818cf8); color: white; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3); }
+        .btn-bill { background: white; border: 1px solid #cbd5e1; color: #475569; }
+        .btn-complete { background: #fce7f3; color: #db2777; }
+
+        /* Filter Pills */
+        .filter-container {
+            position: sticky;
+            top: 70px;
+            z-index: 20;
+            margin: 0 -1rem 1.5rem -1rem;
+            padding: 0 1rem;
+            overflow: hidden;
+        }
+        .filter-scroll {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+            scrollbar-width: none;
+        }
+        .filter-scroll::-webkit-scrollbar { display: none; }
+        
+        .filter-pill {
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: white;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid #e2e8f0;
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+        .filter-pill.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
+        }
+
+        /* Stats Widget */
+        .stat-widget {
+            background: white;
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100px;
+        }
+        .stat-icon-bg {
+            width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        /* Tables Grid */
+        .table-squircle {
+            aspect-ratio: 1;
+            border-radius: 20px;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 2px solid transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .table-squircle:active { transform: scale(0.92); }
+        
+        .t-free { border-color: #e2e8f0; color: #94a3b8; }
+        .t-busy { background: #fef2f2; border-color: #ef4444; color: #ef4444; }
+        .t-prep { background: #fff7ed; border-color: #f97316; color: #d97706; }
+        .t-done { background: #ecfdf5; border-color: #10b981; color: #047857; }
+
+        .table-status-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            position: absolute; top: 12px; right: 12px;
+        }
+
+        /* Modal Overlays */
+        .modal-overlay {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(8px);
+        }
+        .aesthetic-modal {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .loading-ring {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+        }
+        .loading-ring:after {
+            content: " ";
+            display: block;
+            width: 20px;
+            height: 20px;
+            margin: 2px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            border-color: #cbd5e1 transparent #cbd5e1 transparent;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+        @keyframes lds-dual-ring { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media print {
+            .no-print { display: none !important; }
+            .aesthetic-modal { box-shadow: none; border-radius: 0; max-height: none; }
+            body { background: white; }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen pb-20">
+
+    <!-- Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 z-40 opacity-0 pointer-events-none" onclick="toggleSidebar()"></div>
+    
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed top-0 left-0 h-full w-[80%] max-w-[300px] bg-white z-50 transform -translate-x-full no-print flex flex-col">
+        <div class="p-8 pb-4">
+            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tighter">Next<span class="text-blue-600">Gen</span>.</h1>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Kitchen OS v2.0</p>
+        </div>
+        
+        <nav class="flex-1 px-6 space-y-4 mt-4">
+            <button class="w-full flex items-center gap-4 p-4 rounded-2xl transition-all tab-button active group" onclick="switchTab('orders'); toggleSidebar();" id="orders-tab">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 group-[.active]:bg-blue-600 group-[.active]:text-white flex items-center justify-center transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                </div>
+                <span class="font-bold text-lg text-slate-600 group-[.active]:text-slate-900">Orders</span>
+            </button>
+            <button class="w-full flex items-center gap-4 p-4 rounded-2xl transition-all tab-button group" onclick="switchTab('tables'); toggleSidebar();" id="tables-tab">
+                <div class="w-12 h-12 rounded-xl bg-slate-50 text-slate-400 group-[.active]:bg-blue-600 group-[.active]:text-white flex items-center justify-center transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                </div>
+                <span class="font-bold text-lg text-slate-600 group-[.active]:text-slate-900">Tables</span>
+            </button>
+        </nav>
+
+        <div class="p-6">
+            <div class="bg-slate-50 rounded-2xl p-4 mb-4 border border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-white rounded-lg text-slate-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"></path></svg></div>
+                    <span class="font-bold text-slate-700">Sound</span>
+                </div>
+                <button id="sound-toggle" onclick="toggleSound()" class="w-14 h-8 rounded-full bg-slate-200 relative transition-colors duration-300">
+                    <span id="sound-knob" class="absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300"></span>
+                </button>
+            </div>
+            
+            <button onclick="refreshOrders()" class="w-full py-4 bg-slate-900 text-white rounded-2xl font-bold flex items-center justify-center gap-2 active:scale-95 transition-transform">
+                <div id="refresh-spinner" class="hidden loading-ring"></div>
+                <svg id="refresh-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                <span>Sync Data</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Navbar -->
+    <header class="fixed top-0 w-full z-30 bg-white/80 backdrop-blur-xl border-b border-white/20 no-print">
+        <div class="container mx-auto px-4 h-[70px] flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()" class="p-2 -ml-2 text-slate-700 hover:bg-slate-100 rounded-xl transition-colors">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg>
+                </button>
+                <div class="hidden sm:block">
+                    <h1 class="text-xl font-extrabold text-slate-800 tracking-tight">Kitchen Display</h1>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                 <div class="bg-slate-100/80 px-4 py-2 rounded-xl font-mono text-sm font-bold text-slate-600 border border-slate-200/50" id="live-time">
+                    --:--
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 pt-[85px]">
+        
+        <!-- Dashboard Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+            <div class="stat-widget">
+                <div class="stat-icon-bg bg-red-50 text-red-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg></div>
+                <div>
+                    <div class="text-3xl font-black text-slate-800" id="new-count">0</div>
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">New Orders</div>
+                </div>
+            </div>
+            <div class="stat-widget">
+                <div class="stat-icon-bg bg-orange-50 text-orange-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path></svg></div>
+                <div>
+                    <div class="text-3xl font-black text-slate-800" id="preparing-count">0</div>
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">Preparing</div>
+                </div>
+            </div>
+            <div class="stat-widget">
+                <div class="stat-icon-bg bg-green-50 text-green-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                <div>
+                    <div class="text-3xl font-black text-slate-800" id="ready-count">0</div>
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">Ready</div>
+                </div>
+            </div>
+            <div class="stat-widget">
+                <div class="stat-icon-bg bg-indigo-50 text-indigo-500"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m8-2a2 2 0 100-4 2 2 0 000 4z"></path></svg></div>
+                <div>
+                    <div class="text-3xl font-black text-slate-800" id="busy-tables-count">0</div>
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wide">Busy Tables</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div id="orders-content" class="tab-content active">
+            <!-- Filter Pills -->
+            <div class="filter-container">
+                <div class="filter-scroll">
+                    <button onclick="filterOrders('all')" class="filter-pill active" data-filter="all">All Orders</button>
+                    <button onclick="filterOrders('new')" class="filter-pill" data-filter="new">New</button>
+                    <button onclick="filterOrders('preparing')" class="filter-pill" data-filter="preparing">Preparing</button>
+                    <button onclick="filterOrders('ready')" class="filter-pill" data-filter="ready">Ready</button>
+                    <button onclick="filterOrders('delivered')" class="filter-pill" data-filter="delivered">Delivered</button>
+                </div>
+            </div>
+
+            <div id="orders-container" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 pb-10">
+                <div class="col-span-full py-20 flex flex-col items-center justify-center text-slate-400">
+                    <div class="loading-ring mb-4"></div>
+                    <p class="font-medium">Connecting to kitchen...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tables Tab -->
+        <div id="tables-content" class="tab-content">
+             <div class="bg-white rounded-[24px] p-6 shadow-sm border border-slate-100">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-xl font-bold text-slate-800">Floor Overview</h2>
+                    <span class="text-xs font-bold bg-slate-100 px-3 py-1.5 rounded-lg text-slate-500" id="free-tables-text">Updating...</span>
+                </div>
+                
+                <div class="flex gap-6 mb-8 text-xs font-bold overflow-x-auto pb-2">
+                    <div class="flex items-center gap-2 text-slate-400"><div class="w-3 h-3 rounded-full border-2 border-slate-300"></div> Free</div>
+                    <div class="flex items-center gap-2 text-red-500"><div class="w-3 h-3 rounded-full bg-red-500"></div> New Order</div>
+                    <div class="flex items-center gap-2 text-orange-500"><div class="w-3 h-3 rounded-full bg-orange-500"></div> Cooking</div>
+                    <div class="flex items-center gap-2 text-green-500"><div class="w-3 h-3 rounded-full bg-green-500"></div> Ready</div>
+                </div>
+
+                <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4" id="tables-grid"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Aesthetic Modals -->
+    <div id="confirm-overlay" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
+        <div class="aesthetic-modal w-full max-w-sm p-6">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Bill Options</h3>
+                <p class="text-sm text-slate-500 mt-1">This table has multiple active orders.</p>
+            </div>
+            
+            <div id="confirm-content" class="mb-6 text-sm text-slate-600 bg-slate-50 p-4 rounded-2xl border border-slate-100"></div>
+            
+            <div class="space-y-3">
+                <button onclick="generateCombinedInvoice()" class="w-full py-3.5 bg-slate-900 text-white rounded-xl font-bold shadow-lg shadow-slate-200">Combine All Orders</button>
+                <button onclick="generateSingleInvoice()" class="w-full py-3.5 bg-white border border-slate-200 text-slate-700 rounded-xl font-bold">Print Current Only</button>
+                <button onclick="closeConfirmModal()" class="w-full py-3 text-slate-400 font-bold text-sm">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="invoice-overlay" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
+        <div class="aesthetic-modal w-full max-w-[360px]">
+            <div class="bg-slate-50 px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+                <span class="font-bold text-slate-700">KOT Preview</span>
+                <button onclick="closeInvoiceModal()" class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-300 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[60vh] bg-white">
+                <div id="invoice-content" class="kot-receipt font-mono text-sm"></div>
+            </div>
+            <div class="p-5 border-t border-slate-100 bg-white">
+                <button onclick="printInvoice()" class="w-full py-3.5 bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 flex items-center justify-center gap-2 transition-transform active:scale-95">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Print to Kitchen
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwr1_9lc-dqmQMLOsrZyur1lGSP19bR3loVGQU0-ZM4f0XTILJ9UYWHqy9zHwpPLwmEEg/exec";
+        let allOrders = [], completedOrders = [];
+        let currentFilter = 'all', currentTab = 'orders';
+        let previousNewOrderCount = 0;
+        let soundEnabled = true;
+        let tableStatus = {}, currentInvoiceOrders = [], pendingTableNumber = null;
+        let audioContext = null;
+        let localOrderStates = JSON.parse(localStorage.getItem('localOrderStates')) || {};
+
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('-translate-x-full');
+            if (!sidebar.classList.contains('-translate-x-full')) {
+                sidebarOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                sidebarOverlay.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLiveTime();
+            setInterval(updateLiveTime, 1000);
+            loadOrders();
+            setInterval(loadOrders, 10000);
+
+            const savedSoundPreference = localStorage.getItem('kitchenSoundEnabled');
+            if (savedSoundPreference !== null) {
+                soundEnabled = (savedSoundPreference === 'true');
+                updateSoundButton();
+            }
+            initializeTablesGrid();
+        });
+
+        document.addEventListener('click', function unlockAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            document.removeEventListener('click', unlockAudio);
+        }, { once: true });
+
+        function updateLiveTime() {
+            document.getElementById('live-time').textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        async function loadOrders() {
+            try {
+                const response = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?action=getOrders`);
+                if (response.ok) {
+                    const data = await response.json();
+                    let fetchedOrders = (data.orders || []).filter(order => order.status !== 'completed');
+                    
+                    let mergedOrders = fetchedOrders.map(order => {
+                        const localState = localOrderStates[order.orderNumber];
+                        if (localState) {
+                            return { ...order, ...localState };
+                        }
+                        return order;
+                    });
+                    
+                    let activeOrders = mergedOrders.filter(order => order.status !== 'completed');
+
+                    completedOrders = data.completedOrders || [];
+                    checkForNewOrders(activeOrders);
+                    allOrders = activeOrders;
+                    updateTableStatus();
+                    renderOrders();
+                    renderTablesGrid();
+                    updateStats();
+                } else {
+                    if (allOrders.length === 0) showEmptyState();
+                }
+            } catch (error) {
+                 if (allOrders.length === 0) showEmptyState();
+            }
+        }
+
+        function updateTableStatus() {
+            tableStatus = {};
+            for (let i = 1; i <= 25; i++) tableStatus[i] = { status: 'free', orderCount: 0, orders: [] };
+            allOrders.forEach(order => {
+                const tableNum = parseInt(order.tableNumber);
+                if (tableNum >= 1 && tableNum <= 25) {
+                    tableStatus[tableNum].orderCount++;
+                    tableStatus[tableNum].orders.push(order);
+                    if (order.status === 'new') tableStatus[tableNum].status = 'busy';
+                    else if (order.status === 'preparing' || order.status === 'ready') { if (tableStatus[tableNum].status !== 'busy') tableStatus[tableNum].status = 'preparing'; }
+                    else if (order.status === 'delivered') { if (tableStatus[tableNum].status !== 'busy' && tableStatus[tableNum].status !== 'preparing') tableStatus[tableNum].status = 'delivered'; }
+                }
+            });
+        }
+
+        function initializeTablesGrid() {
+            const grid = document.getElementById('tables-grid');
+            let html = '';
+            for (let i = 1; i <= 25; i++) {
+                html += `<div class="table-squircle t-free" id="table-${i}" onclick="showTableDetails(${i})"><span class="text-[10px] font-bold opacity-60">T</span><span class="text-xl font-bold">${i}</span><div class="table-status-dot hidden bg-current"></div></div>`;
+            }
+            grid.innerHTML = html;
+        }
+
+        function renderTablesGrid() {
+            let freeTables = 0;
+            for (let i = 1; i <= 25; i++) {
+                const tableElement = document.getElementById(`table-${i}`), dot = tableElement.querySelector('.table-status-dot'), status = tableStatus[i] || { status: 'free', orderCount: 0 };
+                tableElement.className = 'table-squircle';
+                
+                if (status.orderCount > 0) {
+                    let styleClass = 't-busy';
+                    if (status.status === 'preparing') styleClass = 't-prep';
+                    if (status.status === 'delivered') styleClass = 't-done';
+                    
+                    tableElement.classList.add(styleClass);
+                    dot.classList.remove('hidden');
+                } else {
+                    tableElement.classList.add('t-free');
+                    dot.classList.add('hidden');
+                    freeTables++;
+                }
+            }
+            const freeTablesText = document.getElementById('free-tables-text');
+            if (freeTablesText) freeTablesText.textContent = `${freeTables} Available`;
+        }
+
+        function showTableDetails(tableNumber) {
+            const status = tableStatus[tableNumber];
+            if (!status || status.orderCount === 0) return;
+            const ordersList = status.orders.map(order => `Order #${order.orderNumber} (${order.status}) - ₹${order.total}`).join('\n');
+            let message = `TABLE ${tableNumber}\n\n${ordersList}`;
+            alert(message);
+        }
+
+        function switchTab(tabName) {
+            currentTab = tabName;
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`${tabName}-content`).classList.add('active');
+            
+            document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        function checkForNewOrders(newOrders) {
+            const currentNewOrderCount = newOrders.filter(order => order.status === 'new').length;
+            if (currentNewOrderCount > previousNewOrderCount && soundEnabled) {
+                playNotificationSound();
+                showNewOrderAlert(currentNewOrderCount - previousNewOrderCount);
+            }
+            previousNewOrderCount = currentNewOrderCount;
+        }
+
+        function playNotificationSound() {
+            if (!soundEnabled) return;
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioContext.state === 'suspended') audioContext.resume().catch(e => console.error(e));
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.3);
+        }
+
+        function showNewOrderAlert(count) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-24 right-4 bg-white border-l-4 border-red-500 shadow-xl z-50 transform translate-x-full transition-all duration-300 p-4 rounded-r-xl flex items-center gap-4 max-w-xs';
+            notification.innerHTML = `<div class="bg-red-50 p-3 rounded-full text-red-500"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg></div><div><h4 class="font-bold text-slate-900">New Order!</h4><p class="text-xs text-slate-500 font-bold">${count} waiting for prep</p></div>`;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.classList.remove('translate-x-full'), 100);
+            setTimeout(() => { notification.classList.add('translate-x-full'); setTimeout(() => notification.remove(), 300); }, 4000);
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            if (soundEnabled && (!audioContext || audioContext.state === 'suspended')) {
+                if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                audioContext.resume();
+            }
+            updateSoundButton();
+            localStorage.setItem('kitchenSoundEnabled', soundEnabled);
+        }
+
+        function updateSoundButton() {
+            const knob = document.getElementById('sound-knob');
+            const bg = document.getElementById('sound-toggle');
+            if (soundEnabled) {
+                bg.classList.replace('bg-slate-200', 'bg-green-500');
+                knob.classList.replace('left-1', 'translate-x-7');
+            } else {
+                bg.classList.replace('bg-green-500', 'bg-slate-200');
+                knob.classList.remove('translate-x-7');
+                knob.classList.add('left-1');
+            }
+        }
+
+        function renderOrders() {
+            const container = document.getElementById('orders-container');
+            let filtered = allOrders.filter(o => o.status !== 'completed');
+            if (currentFilter !== 'all') filtered = filtered.filter(o => o.status === currentFilter);
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="col-span-full py-24 text-center text-slate-400"><div class="inline-block p-6 rounded-full bg-slate-100 mb-4"><svg class="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg></div><p class="font-bold">No active orders</p></div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(order => `
+                <div class="order-card status-${order.status} ${order.status === 'new' ? 'new-order-pulse' : ''}">
+                    <div class="card-header-stripe"></div>
+                    <div class="card-header">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-bold uppercase text-slate-500 mb-1">Order #${order.orderNumber}</span>
+                            <span class="text-[11px] font-bold text-slate-400 bg-white/50 px-2 py-1 rounded inline-block self-start">${new Date(order.timestamp).toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'})}</span>
+                        </div>
+                        <div class="table-badge">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Table</span>
+                            <span class="text-xl font-black">${order.tableNumber}</span>
+                        </div>
+                    </div>
+
+                    <div class="item-list">
+                        ${order.items.map(item => `
+                            <div class="item-row">
+                                <div class="flex items-start">
+                                    <div class="qty-badge">${item.quantity}</div>
+                                    <div class="flex flex-col">
+                                        <span class="font-bold text-slate-800 text-sm leading-tight">${item.name}</span>
+                                        ${item.customizations ? `<span class="text-[10px] font-bold text-slate-400 mt-1">${item.customizations.join(', ')}</span>` : ''}
+                                    </div>
+                                </div>
+                                <span class="font-bold text-slate-700 text-sm">₹${item.price * item.quantity}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="flex justify-between items-center mb-4 px-2">
+                             <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Bill</span>
+                             <span class="text-xl font-black text-slate-900">₹${order.total}</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            ${order.status === 'new' ? `
+                                <button onclick="updateOrderStatus('${order.orderNumber}', 'preparing')" class="col-span-2 btn-modern btn-start">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path></svg>
+                                    Start Cooking
+                                </button>
+                            ` : ''}
+                            
+                            ${order.status === 'preparing' ? `
+                                <button onclick="updateOrderStatus('${order.orderNumber}', 'ready')" class="col-span-2 btn-modern btn-done">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                    Order Ready
+                                </button>
+                            ` : ''}
+                            
+                            ${order.status === 'ready' ? `
+                                <button onclick="updateOrderStatus('${order.orderNumber}', 'delivered')" class="col-span-2 btn-modern btn-deliver">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                                    Serve Table
+                                </button>
+                            ` : ''}
+                            
+                            ${order.status === 'delivered' ? `
+                                <button onclick="handleInvoiceGeneration('${order.orderNumber}')" class="btn-modern btn-bill">Print Bill</button>
+                                <button onclick="completeOrder('${order.orderNumber}')" class="btn-modern btn-complete">Clear</button>
+                            ` : `
+                                <button onclick="handleInvoiceGeneration('${order.orderNumber}')" class="col-span-2 btn-modern btn-bill text-xs">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                    ${order.invoiceGeneratedAt ? 'View Receipt' : 'Preview KOT'}
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            const active = allOrders.filter(o => o.status !== 'completed');
+            document.getElementById('new-count').textContent = active.filter(o => o.status === 'new').length;
+            document.getElementById('preparing-count').textContent = active.filter(o => o.status === 'preparing').length;
+            document.getElementById('ready-count').textContent = active.filter(o => o.status === 'ready').length;
+            document.getElementById('busy-tables-count').textContent = Object.values(tableStatus).filter(s => s.orderCount > 0).length;
+        }
+
+        function showEmptyState() {
+            document.getElementById('orders-container').innerHTML = `<div class="col-span-full py-12 text-center text-red-400 font-medium">Offline Mode. Retrying...</div>`;
+        }
+        
+        async function updateOrderStatus(orderNumber, newStatus) {
+            const orderIndex = allOrders.findIndex(order => order.orderNumber === orderNumber);
+            if (orderIndex === -1) return;
+
+            allOrders[orderIndex].status = newStatus;
+            allOrders[orderIndex].lastUpdated = new Date().toISOString();
+
+            if (!localOrderStates[orderNumber]) localOrderStates[orderNumber] = {};
+            localOrderStates[orderNumber].status = newStatus;
+            localOrderStates[orderNumber].lastUpdated = new Date().toISOString();
+            localStorage.setItem('localOrderStates', JSON.stringify(localOrderStates));
+
+            updateTableStatus();
+            renderOrders();
+            renderTablesGrid();
+            updateStats();
+        }
+
+        async function completeOrder(orderNumber) {
+            const orderIndex = allOrders.findIndex(order => order.orderNumber === orderNumber);
+            if (orderIndex === -1) return;
+
+            const completedTime = new Date().toISOString();
+            allOrders[orderIndex].status = 'completed';
+            allOrders[orderIndex].completedAt = completedTime;
+
+            if (!localOrderStates[orderNumber]) localOrderStates[orderNumber] = {};
+            localOrderStates[orderNumber].status = 'completed';
+            localOrderStates[orderNumber].completedAt = completedTime;
+            localStorage.setItem('localOrderStates', JSON.stringify(localOrderStates));
+
+            updateTableStatus();
+            renderOrders();
+            renderTablesGrid();
+            updateStats();
+
+            try {
+                await fetch(GOOGLE_APPS_SCRIPT_URL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ 
+                        orderNumber: orderNumber, 
+                        status: 'completed', 
+                        completedAt: completedTime 
+                    }) 
+                });
+            } catch (error) { console.error('Error completing order:', error); }
+        }
+
+        function filterOrders(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-pill').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.querySelector(`.filter-pill[data-filter="${status}"]`);
+            if(activeBtn) activeBtn.classList.add('active');
+            renderOrders();
+        }
+
+        function refreshOrders() {
+            const icon = document.getElementById('refresh-icon');
+            const spinner = document.getElementById('refresh-spinner');
+            
+            icon.classList.add('hidden');
+            spinner.classList.remove('hidden');
+            
+            loadOrders().finally(() => {
+                setTimeout(() => {
+                     icon.classList.remove('hidden');
+                     spinner.classList.add('hidden');
+                }, 500);
+            });
+        }
+
+        function handleInvoiceGeneration(orderNumber) {
+            const order = allOrders.find(o => o.orderNumber === orderNumber);
+            if (!order) return;
+            pendingTableNumber = parseInt(order.tableNumber);
+            const tableOrders = allOrders.filter(o => parseInt(o.tableNumber) === pendingTableNumber && o.status !== 'completed');
+            if (tableOrders.length > 1) { showCombinedBillConfirmation(tableOrders, order); }
+            else { currentInvoiceOrders = [order]; generateKOTInvoice(); }
+        }
+
+        function showCombinedBillConfirmation(tableOrders, selectedOrder) {
+            const total = tableOrders.reduce((sum, o) => sum + parseInt(o.total), 0);
+            const content = `<div class="mb-2"><div class="flex justify-between items-center mb-2"><span class="text-xs font-bold uppercase text-slate-400">Total Due</span><span class="font-bold text-slate-800 text-lg">₹${total}</span></div><div class="space-y-2">${tableOrders.map(o => `<div class="flex justify-between text-sm bg-white p-2 rounded-lg border border-slate-100"><span class="font-bold text-slate-700">Order #${o.orderNumber}</span><span class="font-bold text-slate-900">₹${o.total}</span></div>`).join('')}</div></div>`;
+            document.getElementById('confirm-content').innerHTML = content;
+            document.getElementById('confirm-overlay').classList.remove('hidden');
+        }
+
+        function generateCombinedInvoice() { closeConfirmModal(); generateKOTInvoice(); }
+        function generateSingleInvoice() {
+            const selected = currentInvoiceOrders.find(o => o.orderNumber === currentInvoiceOrders[0].orderNumber);
+            currentInvoiceOrders = [selected];
+            closeConfirmModal();
+            generateKOTInvoice();
+        }
+        function closeConfirmModal() { document.getElementById('confirm-overlay').classList.add('hidden'); }
+
+        function generateKOTInvoice() {
+            if (!currentInvoiceOrders || currentInvoiceOrders.length === 0) return;
+            const tableNumber = currentInvoiceOrders[0].tableNumber, isCombined = currentInvoiceOrders.length > 1;
+            const total = currentInvoiceOrders.reduce((s, o) => s + parseInt(o.total), 0);
+            const allItems = currentInvoiceOrders.flatMap(o => o.items.map(item => ({...item, orderNumber: o.orderNumber })));
+            const date = new Date().toLocaleDateString('en-IN'), time = new Date().toLocaleTimeString('en-IN');
+            
+            const content = `
+                <div style="text-align: center; margin-bottom: 12px; border-bottom: 2px solid #000; padding-bottom: 8px;">
+                    <div style="font-size: 18px; font-weight: 900;">NAई बहु</div>
+                    <div style="font-size: 10px; letter-spacing: 1px;">KITCHEN ORDER TICKET</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 8px; font-weight: bold;">
+                    <span>TBL: ${tableNumber}</span>
+                    <span>${time}</span>
+                </div>
+                <div style="border-top: 1px dashed #000; padding: 4px 0; font-size: 10px; font-weight: bold; display: flex;">
+                    <span style="flex:1">ITEM</span>
+                    <span style="width:20px; text-align:center">Q</span>
+                    <span style="width:40px; text-align:right">AMT</span>
+                </div>
+                <div style="border-top: 1px dashed #000; padding-top: 4px;">
+                    ${allItems.map(item => `
+                        <div style="font-size: 11px; margin-bottom: 4px;">
+                            <div style="display: flex;">
+                                <span style="flex:1">${item.name}</span>
+                                <span style="width:20px; text-align:center; font-weight:bold">${item.quantity}</span>
+                                <span style="width:40px; text-align:right">${item.price * item.quantity}</span>
+                            </div>
+                            ${item.customizations ? `<div style="font-size: 9px; margin-left: 8px; font-style: italic; color: #444;">- ${item.customizations.join(', ')}</div>` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="border-top: 2px solid #000; margin-top: 8px; padding-top: 4px; display: flex; justify-content: space-between; font-weight: 900; font-size: 14px;">
+                    <span>TOTAL</span>
+                    <span>₹${total}</span>
+                </div>
+            `;
+            document.getElementById('invoice-content').innerHTML = content;
+            document.getElementById('invoice-overlay').classList.remove('hidden');
+        }
+
+        function closeInvoiceModal() {
+            document.getElementById('invoice-overlay').classList.add('hidden');
+            if (currentInvoiceOrders && currentInvoiceOrders.length > 0) markInvoicesGenerated();
+            pendingTableNumber = null;
+        }
+
+        async function markInvoicesGenerated() {
+            const time = new Date().toISOString();
+            currentInvoiceOrders.forEach(invOrder => {
+                const orderIdx = allOrders.findIndex(o => o.orderNumber === invOrder.orderNumber);
+                if (orderIdx !== -1 && !allOrders[orderIdx].invoiceGeneratedAt) { 
+                    allOrders[orderIdx].invoiceGeneratedAt = time; 
+                    if (!localOrderStates[invOrder.orderNumber]) localOrderStates[invOrder.orderNumber] = {};
+                    localOrderStates[invOrder.orderNumber].invoiceGeneratedAt = time;
+                }
+            });
+            localStorage.setItem('localOrderStates', JSON.stringify(localOrderStates));
+            renderOrders();
+        }
+
+        function printInvoice() {
+            window.print();
+            if (currentInvoiceOrders && currentInvoiceOrders.length > 0) markInvoicesGenerated();
+        }
+    </script>
+</body>
+</html>
